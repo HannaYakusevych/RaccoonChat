@@ -104,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // MARK: Lifecycle logging methods
     
     private func printAppStateChanges(in method: String = #function, from state1: String, to state2: String) {
-        print("Application moved from \(state1) to \(state2): \(method)")
+        print("AppDelegate: Application moved from \"\(state1)\" to \"\(state2)\": \(method)")
     }
 
 }
