@@ -7,15 +7,17 @@
 //
 
 import UIKit
+import AVFoundation
+import Photos
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate  {
   
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     
     // The app crashed
     // The reason is that editButton isn't initialized yet (it is nil),
-    // so forced unwrapping caused crash
+    // so forced unwrapping causes crash
     //Logger.write("\(editButton.frame)")
   }
   
@@ -31,6 +33,8 @@ class ProfileViewController: UIViewController {
       return
     }
     print("Выбери изображение профиля")
+    
+    showAlertController()
   }
   
   
@@ -102,6 +106,120 @@ class ProfileViewController: UIViewController {
       return false
     }
     return true
+  }
+  
+  // MARK: Setting new profile photo functions
+  
+  /**
+   Show the AlertController to allow the user to choose a new photo for the profile
+   */
+  private func showAlertController() {
+    let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    
+    // Make actions
+    
+    // Choose the photo from the library
+    let choosePhotoAction = UIAlertAction(title: "Установить из галереи", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+      // Check if Photo Library is available
+      if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
+        // Check if the app is allowed to use the Photo Library
+        let photoLibraryAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+
+        switch photoLibraryAuthorizationStatus {
+        case .notDetermined: self.requestPhotoLibraryPermission()
+        case .authorized: self.presentPhotoLibrary()
+        case .restricted, .denied: self.alertAccessNeeded(for: "Photo Library")
+        }
+      }
+    })
+    
+    // Make a new photo
+    let makePhotoAction = UIAlertAction(title: "Сделать фото", style: .default, handler: { (alert: UIAlertAction!) -> Void in
+      // Check if camera is available
+      if UIImagePickerController.isSourceTypeAvailable(.camera) {
+        // Check if the app is allowed to use the camera
+        let cameraAuthorizationStatus = AVCaptureDevice.authorizationStatus(for: .video)
+        
+        switch cameraAuthorizationStatus {
+        case .notDetermined: self.requestCameraPermission()
+        case .authorized: self.presentCamera()
+        case .restricted, .denied: self.alertAccessNeeded(for: "Camera")
+        }
+      }
+    })
+    
+    let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: nil)
+    
+    // Add actions to the controller
+    alertController.addAction(choosePhotoAction)
+    alertController.addAction(makePhotoAction)
+    alertController.addAction(cancelAction)
+    
+    self.present(alertController, animated: true, completion: nil)
+  }
+  
+  /**
+   Ask the user if an access to the camera is allowed (for now it isn't specified)
+   */
+  private func requestCameraPermission() {
+    AVCaptureDevice.requestAccess(for: .video, completionHandler: {accessGranted in
+      guard accessGranted == true else { return }
+      self.presentCamera()
+    })
+  }
+  
+  /**
+   Ask the user if an access to the Photo Library is allowed (for now it isn't specified)
+   */
+  private func requestPhotoLibraryPermission() {
+    PHPhotoLibrary.requestAuthorization() {accessGranted in
+      guard accessGranted == PHAuthorizationStatus.authorized else { return }
+      self.presentPhotoLibrary()
+    }
+  }
+  
+  private func presentCamera() {
+    let photoPicker = UIImagePickerController()
+    photoPicker.sourceType = .camera
+    photoPicker.delegate = self
+    self.present(photoPicker, animated: true, completion: nil)
+  }
+  
+  private func presentPhotoLibrary() {
+    let photoPicker = UIImagePickerController()
+    photoPicker.sourceType = .photoLibrary
+    photoPicker.delegate = self
+    self.present(photoPicker, animated: true, completion: nil)
+  }
+  
+  /**
+   Ask the user if an access to the app would be allowed (for now it isn't)
+   */
+  private func alertAccessNeeded(for app: String) {
+    let settingsAppURL = URL(string: UIApplication.openSettingsURLString)!
+    
+    let title = app == "Camera" ? "Необходим доступ к камере" : "Необходим доступ к фотографиям"
+    let message = app == "Camera" ? "Доступ к камере необходим для полноценного функционирования приложения" : "Доступ к фотографиям необходим для полноценного функционирования приложения"
+    
+    let alert = UIAlertController(
+      title: title,
+      message: message,
+      preferredStyle: UIAlertController.Style.alert
+    )
+    
+    alert.addAction(UIAlertAction(title: "Отмена", style: .default, handler: nil))
+    alert.addAction(UIAlertAction(title: "Разрешить", style: .cancel, handler: { (alert) -> Void in
+      UIApplication.shared.open(settingsAppURL, options: [:], completionHandler: nil)
+    }))
+    
+    present(alert, animated: true, completion: nil)
+  }
+
+  // Setting a new photo as profile photo
+  func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    picker.dismiss(animated: true, completion: nil)
+    let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+    profileImageView.image = image
   }
 
 
