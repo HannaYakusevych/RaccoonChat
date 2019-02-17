@@ -24,32 +24,32 @@
                                     <constraint firstAttribute="width" secondItem="zZt-gC-Rdy" secondAttribute="height" multiplier="1:1" id="fAc-qK-NSK"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21R-me-fL3">
+                            <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageSizeForAccessibilityContentSizeCategory="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21R-me-fL3">
                                 <rect key="frame" x="16" y="504" width="288" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="SQl-Wg-xkC"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Редактировать">
                                     <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" text="Alexandr Fedorov" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zEj-4j-Zk1">
-                                <rect key="frame" x="16" y="316" width="288" height="36"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
+                                <rect key="frame" x="16" y="316" width="288" height="38.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" insetsLayoutMarginsFromSafeArea="NO" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="none" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jY5-Tr-9KQ">
-                                <rect key="frame" x="16" y="360" width="288" height="107.5"/>
+                                <rect key="frame" x="16" y="362.5" width="288" height="101.5"/>
                                 <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse consequat lorem massa, eu maximus ex varius eu. Phasellus euismod imperdiet.</string>
-                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" placeholderIntrinsicWidth="40" placeholderIntrinsicHeight="40" translatesAutoresizingMaskIntoConstraints="NO" id="nny-R0-auq">
-                                <rect key="frame" x="246.5" y="250.5" width="57.5" height="57.5"/>
+                                <rect key="frame" x="217.5" y="221.5" width="86.5" height="86.5"/>
                                 <color key="backgroundColor" red="0.24705882352941178" green="0.47058823529411764" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" red="0.2470588235" green="0.47058823529999999" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <gestureRecognizers/>
@@ -63,7 +63,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="nny-R0-auq" firstAttribute="height" secondItem="zZt-gC-Rdy" secondAttribute="height" multiplier="0.2" id="5p0-r8-HoE"/>
+                            <constraint firstItem="nny-R0-auq" firstAttribute="height" secondItem="zZt-gC-Rdy" secondAttribute="height" multiplier="0.3" id="5p0-r8-HoE"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="21R-me-fL3" secondAttribute="bottom" constant="20" id="5qQ-8e-0Rs"/>
                             <constraint firstItem="21R-me-fL3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="AFh-3Y-Ept"/>
                             <constraint firstItem="jY5-Tr-9KQ" firstAttribute="top" secondItem="zEj-4j-Zk1" secondAttribute="bottom" constant="8" symbolic="YES" id="HAM-KZ-pjN"/>
@@ -83,6 +83,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="editButton" destination="21R-me-fL3" id="tOF-g1-Bac"/>
                         <outlet property="profileImageView" destination="zZt-gC-Rdy" id="eoJ-2g-wZD"/>
                         <outlet property="setPhotoImageView" destination="nny-R0-auq" id="Urm-UD-B9h"/>
                     </connections>

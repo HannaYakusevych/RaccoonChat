@@ -9,10 +9,19 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-
+  
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+    // The app crashes
+    // The reason is that editButton isn't initialized yet (it is nil)
+    //Logger.write("\(editButton.frame)")
+  }
+  
   // MARK: Outlets
   @IBOutlet weak var setPhotoImageView: UIImageView!
   @IBOutlet weak var profileImageView: UIImageView!
+  @IBOutlet weak var editButton: UIButton!
   
   // MARK: Actions
   
@@ -28,20 +37,31 @@ class ProfileViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
+    Logger.write("\(editButton.frame)")
+    
   }
   
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
     
-    setImagesProperties()
+    setViewContentProperties()
+  }
+  
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    
+    // The editButton.frame property is different here because
+    // the methods viewWillLayoutSubviews() and viewDidLayoutSubviews()
+    // were called and object size has changed according to the screen size
+    Logger.write("\(editButton.frame)")
   }
   
   // MARK: Private functions
   
   /**
-   Set properties for profilePhotoView and choosePhotoView
+   Set properties for profilePhotoView, choosePhotoView and editButton
    */
-  private func setImagesProperties() {
+  private func setViewContentProperties() {
     let layer = setPhotoImageView.layer
     
     // choosePhotoView settings
@@ -52,10 +72,17 @@ class ProfileViewController: UIViewController {
     // 1.75 - empirical multiplier
     let k = CGFloat((image?.height)!) / layer.bounds.height * 1.75
     layer.contentsScale = k
-    layer.cornerRadius = setPhotoImageView.frame.size.height / 2
+    
+    let radius = setPhotoImageView.frame.size.height / 2
+    layer.cornerRadius = radius
     
     // profilePhotoView settings
-    profileImageView.layer.cornerRadius = setPhotoImageView.frame.size.height / 2
+    profileImageView.layer.cornerRadius = radius
+    
+    // editButton settings
+    editButton.layer.cornerRadius = editButton.layer.bounds.height / 4
+    editButton.layer.borderColor = UIColor.black.cgColor
+    editButton.layer.borderWidth = 1.0
   }
   
   /**
