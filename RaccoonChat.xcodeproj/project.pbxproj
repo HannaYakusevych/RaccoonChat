@@ -8,13 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		95054EB7220EDCD800BC484F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95054EB6220EDCD800BC484F /* AppDelegate.swift */; };
-		95054EB9220EDCD800BC484F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95054EB8220EDCD800BC484F /* ViewController.swift */; };
 		95054EBC220EDCD800BC484F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95054EBA220EDCD800BC484F /* Main.storyboard */; };
 		95054EBF220EDCD800BC484F /* RaccoonChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95054EBD220EDCD800BC484F /* RaccoonChat.xcdatamodeld */; };
 		95054EC1220EDCDA00BC484F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95054EC0220EDCDA00BC484F /* Assets.xcassets */; };
 		95054EC4220EDCDA00BC484F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95054EC2220EDCDA00BC484F /* LaunchScreen.storyboard */; };
 		95054ECF220EDCDA00BC484F /* RaccoonChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95054ECE220EDCDA00BC484F /* RaccoonChatTests.swift */; };
-		95054EDC220EFACE00BC484F /* LogMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95054EDB220EFACE00BC484F /* LogMaker.swift */; };
+		95054EDC220EFACE00BC484F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95054EDB220EFACE00BC484F /* Logger.swift */; };
+		95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C769E82218898D001CB34E /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -30,7 +30,6 @@
 /* Begin PBXFileReference section */
 		95054EB3220EDCD800BC484F /* RaccoonChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RaccoonChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95054EB6220EDCD800BC484F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		95054EB8220EDCD800BC484F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		95054EBB220EDCD800BC484F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		95054EBE220EDCD800BC484F /* RaccoonChat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RaccoonChat.xcdatamodel; sourceTree = "<group>"; };
 		95054EC0220EDCDA00BC484F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -39,7 +38,8 @@
 		95054ECA220EDCDA00BC484F /* RaccoonChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RaccoonChatTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		95054ECE220EDCDA00BC484F /* RaccoonChatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaccoonChatTests.swift; sourceTree = "<group>"; };
 		95054ED0220EDCDA00BC484F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		95054EDB220EFACE00BC484F /* LogMaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogMaker.swift; sourceTree = "<group>"; };
+		95054EDB220EFACE00BC484F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		95C769E82218898D001CB34E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,9 +81,9 @@
 		95054EB5220EDCD800BC484F /* RaccoonChat */ = {
 			isa = PBXGroup;
 			children = (
-				95054EDB220EFACE00BC484F /* LogMaker.swift */,
+				95054EDB220EFACE00BC484F /* Logger.swift */,
 				95054EB6220EDCD800BC484F /* AppDelegate.swift */,
-				95054EB8220EDCD800BC484F /* ViewController.swift */,
+				95C769E82218898D001CB34E /* ProfileViewController.swift */,
 				95054EBA220EDCD800BC484F /* Main.storyboard */,
 				95054EC0220EDCDA00BC484F /* Assets.xcassets */,
 				95054EC2220EDCDA00BC484F /* LaunchScreen.storyboard */,
@@ -203,10 +203,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				95054EB9220EDCD800BC484F /* ViewController.swift in Sources */,
 				95054EBF220EDCD800BC484F /* RaccoonChat.xcdatamodeld in Sources */,
 				95054EB7220EDCD800BC484F /* AppDelegate.swift in Sources */,
-				95054EDC220EFACE00BC484F /* LogMaker.swift in Sources */,
+				95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */,
+				95054EDC220EFACE00BC484F /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

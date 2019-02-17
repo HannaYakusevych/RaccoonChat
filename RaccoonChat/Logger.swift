@@ -6,22 +6,30 @@
 //  Copyright © 2019 Hanna Yakusevych. All rights reserved.
 //
 
-struct LogMaker {
+struct Logger {
   
   // Set the default value to 'false' to disable activity logs
-  static var isEnabled = true
+  static var isEnabled = false
   
   static func appStateIsChanging(in method: String = #function, from state1: String, to state2: String) {
-    if LogMaker.isEnabled {
+    if Logger.isEnabled {
       print("AppDelegate: Application moved from \"\(state1)\" to \"\(state2)\": \(method)")
     }
   }
   
+  static func writeLog(_ message: String) {
+    if Logger.isEnabled {
+      print(message)
+    }
+  }
+  
+  /*
   static func viewStateIsChanging(in method: String = #function, message: String) {
-    if LogMaker.isEnabled {
+    if Logger.isEnabled {
       print("ViewController: \(message): \(method)")
     }
   }
+ */
   
 }
 
