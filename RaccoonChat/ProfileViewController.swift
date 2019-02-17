@@ -13,8 +13,9 @@ class ProfileViewController: UIViewController {
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
     
-    // The app crashes
-    // The reason is that editButton isn't initialized yet (it is nil)
+    // The app crashed
+    // The reason is that editButton isn't initialized yet (it is nil),
+    // so forced unwrapping caused crash
     //Logger.write("\(editButton.frame)")
   }
   
@@ -69,7 +70,7 @@ class ProfileViewController: UIViewController {
     layer.contents = image
     layer.contentsGravity = CALayerContentsGravity.center
     
-    // 1.75 - empirical multiplier
+    // 1.75 - empirical multiplier (looks better)
     let k = CGFloat((image?.height)!) / layer.bounds.height * 1.75
     layer.contentsScale = k
     
