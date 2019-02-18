@@ -38,7 +38,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
   }
   
   
-  // MARK: View Lifecycle mathods
+  // MARK: View Lifecycle methods
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -127,7 +127,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
 
         switch photoLibraryAuthorizationStatus {
         case .notDetermined: self.requestPhotoLibraryPermission()
-        case .authorized: self.presentPhotoLibrary()
+        case .authorized: self.presentChoosingPhotoController(ofType: .photoLibrary)
         case .restricted, .denied: self.alertAccessNeeded(for: "Photo Library")
         }
       }
@@ -142,7 +142,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
         
         switch cameraAuthorizationStatus {
         case .notDetermined: self.requestCameraPermission()
-        case .authorized: self.presentCamera()
+        case .authorized: self.presentChoosingPhotoController(ofType: .camera)
         case .restricted, .denied: self.alertAccessNeeded(for: "Camera")
         }
       }
@@ -164,7 +164,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
   private func requestCameraPermission() {
     AVCaptureDevice.requestAccess(for: .video, completionHandler: {accessGranted in
       guard accessGranted == true else { return }
-      self.presentCamera()
+      self.presentChoosingPhotoController(ofType: .camera)
     })
   }
   
@@ -174,20 +174,13 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
   private func requestPhotoLibraryPermission() {
     PHPhotoLibrary.requestAuthorization() {accessGranted in
       guard accessGranted == PHAuthorizationStatus.authorized else { return }
-      self.presentPhotoLibrary()
+      self.presentChoosingPhotoController(ofType: .photoLibrary)
     }
   }
   
-  private func presentCamera() {
+  private func presentChoosingPhotoController(ofType: UIImagePickerController.SourceType) {
     let photoPicker = UIImagePickerController()
-    photoPicker.sourceType = .camera
-    photoPicker.delegate = self
-    self.present(photoPicker, animated: true, completion: nil)
-  }
-  
-  private func presentPhotoLibrary() {
-    let photoPicker = UIImagePickerController()
-    photoPicker.sourceType = .photoLibrary
+    photoPicker.sourceType = ofType
     photoPicker.delegate = self
     self.present(photoPicker, animated: true, completion: nil)
   }
@@ -221,6 +214,4 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
     profileImageView.image = image
   }
-
-
 }
