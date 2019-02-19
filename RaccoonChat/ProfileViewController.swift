@@ -145,6 +145,8 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
         case .authorized: self.presentChoosingPhotoController(ofType: .camera)
         case .restricted, .denied: self.alertAccessNeeded(for: "Camera")
         }
+      } else {
+        self.alertCameraIsUnavailable()
       }
     })
     
@@ -204,6 +206,20 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     alert.addAction(UIAlertAction(title: "Разрешить", style: .cancel, handler: { (alert) -> Void in
       UIApplication.shared.open(settingsAppURL, options: [:], completionHandler: nil)
     }))
+    
+    present(alert, animated: true, completion: nil)
+  }
+  
+  /**
+   Tell the user if camera isn't available on device
+ */
+  private func alertCameraIsUnavailable() {
+    let alert = UIAlertController(
+      title: "Камера не доступна на данном устройстве",
+      message: nil,
+      preferredStyle: UIAlertController.Style.alert
+    )
+    alert.addAction(UIAlertAction(title: "ОК", style: .default, handler: nil))
     
     present(alert, animated: true, completion: nil)
   }
