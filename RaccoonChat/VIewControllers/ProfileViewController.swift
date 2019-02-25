@@ -36,6 +36,9 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     
     showAlertController()
   }
+  @IBAction func goBack(_ sender: Any) {
+    self.dismiss(animated: true, completion: nil)
+  }
   
   
   // MARK: View Lifecycle methods

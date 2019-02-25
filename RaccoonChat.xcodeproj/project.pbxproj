@@ -19,6 +19,7 @@
 		952FB90322231510009822C6 /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB90222231510009822C6 /* ConversationCell.swift */; };
 		952FB9052223E01C009822C6 /* Conversation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FB9042223E01C009822C6 /* Conversation.storyboard */; };
 		952FB9072223E06C009822C6 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB9062223E06C009822C6 /* ConversationViewController.swift */; };
+		952FB90A2223E514009822C6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB9092223E514009822C6 /* MessageCell.swift */; };
 		95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C769E82218898D001CB34E /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -46,9 +47,10 @@
 		95054EDB220EFACE00BC484F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		952FB8FC222302B4009822C6 /* ConversationsList.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ConversationsList.storyboard; sourceTree = "<group>"; };
 		952FB8FF22230429009822C6 /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
-		952FB90222231510009822C6 /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationCell.swift; path = RaccoonChat/ConversationCell.swift; sourceTree = SOURCE_ROOT; };
+		952FB90222231510009822C6 /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationCell.swift; path = RaccoonChat/ViewCells/ConversationCell.swift; sourceTree = SOURCE_ROOT; };
 		952FB9042223E01C009822C6 /* Conversation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Conversation.storyboard; sourceTree = "<group>"; };
 		952FB9062223E06C009822C6 /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
+		952FB9092223E514009822C6 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		95C769E82218898D001CB34E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,10 +93,10 @@
 		95054EB5220EDCD800BC484F /* RaccoonChat */ = {
 			isa = PBXGroup;
 			children = (
+				952FB9082223E418009822C6 /* ViewCells */,
 				952FB90122230658009822C6 /* VIewControllers */,
 				952FB8FE222302C0009822C6 /* Storyboards */,
 				95054EDB220EFACE00BC484F /* Logger.swift */,
-				952FB90222231510009822C6 /* ConversationCell.swift */,
 				95054EB6220EDCD800BC484F /* AppDelegate.swift */,
 				95054EC0220EDCDA00BC484F /* Assets.xcassets */,
 				95054EC5220EDCDA00BC484F /* Info.plist */,
@@ -131,6 +133,15 @@
 				952FB9062223E06C009822C6 /* ConversationViewController.swift */,
 			);
 			path = VIewControllers;
+			sourceTree = "<group>";
+		};
+		952FB9082223E418009822C6 /* ViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				952FB90222231510009822C6 /* ConversationCell.swift */,
+				952FB9092223E514009822C6 /* MessageCell.swift */,
+			);
+			path = ViewCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -242,6 +253,7 @@
 				952FB90322231510009822C6 /* ConversationCell.swift in Sources */,
 				95054EB7220EDCD800BC484F /* AppDelegate.swift in Sources */,
 				95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */,
+				952FB90A2223E514009822C6 /* MessageCell.swift in Sources */,
 				95054EDC220EFACE00BC484F /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

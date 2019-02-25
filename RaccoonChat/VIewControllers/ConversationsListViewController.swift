@@ -10,6 +10,14 @@ import UIKit
 
 class ConversationsListViewController: UITableViewController {
 
+  @IBAction func goToProfile(_ sender: Any) {
+    if let viewController = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ProfViewController") as? ProfileViewController {
+      self.present(viewController, animated: true, completion: nil)
+      
+    }
+    print("hello")
+  }
+  
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -17,7 +25,7 @@ class ConversationsListViewController: UITableViewController {
     // Do any additional setup after loading the view.
   }
   
-  // MARK: UITableViewDataSource methods
+  // MARK: - Table view data source
   
   // Just for representing cell styles
   let onlineUsers = [User(name: "Name 1", message: nil, date: nil, online: true, hasUnreadMessages: false, photo: nil),
@@ -80,19 +88,23 @@ class ConversationsListViewController: UITableViewController {
     return "History"
   }
   
-  // MARK: UITableViewDelegate methods
+  // MARK: - Table view delegate
+  override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    if let viewController = UIStoryboard(name: "Conversation", bundle: nil).instantiateViewController(withIdentifier: "ConvViewController") as? ConversationViewController {
+      viewController.title = indexPath.section == 0 ? onlineUsers[indexPath.row].name : offlineUsers[indexPath.row].name
+      navigationController?.pushViewController(viewController, animated: true)
+    }
+  }
   
-    
-
-  /*
   // MARK: - Navigation
-
+  /*
   // In a storyboard-based application, you will often want to do a little preparation before navigation
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-      // Get the new view controller using segue.destination.
-      // Pass the selected object to the new view controller.
+    
+    // Get the new view controller using segue.destination.
+    // Pass the selected object to the new view controller.
   }
-  */
+ */
 
 }
 

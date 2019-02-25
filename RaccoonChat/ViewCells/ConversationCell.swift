@@ -69,7 +69,7 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
       return self.backgroundColor != #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
     set {
-      self.backgroundColor = newValue ? #colorLiteral(red: 1, green: 0.9781315923, blue: 0.8520652652, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+      self.backgroundColor = newValue ? #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0.3413420377, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
   }
   

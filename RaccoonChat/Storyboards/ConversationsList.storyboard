@@ -83,12 +83,18 @@
                             <outlet property="delegate" destination="py6-ZU-91y" id="gC6-sc-47N"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Tinkoff Chat" id="T8V-pp-tgH"/>
+                    <navigationItem key="navigationItem" title="Tinkoff Chat" id="T8V-pp-tgH">
+                        <barButtonItem key="rightBarButtonItem" title="Item" id="cQV-xI-X2V">
+                            <connections>
+                                <action selector="goToProfile:" destination="py6-ZU-91y" id="3zd-0e-Ugh"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="85N-l8-2qc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5258.3999999999996" y="-2140.4797601199402"/>
+            <point key="canvasLocation" x="-4998" y="-2127"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="sGg-bb-RG3">
