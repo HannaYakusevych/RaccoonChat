@@ -84,13 +84,16 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Tinkoff Chat" id="T8V-pp-tgH">
-                        <barButtonItem key="rightBarButtonItem" title="Item" id="cQV-xI-X2V">
+                        <barButtonItem key="rightBarButtonItem" title="Profile" id="cQV-xI-X2V">
                             <connections>
-                                <action selector="goToProfile:" destination="py6-ZU-91y" id="3zd-0e-Ugh"/>
+                                <action selector="goToProfile:" destination="py6-ZU-91y" id="C78-dZ-w4N"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="showProfileButton" destination="cQV-xI-X2V" id="1NR-9Q-u8c"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="85N-l8-2qc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -15,13 +15,15 @@ class ConversationsListViewController: UITableViewController {
       self.present(viewController, animated: true, completion: nil)
       
     }
-    print("hello")
   }
+  
+  @IBOutlet weak var showProfileButton: UIBarButtonItem!
   
   override func viewDidLoad() {
     super.viewDidLoad()
 
     tableView.reloadData()
+    
     // Do any additional setup after loading the view.
   }
   
@@ -29,12 +31,12 @@ class ConversationsListViewController: UITableViewController {
   
   // Just for representing cell styles
   let onlineUsers = [User(name: "Name 1", message: nil, date: nil, online: true, hasUnreadMessages: false, photo: nil),
-                     User(name: "Name 7", message: "Hello", date: Date(timeIntervalSince1970: 10000000), online: true, hasUnreadMessages: false, photo: nil),
+                     User(name: "Name 7", message: "Old message", date: Date(timeIntervalSince1970: 10000000), online: true, hasUnreadMessages: false, photo: nil),
                      User(name: "Name 2", message: "Hello", date: Date(timeIntervalSince1970: 500), online: true, hasUnreadMessages: false, photo: nil),
                      User(name: "Name 3", message: "Hello", date: Date(timeIntervalSinceNow: -30), online: true, hasUnreadMessages: false, photo: nil),
                      User(name: "Name 4", message: "Hello", date: Date(timeIntervalSinceNow: -900), online: true, hasUnreadMessages: false, photo: nil),
-                     User(name: "Name 5", message: "Hello", date: Date(timeIntervalSince1970: 500), online: true, hasUnreadMessages: true, photo: nil),
-                     User(name: "Name 6", message: "Hello", date: Date(timeIntervalSinceNow: -30), online: true, hasUnreadMessages: true, photo: nil),
+                     User(name: "Name 5", message: "Unread Message", date: Date(timeIntervalSince1970: 500), online: true, hasUnreadMessages: true, photo: nil),
+                     User(name: "Name 6", message: "Unread Message", date: Date(timeIntervalSinceNow: -30), online: true, hasUnreadMessages: true, photo: nil),
                      User(name: "Name 8", message: "Hello", date: Date(timeIntervalSinceNow: -30000), online: true, hasUnreadMessages: false, photo: nil),
                      User(name: "Name 9", message: "Hello", date: Date(timeIntervalSince1970: 500), online: true, hasUnreadMessages: false, photo: nil),
                      User(name: "Name 10", message: "Hello", date: Date(timeIntervalSinceNow: -90), online: true, hasUnreadMessages: false, photo: nil)]
@@ -44,8 +46,8 @@ class ConversationsListViewController: UITableViewController {
                       User(name: "Name 13", message: "Hello", date: Date(timeIntervalSinceNow: -30), online: false, hasUnreadMessages: false, photo: nil),
                       User(name: "Name 14", message: "Hello", date: Date(timeIntervalSinceNow: -30), online: false, hasUnreadMessages: false, photo: nil),
                       User(name: "Name 15", message: "Hello", date: Date(timeIntervalSinceNow: -30), online: false, hasUnreadMessages: false, photo: nil),
-                      User(name: "Name 16", message: "Hello", date: Date(timeIntervalSince1970: 500), online: false, hasUnreadMessages: true, photo: nil),
-                      User(name: "Name 17", message: "Hello", date: Date(timeIntervalSinceNow: -300), online: false, hasUnreadMessages: true, photo: nil),
+                      User(name: "Name 16", message: "Unread Message", date: Date(timeIntervalSince1970: 500), online: false, hasUnreadMessages: true, photo: nil),
+                      User(name: "Name 17", message: "Unread Message", date: Date(timeIntervalSinceNow: -300), online: false, hasUnreadMessages: true, photo: nil),
                       User(name: "Name 18", message: "Hello", date: Date(timeIntervalSinceNow: -30), online: false, hasUnreadMessages: false, photo: nil),
                       User(name: "Name 19", message: "Hello", date: Date(timeIntervalSince1970: 5000000), online: false, hasUnreadMessages: false, photo: nil),
                       User(name: "Name 20", message: "Hello", date: Date(timeIntervalSinceNow: -3000000), online: false, hasUnreadMessages: false, photo: nil)]

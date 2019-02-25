@@ -20,6 +20,8 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     self.tableView.dataSource = self
     
     self.tableView.reloadData()
+    
+    
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
@@ -43,12 +45,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     var isInput = false
   }
   let messages = [Message(text: "Hello", isInput: true), Message(text: "Hi! How are you", isInput: false),
-                  Message(text: "Good thanks. How are you?", isInput: true), Message(text: "I'm fine", isInput: false)]
+                  Message(text: "Good, thanks. How are you?", isInput: true), Message(text: "I'm fine", isInput: false)]
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let identifier = messages[indexPath.row].isInput ? "InputMessageCell" : "OutputMessageCell"
     let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! MessageCell
-    cell.textMessage = messages[indexPath.row].text
+    cell.textMessage = messages[indexPath.row].text    
 
     return cell
   }
