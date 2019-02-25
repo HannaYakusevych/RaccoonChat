@@ -8,12 +8,17 @@
 
 /* Begin PBXBuildFile section */
 		95054EB7220EDCD800BC484F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95054EB6220EDCD800BC484F /* AppDelegate.swift */; };
-		95054EBC220EDCD800BC484F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95054EBA220EDCD800BC484F /* Main.storyboard */; };
+		95054EBC220EDCD800BC484F /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95054EBA220EDCD800BC484F /* Profile.storyboard */; };
 		95054EBF220EDCD800BC484F /* RaccoonChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 95054EBD220EDCD800BC484F /* RaccoonChat.xcdatamodeld */; };
 		95054EC1220EDCDA00BC484F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95054EC0220EDCDA00BC484F /* Assets.xcassets */; };
 		95054EC4220EDCDA00BC484F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95054EC2220EDCDA00BC484F /* LaunchScreen.storyboard */; };
 		95054ECF220EDCDA00BC484F /* RaccoonChatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95054ECE220EDCDA00BC484F /* RaccoonChatTests.swift */; };
 		95054EDC220EFACE00BC484F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95054EDB220EFACE00BC484F /* Logger.swift */; };
+		952FB8FD222302B4009822C6 /* ConversationsList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FB8FC222302B4009822C6 /* ConversationsList.storyboard */; };
+		952FB90022230429009822C6 /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB8FF22230429009822C6 /* ConversationsListViewController.swift */; };
+		952FB90322231510009822C6 /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB90222231510009822C6 /* ConversationCell.swift */; };
+		952FB9052223E01C009822C6 /* Conversation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FB9042223E01C009822C6 /* Conversation.storyboard */; };
+		952FB9072223E06C009822C6 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB9062223E06C009822C6 /* ConversationViewController.swift */; };
 		95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C769E82218898D001CB34E /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -30,7 +35,7 @@
 /* Begin PBXFileReference section */
 		95054EB3220EDCD800BC484F /* RaccoonChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RaccoonChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95054EB6220EDCD800BC484F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		95054EBB220EDCD800BC484F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		95054EBB220EDCD800BC484F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Profile.storyboard; sourceTree = "<group>"; };
 		95054EBE220EDCD800BC484F /* RaccoonChat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RaccoonChat.xcdatamodel; sourceTree = "<group>"; };
 		95054EC0220EDCDA00BC484F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		95054EC3220EDCDA00BC484F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -39,6 +44,11 @@
 		95054ECE220EDCDA00BC484F /* RaccoonChatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RaccoonChatTests.swift; sourceTree = "<group>"; };
 		95054ED0220EDCDA00BC484F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95054EDB220EFACE00BC484F /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		952FB8FC222302B4009822C6 /* ConversationsList.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ConversationsList.storyboard; sourceTree = "<group>"; };
+		952FB8FF22230429009822C6 /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
+		952FB90222231510009822C6 /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationCell.swift; path = RaccoonChat/ConversationCell.swift; sourceTree = SOURCE_ROOT; };
+		952FB9042223E01C009822C6 /* Conversation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Conversation.storyboard; sourceTree = "<group>"; };
+		952FB9062223E06C009822C6 /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		95C769E82218898D001CB34E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -81,12 +91,12 @@
 		95054EB5220EDCD800BC484F /* RaccoonChat */ = {
 			isa = PBXGroup;
 			children = (
+				952FB90122230658009822C6 /* VIewControllers */,
+				952FB8FE222302C0009822C6 /* Storyboards */,
 				95054EDB220EFACE00BC484F /* Logger.swift */,
+				952FB90222231510009822C6 /* ConversationCell.swift */,
 				95054EB6220EDCD800BC484F /* AppDelegate.swift */,
-				95C769E82218898D001CB34E /* ProfileViewController.swift */,
-				95054EBA220EDCD800BC484F /* Main.storyboard */,
 				95054EC0220EDCDA00BC484F /* Assets.xcassets */,
-				95054EC2220EDCDA00BC484F /* LaunchScreen.storyboard */,
 				95054EC5220EDCDA00BC484F /* Info.plist */,
 				95054EBD220EDCD800BC484F /* RaccoonChat.xcdatamodeld */,
 			);
@@ -100,6 +110,27 @@
 				95054ED0220EDCDA00BC484F /* Info.plist */,
 			);
 			path = RaccoonChatTests;
+			sourceTree = "<group>";
+		};
+		952FB8FE222302C0009822C6 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				95054EC2220EDCDA00BC484F /* LaunchScreen.storyboard */,
+				95054EBA220EDCD800BC484F /* Profile.storyboard */,
+				952FB8FC222302B4009822C6 /* ConversationsList.storyboard */,
+				952FB9042223E01C009822C6 /* Conversation.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		952FB90122230658009822C6 /* VIewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				95C769E82218898D001CB34E /* ProfileViewController.swift */,
+				952FB8FF22230429009822C6 /* ConversationsListViewController.swift */,
+				952FB9062223E06C009822C6 /* ConversationViewController.swift */,
+			);
+			path = VIewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,8 +215,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				95054EC4220EDCDA00BC484F /* LaunchScreen.storyboard in Resources */,
+				952FB8FD222302B4009822C6 /* ConversationsList.storyboard in Resources */,
+				952FB9052223E01C009822C6 /* Conversation.storyboard in Resources */,
 				95054EC1220EDCDA00BC484F /* Assets.xcassets in Resources */,
-				95054EBC220EDCD800BC484F /* Main.storyboard in Resources */,
+				95054EBC220EDCD800BC484F /* Profile.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,7 +236,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				952FB9072223E06C009822C6 /* ConversationViewController.swift in Sources */,
 				95054EBF220EDCD800BC484F /* RaccoonChat.xcdatamodeld in Sources */,
+				952FB90022230429009822C6 /* ConversationsListViewController.swift in Sources */,
+				952FB90322231510009822C6 /* ConversationCell.swift in Sources */,
 				95054EB7220EDCD800BC484F /* AppDelegate.swift in Sources */,
 				95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */,
 				95054EDC220EFACE00BC484F /* Logger.swift in Sources */,
@@ -229,12 +265,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		95054EBA220EDCD800BC484F /* Main.storyboard */ = {
+		95054EBA220EDCD800BC484F /* Profile.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				95054EBB220EDCD800BC484F /* Base */,
 			);
-			name = Main.storyboard;
+			name = Profile.storyboard;
 			sourceTree = "<group>";
 		};
 		95054EC2220EDCDA00BC484F /* LaunchScreen.storyboard */ = {
