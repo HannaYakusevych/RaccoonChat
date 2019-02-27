@@ -23,14 +23,12 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
   
   var message: String? {
     get {
-      return messageLabel.text
+      return messageLabel.text == "No messages yet" ? nil : messageLabel.text
     }
     set {
       if newValue == nil {
         messageLabel.text = "No messages yet"
-        //messageLabel.font = UIFont(name: "Arial-ItalicMT", size: messageLabel.font.pointSize)
-        //messageLabel.font = UIFont.italicSystemFont(ofSize: messageLabel.font.pointSize)
-        messageLabel.font = UIFont.boldSystemFont(ofSize: 13)
+        messageLabel.font = UIFont.italicSystemFont(ofSize: messageLabel.font.pointSize)
         print(messageLabel.font)
       }
       else {
@@ -81,11 +79,13 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
       return messageLabel.font.fontDescriptor.symbolicTraits.contains(.traitBold)
     }
     set {
-      if newValue {
-        messageLabel.font = UIFont.boldSystemFont(ofSize: messageLabel.font.pointSize)
-      }
-      else {
-        messageLabel.font = UIFont.systemFont(ofSize: messageLabel.font.pointSize)
+      if message != nil {
+        if newValue {
+          messageLabel.font = UIFont.boldSystemFont(ofSize: messageLabel.font.pointSize)
+        }
+        else {
+          messageLabel.font = UIFont.systemFont(ofSize: messageLabel.font.pointSize)
+        }
       }
     }
   }
