@@ -30,12 +30,12 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
         messageLabel.text = "No messages yet"
         //messageLabel.font = UIFont(name: "Arial-ItalicMT", size: messageLabel.font.pointSize)
         //messageLabel.font = UIFont.italicSystemFont(ofSize: messageLabel.font.pointSize)
-        messageLabel.font = UIFont.boldSystemFont(ofSize: messageLabel.font.pointSize - 4)
+        messageLabel.font = UIFont.boldSystemFont(ofSize: 13)
         print(messageLabel.font)
       }
       else {
         messageLabel.text = newValue
-        messageLabel.font = UIFont.systemFont(ofSize: messageLabel.font.pointSize)
+        messageLabel.font = UIFont.systemFont(ofSize: 17)
       }
     }
   }
