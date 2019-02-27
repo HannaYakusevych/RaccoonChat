@@ -22,21 +22,18 @@
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="InputMessageCell" id="eWk-pE-T3K" customClass="MessageCell" customModule="RaccoonChat" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="InputMessageCell" id="eWk-pE-T3K" customClass="MessageCell" customModule="RaccoonChat" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eWk-pE-T3K" id="T7g-xK-fNk">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YsQ-Ue-gOk" customClass="MyLabel" customModule="RaccoonChat" customModuleProvider="target">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" layoutMarginsFollowReadableWidth="YES" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YsQ-Ue-gOk" customClass="MyLabel" customModule="RaccoonChat" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="11" width="249.5" height="22"/>
-                                                    <color key="backgroundColor" red="0.016804177310000001" green="0.7065648229" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                                     </accessibility>
-                                                    <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium in risus et posuere. Vestibulum venenatis, nunc sit amet finibus dignissim, nisl mauris malesuada metus, id fringilla neque arcu ultrices odio. Maecenas maximus turpis ut augue rutrum venenatis. Suspendisse tincidunt, libero quis ultricies egestas, quam velit viverra velit, a auctor ligula magna a elit. Quisque id libero sodales arcu convallis malesuada. Vestibulum mattis ipsum felis, rhoncus iaculis dui viverra at. Donec lacinia, risus in finibus mattis, leo libero molestie urna, at pellentesque turpis ligula gravida lorem. Praesent eu consectetur neque, ac tincidunt ipsum. Curabitur faucibus enim mi, fringilla tempus justo volutpat non. Nunc vel lectus mollis, bibendum purus sed, finibus metus.
-    Nulla quis nisl lectus. Sed auctor fringilla tortor tempor malesuada. Sed vel facilisis lectus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Duis et malesuada diam. Proin iaculis, nunc vitae rhoncus sodales, odio ipsum vestibulum dolor, id rutrum enim nulla a orci. Aliquam semper nunc id auctor cursus. Proin sit amet lacinia urna. Proin vitae viverra quam. Mauris sit amet nisl eget ipsum finibus tristique. Proin laoreet justo id mauris finibus lobortis. Nunc eget massa in libero scelerisque aliquet. Duis dignissim vel lacus ut.</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -49,10 +46,10 @@
                                                             <real key="value" value="5"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="topTextInset">
-                                                            <real key="value" value="0.0"/>
+                                                            <real key="value" value="5"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="bottomTextInset">
-                                                            <real key="value" value="0.0"/>
+                                                            <real key="value" value="5"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>
@@ -68,20 +65,18 @@
                                             <outlet property="inputMessageLabel" destination="YsQ-Ue-gOk" id="5lC-rS-kFo"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="OutputMessageCell" id="la8-jd-VAF" customClass="MessageCell" customModule="RaccoonChat" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleAspectFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="OutputMessageCell" id="la8-jd-VAF" customClass="MessageCell" customModule="RaccoonChat" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="72" width="375" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="la8-jd-VAF" id="LCY-lc-7oc">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I9O-uf-Ttj" customClass="MyLabel" customModule="RaccoonChat" customModuleProvider="target">
+                                                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="right" horizontalHuggingPriority="251" text="" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I9O-uf-Ttj" customClass="MyLabel" customModule="RaccoonChat" customModuleProvider="target">
                                                     <rect key="frame" x="111" y="11" width="249" height="22"/>
-                                                    <color key="backgroundColor" red="0.016804177310000001" green="0.7065648229" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <accessibility key="accessibilityConfiguration">
                                                         <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
                                                     </accessibility>
-                                                    <string key="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur neque velit, tempor quis sodales vel, malesuada gravida orci. Proin a nunc accumsan, aliquam urna vel, consectetur dolor. Aenean egestas, libero vitae accumsan faucibus, metus dui feugiat enim, quis condimentum erat libero quis lectus. Donec sollicitudin, orci eget tempor sollicitudin, sapien enim bibendum lacus, eu fermentum nunc orci sed nibh. Pellentesque ac molestie diam. Suspendisse hendrerit vestibulum nulla, a sollicitudin ligula aliquam in. Praesent tincidunt magna vitae urna ultricies, eu mollis velit aliquet. Praesent in lectus vel arcu rhoncus fermentum. Proin suscipit est mi, euismod ullamcorper neque suscipit vel. Sed ut iaculis magna.</string>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -93,10 +88,10 @@
                                                             <real key="value" value="5"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="topTextInset">
-                                                            <real key="value" value="0.0"/>
+                                                            <real key="value" value="5"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="bottomTextInset">
-                                                            <real key="value" value="0.0"/>
+                                                            <real key="value" value="5"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </label>

@@ -36,11 +36,12 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
   
   override func awakeFromNib() {
     super.awakeFromNib()
+    // Initialization code
     let label = inputMessageLabel ?? outputMessageLabel!
     label.layer.borderWidth = 1
     label.layer.borderColor = UIColor.black.cgColor
     label.layer.cornerRadius = label.frame.height / 4
-        // Initialization code
+    label.layer.backgroundColor = UIColor(red: 4/255, green: 180/255, blue: 255/255, alpha: 1).cgColor
   }
   
 
