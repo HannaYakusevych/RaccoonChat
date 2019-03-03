@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5GY-zz-S8k">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="azx-rR-LIW">
+            <objects>
+                <viewController id="5GY-zz-S8k" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IaC-yU-e1V">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="33" translatesAutoresizingMaskIntoConstraints="NO" id="8Qv-CX-oU6">
+                                <rect key="frame" x="94" y="233.5" width="187.5" height="200"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qei-F8-hWM">
+                                        <rect key="frame" x="0.0" y="0.0" width="187.5" height="44.5"/>
+                                        <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.79607843137254897" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Тема 1"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mu5-YM-qxq">
+                                        <rect key="frame" x="0.0" y="77.5" width="187.5" height="45"/>
+                                        <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.79607843137254897" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Тема 2"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zYc-TA-r14">
+                                        <rect key="frame" x="0.0" y="155.5" width="187.5" height="44.5"/>
+                                        <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.79607843137254897" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Тема 3"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.97948998212814331" green="0.87306255102157593" blue="0.33693575859069824" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                        <constraints>
+                            <constraint firstItem="8Qv-CX-oU6" firstAttribute="centerX" secondItem="iPF-PF-6Nm" secondAttribute="centerX" id="CKq-wH-Eht"/>
+                            <constraint firstItem="8Qv-CX-oU6" firstAttribute="width" secondItem="IaC-yU-e1V" secondAttribute="width" multiplier="0.5" id="ImD-Wc-GX5"/>
+                            <constraint firstItem="8Qv-CX-oU6" firstAttribute="height" secondItem="IaC-yU-e1V" secondAttribute="height" multiplier="0.3" id="nwI-9J-Tjl"/>
+                            <constraint firstItem="8Qv-CX-oU6" firstAttribute="centerY" secondItem="IaC-yU-e1V" secondAttribute="centerY" id="z85-Cx-RMe"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="iPF-PF-6Nm"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="uNQ-cS-3A1">
+                        <barButtonItem key="rightBarButtonItem" title="Закрыть" id="GtX-b5-8Yv"/>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yaU-Bs-hPj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-196" y="-525"/>
+        </scene>
+    </scenes>
+</document>
