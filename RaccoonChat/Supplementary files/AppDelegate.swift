@@ -17,6 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
     // Override point for customization after application launch.
+    
+    // Applying theme
+    let theme = ThemeManager.currentTheme()
+    ThemeManager.applyTheme(theme: theme)
+    
     Logger.appStateIsChanging(from: "Not running", to: "Inactive")
     return true
   }

@@ -24,22 +24,38 @@ class ConversationsListViewController: UITableViewController {
       fatalError()
     }
     // MARK: - Obj-C implementation
-    /*
+    ///*
     let themesViewController = navigationController.viewControllers.first as! ThemesViewController<AnyObject>
     themesViewController.delegate = self
-    */
+    themesViewController.view.backgroundColor = ThemeManager.currentTheme().mainColor
+    //*/
     
     // MARK: - Swift implementation
-    
+    /*
     let themesViewController = navigationController.viewControllers.first as! ThemesViewController
     themesViewController.changeColor = { (selectedTheme: UIColor) in
-      themesViewController.view.backgroundColor = selectedTheme;
+      
+      switch selectedTheme {
+      case Theme.Blue.mainColor:
+        ThemeManager.applyTheme(theme: Theme.Blue)
+      case Theme.Orange.mainColor:
+        ThemeManager.applyTheme(theme: Theme.Orange)
+      case Theme.Purple.mainColor:
+        ThemeManager.applyTheme(theme: Theme.Purple)
+      default:
+        Logger.write("Error: the selected theme is out of available")
+      }
+      
+      themesViewController.view.backgroundColor = selectedTheme
+      navigationController.navigationBar.barStyle = ThemeManager.currentTheme().barStyle
+      navigationController.navigationBar.backgroundColor = ThemeManager.currentTheme().mainColor.withAlphaComponent(0.7)
       self.logThemeChanging(selectedTheme: selectedTheme)
     }
+     */
     
     
     
-    themesViewController.model = Themes(firstColor: Theme.Orange.mainColor, second: Theme.Blue.mainColor, third: Theme.Dark.mainColor)
+    themesViewController.model = Themes(firstColor: Theme.Orange.mainColor, second: Theme.Blue.mainColor, third: Theme.Purple.mainColor)
     self.present(navigationController, animated: true, completion: nil)
   }
   
@@ -47,6 +63,7 @@ class ConversationsListViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    //self.view.backgroundColor = ThemeManager.currentTheme().mainColor
 
     tableView.reloadData()
     
@@ -146,14 +163,27 @@ class ConversationsListViewController: UITableViewController {
 }
 
 // MARK: - ThemesViewControllerDelegate extension
-/*
+///*
 extension ConversationsListViewController: ThemesViewControllerDelegate {
   func themesViewController(_ controller: ThemesViewController<AnyObject>, didSelectTheme selectedTheme: UIColor) {
-    controller.view.backgroundColor = selectedTheme;
-    logThemeChanging(selectedTheme: selectedTheme)
+    switch selectedTheme {
+    case Theme.Blue.mainColor:
+      ThemeManager.applyTheme(theme: Theme.Blue)
+    case Theme.Orange.mainColor:
+      ThemeManager.applyTheme(theme: Theme.Orange)
+    case Theme.Purple.mainColor:
+      ThemeManager.applyTheme(theme: Theme.Purple)
+    default:
+      Logger.write("Error: the selected theme is out of available")
+    }
+    
+    controller.view.backgroundColor = selectedTheme
+    controller.navigationController?.navigationBar.barStyle = ThemeManager.currentTheme().barStyle
+    controller.navigationController?.navigationBar.backgroundColor = ThemeManager.currentTheme().mainColor.withAlphaComponent(0.7)
+    self.logThemeChanging(selectedTheme: selectedTheme)
   }
 }
-*/
+//*/
 
 // MARK: User class - just for the task
 struct User {

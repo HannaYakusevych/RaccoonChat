@@ -49,6 +49,7 @@ class ThemesViewController: UIViewController {
     themeButtons[0].backgroundColor = UIColor.white.withAlphaComponent(0.8)
     themeButtons[1].backgroundColor = UIColor.white.withAlphaComponent(0.8)
     themeButtons[2].backgroundColor = UIColor.white.withAlphaComponent(0.8)
+    self.view.backgroundColor = ThemeManager.currentTheme().mainColor
         // Do any additional setup after loading the view.
   }
     

@@ -22,8 +22,9 @@
 		952FB9052223E01C009822C6 /* Conversation.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FB9042223E01C009822C6 /* Conversation.storyboard */; };
 		952FB9072223E06C009822C6 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB9062223E06C009822C6 /* ConversationViewController.swift */; };
 		952FB90A2223E514009822C6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB9092223E514009822C6 /* MessageCell.swift */; };
-		959F97B5222F00A200451C41 /* ThemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956685D1222C948E00E5F864 /* ThemesViewController.swift */; };
-		959F97BA222F102E00451C41 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959F97B9222F102E00451C41 /* Theme.swift */; };
+		959F97BA222F102E00451C41 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959F97B9222F102E00451C41 /* ThemeManager.swift */; };
+		959F97BF222F1C7F00451C41 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959F97BE222F1C7F00451C41 /* Theme.swift */; };
+		959F97C0222F26C300451C41 /* ThemesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 956685CF222C69E600E5F864 /* ThemesViewController.m */; };
 		95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C769E82218898D001CB34E /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,7 +64,8 @@
 		956685CE222C69E600E5F864 /* ThemesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemesViewController.h; sourceTree = "<group>"; };
 		956685CF222C69E600E5F864 /* ThemesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemesViewController.m; sourceTree = "<group>"; };
 		956685D1222C948E00E5F864 /* ThemesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesViewController.swift; sourceTree = "<group>"; };
-		959F97B9222F102E00451C41 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		959F97B9222F102E00451C41 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		959F97BE222F1C7F00451C41 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		95C769E82218898D001CB34E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,7 +162,6 @@
 			children = (
 				95054EB6220EDCD800BC484F /* AppDelegate.swift */,
 				95054EDB220EFACE00BC484F /* Logger.swift */,
-				9523893A222BF33700AE51C2 /* RaccoonChat-Bridging-Header.h */,
 				95054EC0220EDCDA00BC484F /* Assets.xcassets */,
 				95054EC5220EDCDA00BC484F /* Info.plist */,
 			);
@@ -170,6 +171,7 @@
 		959F97B4222F008A00451C41 /* Themes */ = {
 			isa = PBXGroup;
 			children = (
+				9523893A222BF33700AE51C2 /* RaccoonChat-Bridging-Header.h */,
 				959F97B6222F00A800451C41 /* ViewControllers */,
 				959F97B8222F00F500451C41 /* Model */,
 				959F97B7222F00C300451C41 /* Storyboards */,
@@ -201,7 +203,8 @@
 			children = (
 				95238940222BF5BB00AE51C2 /* Themes.h */,
 				9523893E222BF55400AE51C2 /* Themes.m */,
-				959F97B9222F102E00451C41 /* Theme.swift */,
+				959F97B9222F102E00451C41 /* ThemeManager.swift */,
+				959F97BE222F1C7F00451C41 /* Theme.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -318,10 +321,11 @@
 				95054EB7220EDCD800BC484F /* AppDelegate.swift in Sources */,
 				95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */,
 				9523893F222BF55500AE51C2 /* Themes.m in Sources */,
-				959F97B5222F00A200451C41 /* ThemesViewController.swift in Sources */,
-				959F97BA222F102E00451C41 /* Theme.swift in Sources */,
+				959F97BA222F102E00451C41 /* ThemeManager.swift in Sources */,
+				959F97BF222F1C7F00451C41 /* Theme.swift in Sources */,
 				952FB90A2223E514009822C6 /* MessageCell.swift in Sources */,
 				95054EDC220EFACE00BC484F /* Logger.swift in Sources */,
+				959F97C0222F26C300451C41 /* ThemesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,7 +499,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = hanyakus.RaccoonChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RaccoonChat/Supplementary files/RaccoonChat-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "RaccoonChat/Themes/RaccoonChat-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "RaccoonChat/Themes/RaccoonChat-Swift.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -518,7 +523,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = hanyakus.RaccoonChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "RaccoonChat/Supplementary files/RaccoonChat-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "RaccoonChat/Themes/RaccoonChat-Bridging-Header.h";
+				SWIFT_OBJC_INTERFACE_HEADER_NAME = "RaccoonChat/Themes/RaccoonChat-Swift.h";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
