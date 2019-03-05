@@ -10,11 +10,37 @@ import UIKit
 
 class ConversationsListViewController: UITableViewController {
 
+  // MARK: - Actions
   @IBAction func goToProfile(_ sender: Any) {
     if let viewController = UIStoryboard(name: "Profile", bundle: nil).instantiateViewController(withIdentifier: "ProfViewController") as? ProfileViewController {
-      self.present(viewController, animated: true, completion: nil)
-      
+      let navigationController = UINavigationController.init(rootViewController: viewController)
+      self.present(navigationController, animated: true, completion: nil)
     }
+  }
+  @IBAction func selectNewTheme(_ sender: Any) {
+    let storyboard = UIStoryboard(name: "Themes", bundle: nil)
+    guard let navigationController = storyboard.instantiateViewController(withIdentifier: "ThemeController") as? UINavigationController else {
+      Logger.write("Error: the ThemesViewController is unavailable")
+      fatalError()
+    }
+    // MARK: - Obj-C implementation
+    /*
+    let themesViewController = navigationController.viewControllers.first as! ThemesViewController<AnyObject>
+    themesViewController.delegate = self
+    */
+    
+    // MARK: - Swift implementation
+    
+    let themesViewController = navigationController.viewControllers.first as! ThemesViewController
+    themesViewController.changeColor = { (selectedTheme: UIColor) in
+      themesViewController.view.backgroundColor = selectedTheme;
+      self.logThemeChanging(selectedTheme: selectedTheme)
+    }
+    
+    
+    
+    themesViewController.model = Themes(firstColor: Theme.Orange.mainColor, second: Theme.Blue.mainColor, third: Theme.Dark.mainColor)
+    self.present(navigationController, animated: true, completion: nil)
   }
   
   @IBOutlet weak var showProfileButton: UIBarButtonItem!
@@ -98,6 +124,15 @@ class ConversationsListViewController: UITableViewController {
     }
   }
   
+  // MARK: - Theme changing methods
+  func logThemeChanging(selectedTheme: UIColor) {
+    if let components = selectedTheme.cgColor.components {
+      Logger.write("to the color 'red: \(components[0]), green: \(components[1]), blue: \(components[2]), alpha: \(components[3])'")
+    } else {
+      Logger.write("Error: the new theme color is nil")
+    }
+  }
+  
   // MARK: - Navigation
   /*
   // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -109,6 +144,16 @@ class ConversationsListViewController: UITableViewController {
  */
 
 }
+
+// MARK: - ThemesViewControllerDelegate extension
+/*
+extension ConversationsListViewController: ThemesViewControllerDelegate {
+  func themesViewController(_ controller: ThemesViewController<AnyObject>, didSelectTheme selectedTheme: UIColor) {
+    controller.view.backgroundColor = selectedTheme;
+    logThemeChanging(selectedTheme: selectedTheme)
+  }
+}
+*/
 
 // MARK: User class - just for the task
 struct User {

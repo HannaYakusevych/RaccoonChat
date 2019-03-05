@@ -84,6 +84,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Tinkoff Chat" id="T8V-pp-tgH">
+                        <barButtonItem key="leftBarButtonItem" title="Select Theme" id="Qlx-Cg-Lem">
+                            <connections>
+                                <action selector="selectNewTheme:" destination="py6-ZU-91y" id="uli-9S-WLu"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Profile" id="cQV-xI-X2V">
                             <connections>
                                 <action selector="goToProfile:" destination="py6-ZU-91y" id="C78-dZ-w4N"/>
