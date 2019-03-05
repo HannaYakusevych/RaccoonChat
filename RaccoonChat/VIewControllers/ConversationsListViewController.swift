@@ -113,7 +113,6 @@ class ConversationsListViewController: UITableViewController {
       cell.hasUnreadMessages = offlineUsers[indexPath.row].hasUnreadMessages
       cell.photo = offlineUsers[indexPath.row].photo
     }
-    
 
     return cell
   }
@@ -180,6 +179,9 @@ extension ConversationsListViewController: ThemesViewControllerDelegate {
     controller.view.backgroundColor = selectedTheme
     controller.navigationController?.navigationBar.barStyle = ThemeManager.currentTheme().barStyle
     controller.navigationController?.navigationBar.backgroundColor = ThemeManager.currentTheme().mainColor.withAlphaComponent(0.7)
+    
+    self.tableView.reloadData()
+    
     self.logThemeChanging(selectedTheme: selectedTheme)
   }
 }

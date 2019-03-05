@@ -44,6 +44,8 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
   // MARK: View Lifecycle methods
   override func viewDidLoad() {
     super.viewDidLoad()
+    view.backgroundColor = ThemeManager.currentTheme().mainColor
+    editButton.backgroundColor = UIColor.white.withAlphaComponent(0.8)
     
     Logger.write("\(editButton.frame)")
     

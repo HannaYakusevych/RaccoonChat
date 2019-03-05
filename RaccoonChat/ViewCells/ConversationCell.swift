@@ -70,7 +70,7 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
       return self.backgroundColor != #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
     set {
-      self.backgroundColor = newValue ? #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0.3413420377, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+      self.backgroundColor = newValue ? ThemeManager.currentTheme().mainColor : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
   }
   
@@ -109,6 +109,7 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
   
   override func awakeFromNib() {
     super.awakeFromNib()
+    profileImageView.layer.cornerRadius = profileImageView.layer.bounds.height / 2
     // Initialization code
   }
 
