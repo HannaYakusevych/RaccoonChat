@@ -4,6 +4,15 @@
       "idiom" : "universal",
       "filename" : "slr-camera-2-xxl.png",
       "compression-type" : "automatic"
+    },
+    {
+      "idiom" : "universal",
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ]
     }
   ],
   "info" : {

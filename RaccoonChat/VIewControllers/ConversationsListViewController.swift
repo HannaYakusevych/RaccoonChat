@@ -49,6 +49,9 @@ class ConversationsListViewController: UITableViewController {
       themesViewController.view.backgroundColor = selectedTheme
       navigationController.navigationBar.barStyle = ThemeManager.currentTheme().barStyle
       navigationController.navigationBar.backgroundColor = ThemeManager.currentTheme().mainColor.withAlphaComponent(0.7)
+     
+      self.tableView.reloadData()
+     
       self.logThemeChanging(selectedTheme: selectedTheme)
     }
      */

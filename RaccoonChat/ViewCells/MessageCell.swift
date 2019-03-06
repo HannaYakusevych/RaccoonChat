@@ -40,7 +40,7 @@ class MessageCell: UITableViewCell, MessageCellConfiguration {
     let label = inputMessageLabel ?? outputMessageLabel!
     label.layer.borderWidth = 1
     label.layer.borderColor = UIColor.black.cgColor
-    label.layer.cornerRadius = label.bounds.width / 2
+    label.layer.cornerRadius = 16
     label.layer.backgroundColor = label == inputMessageLabel ? ThemeManager.currentTheme().mainColor.withAlphaComponent(0.8).cgColor : ThemeManager.currentTheme().mainColor.withAlphaComponent(0.2).cgColor
   }
   

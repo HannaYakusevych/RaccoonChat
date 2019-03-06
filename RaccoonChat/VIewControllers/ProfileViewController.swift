@@ -75,9 +75,18 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     let layer = setPhotoImageView.layer
     
     // choosePhotoView settings
-    let image = UIImage(named: "slr-camera-2-xxl")?.cgImage
+    var image: CGImage?
+    switch ThemeManager.currentTheme() {
+    case Theme.Blue:
+      image = UIImage(named: "slr-camera-blue")?.cgImage
+    case Theme.Purple:
+      image = UIImage(named: "slr-camera-purple")?.cgImage
+    case Theme.Orange:
+      image = UIImage(named: "slr-camera-orange")?.cgImage
+    }
     layer.contents = image
     layer.contentsGravity = CALayerContentsGravity.center
+    layer.backgroundColor = UIColor.white.cgColor
     
     // 1.75 - empirical multiplier (looks better)
     let k = CGFloat((image?.height)!) / layer.bounds.height * 1.75
