@@ -23,15 +23,7 @@ class ConversationsListViewController: UITableViewController {
       Logger.write("Error: the ThemesViewController is unavailable")
       fatalError()
     }
-    // MARK: - Obj-C implementation
-    ///*
-    let themesViewController = navigationController.viewControllers.first as! ThemesViewController<AnyObject>
-    themesViewController.delegate = self
-    themesViewController.view.backgroundColor = ThemeManager.currentTheme().mainColor
-    //*/
     
-    // MARK: - Swift implementation
-    /*
     let themesViewController = navigationController.viewControllers.first as! ThemesViewController
     themesViewController.changeColor = { (selectedTheme: UIColor) in
       
@@ -54,9 +46,6 @@ class ConversationsListViewController: UITableViewController {
      
       self.logThemeChanging(selectedTheme: selectedTheme)
     }
-     */
-    
-    
     
     themesViewController.model = Themes(firstColor: Theme.Orange.mainColor, second: Theme.Blue.mainColor, third: Theme.Purple.mainColor)
     self.present(navigationController, animated: true, completion: nil)
@@ -164,31 +153,6 @@ class ConversationsListViewController: UITableViewController {
 
 }
 
-// MARK: - ThemesViewControllerDelegate extension
-///*
-extension ConversationsListViewController: ThemesViewControllerDelegate {
-  func themesViewController(_ controller: ThemesViewController<AnyObject>, didSelectTheme selectedTheme: UIColor) {
-    switch selectedTheme {
-    case Theme.Blue.mainColor:
-      ThemeManager.applyTheme(theme: Theme.Blue)
-    case Theme.Orange.mainColor:
-      ThemeManager.applyTheme(theme: Theme.Orange)
-    case Theme.Purple.mainColor:
-      ThemeManager.applyTheme(theme: Theme.Purple)
-    default:
-      Logger.write("Error: the selected theme is out of available")
-    }
-    
-    controller.view.backgroundColor = selectedTheme
-    controller.navigationController?.navigationBar.barStyle = ThemeManager.currentTheme().barStyle
-    controller.navigationController?.navigationBar.backgroundColor = ThemeManager.currentTheme().mainColor.withAlphaComponent(0.7)
-    
-    self.tableView.reloadData()
-    
-    self.logThemeChanging(selectedTheme: selectedTheme)
-  }
-}
-//*/
 
 // MARK: User class - just for the task
 struct User {
