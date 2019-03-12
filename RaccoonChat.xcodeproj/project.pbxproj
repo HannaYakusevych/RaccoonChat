@@ -23,6 +23,7 @@
 		952FB9072223E06C009822C6 /* ConversationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB9062223E06C009822C6 /* ConversationViewController.swift */; };
 		952FB90A2223E514009822C6 /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB9092223E514009822C6 /* MessageCell.swift */; };
 		953CDB052235242500E6F1CC /* ThemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 956685D1222C948E00E5F864 /* ThemesViewController.swift */; };
+		953CDB082236699500E6F1CC /* ProfileDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953CDB072236699500E6F1CC /* ProfileDataManager.swift */; };
 		959F97BA222F102E00451C41 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959F97B9222F102E00451C41 /* ThemeManager.swift */; };
 		959F97BF222F1C7F00451C41 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959F97BE222F1C7F00451C41 /* Theme.swift */; };
 		95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C769E82218898D001CB34E /* ProfileViewController.swift */; };
@@ -60,6 +61,7 @@
 		952FB9042223E01C009822C6 /* Conversation.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Conversation.storyboard; sourceTree = "<group>"; };
 		952FB9062223E06C009822C6 /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		952FB9092223E514009822C6 /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		953CDB072236699500E6F1CC /* ProfileDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileDataManager.swift; sourceTree = "<group>"; };
 		956685D1222C948E00E5F864 /* ThemesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesViewController.swift; sourceTree = "<group>"; };
 		959F97B9222F102E00451C41 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		959F97BE222F1C7F00451C41 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -105,10 +107,11 @@
 		95054EB5220EDCD800BC484F /* RaccoonChat */ = {
 			isa = PBXGroup;
 			children = (
+				952FB8FE222302C0009822C6 /* Storyboards */,
 				952FB9082223E418009822C6 /* ViewCells */,
 				952FB90122230658009822C6 /* VIewControllers */,
-				952FB8FE222302C0009822C6 /* Storyboards */,
 				959F97B4222F008A00451C41 /* Themes */,
+				953CDB062236692200E6F1CC /* SavingData */,
 				959F97B3222F005400451C41 /* Supplementary files */,
 				95054EBD220EDCD800BC484F /* RaccoonChat.xcdatamodeld */,
 			);
@@ -152,6 +155,14 @@
 				952FB9092223E514009822C6 /* MessageCell.swift */,
 			);
 			path = ViewCells;
+			sourceTree = "<group>";
+		};
+		953CDB062236692200E6F1CC /* SavingData */ = {
+			isa = PBXGroup;
+			children = (
+				953CDB072236699500E6F1CC /* ProfileDataManager.swift */,
+			);
+			path = SavingData;
 			sourceTree = "<group>";
 		};
 		959F97B3222F005400451C41 /* Supplementary files */ = {
@@ -320,6 +331,7 @@
 				959F97BF222F1C7F00451C41 /* Theme.swift in Sources */,
 				952FB90A2223E514009822C6 /* MessageCell.swift in Sources */,
 				95054EDC220EFACE00BC484F /* Logger.swift in Sources */,
+				953CDB082236699500E6F1CC /* ProfileDataManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
