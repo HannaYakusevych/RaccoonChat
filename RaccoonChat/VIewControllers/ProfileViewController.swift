@@ -67,8 +67,10 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
       self.dataManager = OperationDataManager()
     }
     activityIndicator.startAnimating()
-    dataManager.saveProfileData(name: self.nameTextField.text, description: self.descriptionTextView.text, image: self.profileImageView.image) { isSaved in
-      self.save(isSaved: isSaved)
+    dataManager.saveProfileData(name: self.nameHasChanged ? self.nameTextField.text : nil,
+                                description: self.descriptionHasChanged ? self.descriptionTextView.text: nil,
+                                image: self.imageHasChanged ? self.profileImageView.image: nil) { isSaved in
+                                  self.save(isSaved: isSaved)
     }
     
     
@@ -92,6 +94,8 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    
+    nameTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
     
     // Reading the user data from the file
     activityIndicator.startAnimating()
@@ -152,9 +156,16 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
       self.present(alertController, animated: true)
       self.activityIndicator.stopAnimating()
       self.editingMode(isEnabled: false)
+      self.imageHasChanged = false
+      self.descriptionHasChanged = false
+      self.nameHasChanged = false
     } else {
       let alertController = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: UIAlertController.Style.alert)
-      alertController.addAction(UIAlertAction(title: "ОК", style: .default, handler: nil))
+      alertController.addAction(UIAlertAction(title: "ОК", style: .default) { _ in
+        self.imageHasChanged = false
+        self.descriptionHasChanged = false
+        self.nameHasChanged = false
+      })
       alertController.addAction(UIAlertAction(title: "Повторить", style: .default) { _ in
         self.activityIndicator.startAnimating()
         self.dataManager.saveProfileData(name: self.nameTextField.text, description: self.descriptionTextView.text, image: self.profileImageView.image) { isSaved in
@@ -164,9 +175,9 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
       self.present(alertController, animated: true)
     }
   }
-  
+  //TODO: add sth to change flags hasChanged
   /**
-   Set properties for profilePhotoView, choosePhotoView and editButton
+   Set properties for profilePhotoView, choosePhotoView and editButton while loading
    */
   private func setViewContentProperties() {
     let layer = setPhotoImageView.layer
@@ -246,15 +257,17 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
     
     setPhotoImageView.isHidden = !isEnabled
     setPhotoImageView.isUserInteractionEnabled = isEnabled
+    // TODO: Change image
+    //setPhotoImageView.image =
     
     // Get rig of editButton
     editButton.isUserInteractionEnabled = !isEnabled
     editButton.isHidden = isEnabled
     
     // Show saving buttons
-    gcdButton.isUserInteractionEnabled = isEnabled
+    gcdButton.isUserInteractionEnabled = false
     gcdButton.isHidden = !isEnabled
-    operationButton.isUserInteractionEnabled = isEnabled
+    operationButton.isUserInteractionEnabled = false
     operationButton.isHidden = !isEnabled
   }
 }
@@ -380,6 +393,9 @@ extension ProfileViewController: UIImagePickerControllerDelegate {
     picker.dismiss(animated: true, completion: {self.setViewContentProperties()})
     let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
     profileImageView.image = image
+    imageHasChanged = true
+    operationButton.isUserInteractionEnabled = true
+    gcdButton.isUserInteractionEnabled = true
   }
 }
 
@@ -400,15 +416,26 @@ extension ProfileViewController: UITextFieldDelegate {
     view.endEditing(true)
   }
   
+  @objc func textFieldDidChange(_ textField: UITextField) {
+    nameHasChanged = true
+    gcdButton.isUserInteractionEnabled = true
+    operationButton.isUserInteractionEnabled = true
+  }
+  
   // Handling covering TextField by keyboard
   @objc func keyboardWillChange(notification: Notification) {
     
+    Logger.write("Keyboard is changing the state")
     guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
       return
     }
     if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
+      //self.descriptionTextView.inputAccessoryView = keyboardToolbar
       view.frame.origin.y = -keyboardRect.height
-    } else {
+    } else  if notification.name == UIResponder.keyboardWillHideNotification {
+      //self.descriptionTextView.inputAccessoryView = nil
+      //view.frame.origin.y += keyboardRect.height * 1.2
+      
       view.frame.origin.y = 0
     }
     
@@ -420,6 +447,12 @@ extension ProfileViewController: UITextViewDelegate {
   func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
     textView.inputAccessoryView = keyboardToolbar
     return true
+  }
+  
+  func textViewDidChange(_ textView: UITextView) {
+    descriptionHasChanged = true
+    gcdButton.isUserInteractionEnabled = true
+    operationButton.isUserInteractionEnabled = true
   }
   
   func textViewDidBeginEditing(_ textView: UITextView) {
