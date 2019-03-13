@@ -23,6 +23,11 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
   @IBOutlet var keyboardToolbar: UIToolbar!
   @IBOutlet var activityIndicator: UIActivityIndicatorView!
   
+  // Checking if data has changed
+  var nameHasChanged = false
+  var descriptionHasChanged = false
+  var imageHasChanged = false
+  
   // Default: GCD
   var dataManager: ProfileDataManager = GCDDataManager()
   
@@ -59,7 +64,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
     if (sender == gcdButton) {
       self.dataManager = GCDDataManager()
     } else {
-      //TODO: Save using Operation
+      self.dataManager = OperationDataManager()
     }
     activityIndicator.startAnimating()
     dataManager.saveProfileData(name: self.nameTextField.text, description: self.descriptionTextView.text, image: self.profileImageView.image) { isSaved in
@@ -143,7 +148,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
   func save(isSaved: Bool) {
     if isSaved {
       let alertController = UIAlertController(title: "Данные сохранены", message: nil, preferredStyle: UIAlertController.Style.alert)
-      alertController.addAction(UIAlertAction(title: "ОК", style: .default, handler: {_ in sleep(2)}))
+      alertController.addAction(UIAlertAction(title: "ОК", style: .default, handler: nil))
       self.present(alertController, animated: true)
       self.activityIndicator.stopAnimating()
       self.editingMode(isEnabled: false)
@@ -424,6 +429,11 @@ extension ProfileViewController: UITextViewDelegate {
   func textViewDidEndEditing(_ textView: UITextView) {
     textView.resignFirstResponder()
     showPlaceholderTextIfEmpty(textView)
+  }
+  
+  func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+    textView.inputAccessoryView = nil
+    return true
   }
   
   private func hidePlaceholderText(_ textView: UITextView) {
