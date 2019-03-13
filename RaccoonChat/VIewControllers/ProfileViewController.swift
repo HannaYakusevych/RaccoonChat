@@ -10,23 +10,23 @@ import UIKit
 import AVFoundation
 import Photos
 
-class ProfileViewController: UIViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate  {
+class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
   
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    
-    // The app crashed
-    // The reason is that editButton isn't initialized yet (it is nil),
-    // so forced unwrapping causes crash
-    //Logger.write("\(editButton.frame)")
-  }
-  
-  // MARK: Outlets
+  // MARK: - Outlets
   @IBOutlet weak var setPhotoImageView: UIImageView!
   @IBOutlet weak var profileImageView: UIImageView!
   @IBOutlet weak var editButton: UIButton!
+  @IBOutlet var nameTextField: UITextField!
+  @IBOutlet var descriptionTextView: UITextView!
+  @IBOutlet var gcdButton: UIButton!
+  @IBOutlet var operationButton: UIButton!
+  @IBOutlet var keyboardToolbar: UIToolbar!
+  @IBOutlet var activityIndicator: UIActivityIndicatorView!
   
-  // MARK: Actions
+  // Default: GCD
+  var dataManager: ProfileDataManager = GCDDataManager()
+  
+  // MARK: - Actions
   
   @IBAction func changePhoto(_ sender: UITapGestureRecognizer) {
     if !tappedInSetPhotoCircle(sender: sender) {
@@ -35,20 +35,72 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     print("Выбери изображение профиля")
     
     showAlertController()
+    setViewContentProperties()
   }
+  
   @IBAction func goBack(_ sender: Any) {
     self.dismiss(animated: true, completion: nil)
   }
   
+  @IBAction func hideKeyboard(_ sender: UIBarButtonItem) {
+    view.endEditing(true)
+  }
   
-  // MARK: View Lifecycle methods
+  @IBAction func editProfileData(_ sender: UIButton) {
+    editingMode(isEnabled: true)
+  }
+  
+  @IBAction func saveData(_ sender: UIButton) {
+    showPlaceholderTextIfEmpty(descriptionTextView)
+    // Don't allow user to save date while last saving isn't complete
+    gcdButton.isUserInteractionEnabled = false
+    operationButton.isUserInteractionEnabled = false
+    
+    if (sender == gcdButton) {
+      self.dataManager = GCDDataManager()
+    } else {
+      //TODO: Save using Operation
+    }
+    activityIndicator.startAnimating()
+    dataManager.saveProfileData(name: self.nameTextField.text, description: self.descriptionTextView.text, image: self.profileImageView.image) { isSaved in
+      self.save(isSaved: isSaved)
+    }
+    
+    
+  }
+  
+  
+  
+  // MARK: - View Lifecycle methods
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = ThemeManager.currentTheme().mainColor
-    editButton.backgroundColor = UIColor.white.withAlphaComponent(0.8)
     
-    Logger.write("\(editButton.frame)")
+    editingMode(isEnabled: false)
     
+    nameTextField.delegate = self
+    descriptionTextView.delegate = self
+    
+    configureTapGesture()
+    
+    // Listen for keyboard events
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    
+    // Reading the user data from the file
+    activityIndicator.startAnimating()
+    dataManager.loadProfileData() { isLoaded, data in
+      self.load(isLoaded: isLoaded, data: data)
+    }
+    
+  }
+  
+  deinit {
+    // Stop listening for keyboard hide/show events
+    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
   }
   
   override func viewDidLayoutSubviews() {
@@ -57,16 +109,56 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     setViewContentProperties()
   }
   
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    
-    // The editButton.frame property is different here because
-    // the methods viewWillLayoutSubviews() and viewDidLayoutSubviews()
-    // were called and object size has changed according to the screen size
-    Logger.write("\(editButton.frame)")
+  // MARK: - Private functions
+  
+  /**
+   Function for loading data ending (reloading included)
+   */
+  func load(isLoaded: Bool, data: (String, String, UIImage)) {
+    let (name, description, image) = data
+    self.profileImageView.image = image
+    self.nameTextField.text = name
+    self.descriptionTextView.text = description
+    if self.descriptionTextView.text != "Profile information" {
+      self.descriptionTextView.textColor = UIColor.black
+    }
+    self.activityIndicator.stopAnimating()
+    if !isLoaded {
+      print(isLoaded)
+      let alertController = UIAlertController(title: "Ошибка загрузки", message: "Не удалось получить данные. Если вы впервые используете приложение, проигнорируйте данное сообщение", preferredStyle: UIAlertController.Style.alert)
+      alertController.addAction(UIAlertAction(title: "ОК", style: .default, handler: nil))
+      alertController.addAction(UIAlertAction(title: "Повторить", style: .default, handler: { (alertAction) -> Void in
+        self.activityIndicator.startAnimating()
+        self.dataManager.loadProfileData() { isLoaded, data in
+          self.load(isLoaded: isLoaded, data: data)
+        }
+      }))
+      self.present(alertController, animated: true, completion: nil)
+    }
   }
   
-  // MARK: Private functions
+  /**
+   Function for saving data ending (reloading included)
+   */
+  func save(isSaved: Bool) {
+    if isSaved {
+      let alertController = UIAlertController(title: "Данные сохранены", message: nil, preferredStyle: UIAlertController.Style.alert)
+      alertController.addAction(UIAlertAction(title: "ОК", style: .default, handler: {_ in sleep(2)}))
+      self.present(alertController, animated: true)
+      self.activityIndicator.stopAnimating()
+      self.editingMode(isEnabled: false)
+    } else {
+      let alertController = UIAlertController(title: "Ошибка", message: "Не удалось сохранить данные", preferredStyle: UIAlertController.Style.alert)
+      alertController.addAction(UIAlertAction(title: "ОК", style: .default, handler: nil))
+      alertController.addAction(UIAlertAction(title: "Повторить", style: .default) { _ in
+        self.activityIndicator.startAnimating()
+        self.dataManager.saveProfileData(name: self.nameTextField.text, description: self.descriptionTextView.text, image: self.profileImageView.image) { isSaved in
+          self.save(isSaved: isSaved)
+        }
+      })
+      self.present(alertController, animated: true)
+    }
+  }
   
   /**
    Set properties for profilePhotoView, choosePhotoView and editButton
@@ -95,13 +187,31 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     let radius = setPhotoImageView.frame.size.height / 2
     layer.cornerRadius = radius
     
+    setPhotoImageView.highlightedImage = UIImage(cgImage: image!)
+    
     // profilePhotoView settings
     profileImageView.layer.cornerRadius = radius
     
-    // editButton settings
+    // Edit button settings
     editButton.layer.cornerRadius = editButton.layer.bounds.height / 4
     editButton.layer.borderColor = UIColor.black.cgColor
     editButton.layer.borderWidth = 1.0
+    editButton.backgroundColor = UIColor.white.withAlphaComponent(0.8)
+    
+    // GCD button settings
+    gcdButton.layer.cornerRadius = gcdButton.layer.bounds.height / 4
+    gcdButton.layer.borderColor = UIColor.black.cgColor
+    gcdButton.layer.borderWidth = 1.0
+    gcdButton.backgroundColor = UIColor.white.withAlphaComponent(0.8)
+    
+    // Operation button settings
+    operationButton.layer.cornerRadius = operationButton.layer.bounds.height / 4
+    operationButton.layer.borderColor = UIColor.black.cgColor
+    operationButton.layer.borderWidth = 1.0
+    operationButton.backgroundColor = UIColor.white.withAlphaComponent(0.8)
+    
+    nameTextField.layer.cornerRadius = 10
+    descriptionTextView.layer.cornerRadius = 10
   }
   
   /**
@@ -119,11 +229,33 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     if pow(center.x-point.x, 2) + pow(center.y - point.y, 2) >= pow(radius, 2) {
       return false
     }
+    self.handleTap()
     return true
   }
   
-  // MARK: Setting new profile photo functions
-  
+  private func editingMode(isEnabled: Bool) {
+    nameTextField.isEnabled = isEnabled
+    nameTextField.backgroundColor = isEnabled ? UIColor.white.withAlphaComponent(0.8) : nil
+    descriptionTextView.isEditable = isEnabled
+    descriptionTextView.backgroundColor = isEnabled ? UIColor.white.withAlphaComponent(0.8) : nil
+    
+    setPhotoImageView.isHidden = !isEnabled
+    setPhotoImageView.isUserInteractionEnabled = isEnabled
+    
+    // Get rig of editButton
+    editButton.isUserInteractionEnabled = !isEnabled
+    editButton.isHidden = isEnabled
+    
+    // Show saving buttons
+    gcdButton.isUserInteractionEnabled = isEnabled
+    gcdButton.isHidden = !isEnabled
+    operationButton.isUserInteractionEnabled = isEnabled
+    operationButton.isHidden = !isEnabled
+  }
+}
+
+// MARK: - UIImagePickerControllerDelegate
+extension ProfileViewController: UIImagePickerControllerDelegate {
   /**
    Show the AlertController to allow the user to choose a new photo for the profile
    */
@@ -138,7 +270,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
       if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
         // Check if the app is allowed to use the Photo Library
         let photoLibraryAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
-
+        
         switch photoLibraryAuthorizationStatus {
         case .notDetermined: self.requestPhotoLibraryPermission()
         case .authorized: self.presentChoosingPhotoController(ofType: .photoLibrary)
@@ -164,14 +296,14 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
       }
     })
     
-    let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: nil)
+    let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: {(alert: UIAlertAction!) -> Void in self.setViewContentProperties()})
     
     // Add actions to the controller
     alertController.addAction(choosePhotoAction)
     alertController.addAction(makePhotoAction)
     alertController.addAction(cancelAction)
     
-    self.present(alertController, animated: true, completion: nil)
+    self.present(alertController, animated: true, completion: {self.setViewContentProperties()})
   }
   
   /**
@@ -226,7 +358,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
   
   /**
    Tell the user if camera isn't available on device
- */
+   */
   private func alertCameraIsUnavailable() {
     let alert = UIAlertController(
       title: "Камера не доступна на данном устройстве",
@@ -237,11 +369,74 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     
     present(alert, animated: true, completion: nil)
   }
-
+  
   // Setting a new photo as profile photo
   func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-    picker.dismiss(animated: true, completion: nil)
+    picker.dismiss(animated: true, completion: {self.setViewContentProperties()})
     let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
     profileImageView.image = image
+  }
+}
+
+// MARK: - UITextFieldDelegate
+extension ProfileViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
+  
+  // Private functions
+  private func configureTapGesture() {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap))
+    view.addGestureRecognizer(tapGesture)
+  }
+  
+  @objc func handleTap() {
+    view.endEditing(true)
+  }
+  
+  // Handling covering TextField by keyboard
+  @objc func keyboardWillChange(notification: Notification) {
+    
+    guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+      return
+    }
+    if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
+      view.frame.origin.y = -keyboardRect.height
+    } else {
+      view.frame.origin.y = 0
+    }
+    
+    
+  }
+}
+
+extension ProfileViewController: UITextViewDelegate {
+  func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+    textView.inputAccessoryView = keyboardToolbar
+    return true
+  }
+  
+  func textViewDidBeginEditing(_ textView: UITextView) {
+    hidePlaceholderText(textView)
+  }
+  
+  func textViewDidEndEditing(_ textView: UITextView) {
+    textView.resignFirstResponder()
+    showPlaceholderTextIfEmpty(textView)
+  }
+  
+  private func hidePlaceholderText(_ textView: UITextView) {
+    if textView.text == "Profile information" {
+      textView.text = ""
+      textView.textColor = UIColor.black
+    }
+  }
+  
+  private func showPlaceholderTextIfEmpty(_ textView: UITextView) {
+    if textView.text == "" {
+      textView.text = "Profile information"
+      textView.textColor = UIColor.lightGray
+    }
   }
 }
