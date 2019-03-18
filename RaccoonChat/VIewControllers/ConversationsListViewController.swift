@@ -9,6 +9,8 @@
 import UIKit
 
 class ConversationsListViewController: UITableViewController {
+  
+  let communicationManager = CommunicationManager()
 
   // MARK: - Actions
   @IBAction func goToProfile(_ sender: Any) {
@@ -55,7 +57,7 @@ class ConversationsListViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    //self.view.backgroundColor = ThemeManager.currentTheme().mainColor
+    communicationManager.updateChat = {self.tableView.reloadData()}
 
     tableView.reloadData()
     
@@ -76,21 +78,12 @@ class ConversationsListViewController: UITableViewController {
                      User(name: "Name 9", message: "Hello", date: Date(timeIntervalSince1970: 500), online: true, hasUnreadMessages: false, photo: nil),
                      User(name: "Name 10", message: "Hello", date: Date(timeIntervalSinceNow: -90), online: true, hasUnreadMessages: false, photo: nil)]
   
-  let offlineUsers = [User(name: "Name 11", message: nil, date: nil, online: false, hasUnreadMessages: false, photo: nil),
-                      User(name: "Name 12", message: "Hello", date: Date(timeIntervalSince1970: 500), online: false, hasUnreadMessages: false, photo: nil),
-                      User(name: "Name 13", message: "Hello", date: Date(timeIntervalSinceNow: -30), online: false, hasUnreadMessages: false, photo: nil),
-                      User(name: "Name 14", message: "Hello", date: Date(timeIntervalSinceNow: -30), online: false, hasUnreadMessages: false, photo: nil),
-                      User(name: "Name 15", message: "Hello", date: Date(timeIntervalSinceNow: -30), online: false, hasUnreadMessages: false, photo: nil),
-                      User(name: "Name 16", message: "Unread Message", date: Date(timeIntervalSince1970: 500), online: false, hasUnreadMessages: true, photo: nil),
-                      User(name: "Name 17", message: "Unread Message", date: Date(timeIntervalSinceNow: -300), online: false, hasUnreadMessages: true, photo: nil),
-                      User(name: "Name 18", message: "Hello", date: Date(timeIntervalSinceNow: -30), online: false, hasUnreadMessages: false, photo: nil),
-                      User(name: "Name 19", message: "Hello", date: Date(timeIntervalSince1970: 5000000), online: false, hasUnreadMessages: false, photo: nil),
-                      User(name: "Name 20", message: "Hello", date: Date(timeIntervalSinceNow: -3000000), online: false, hasUnreadMessages: false, photo: nil)]
+  let offlineUsers: [User] = []
   
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationCell", for: indexPath) as! ConversationCell
     if indexPath.section == 0 {
-      cell.name = onlineUsers[indexPath.row].name
+      cell.name = communicationManager.communicator.foundPeers[indexPath.row].displayName
       cell.message = onlineUsers[indexPath.row].message
       cell.date = onlineUsers[indexPath.row].date
       cell.online = onlineUsers[indexPath.row].online
@@ -114,7 +107,10 @@ class ConversationsListViewController: UITableViewController {
   }
   
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return 10
+    if section == 0 {
+      return communicationManager.communicator.foundPeers.count
+    }
+    return offlineUsers.count
   }
   
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -127,7 +123,7 @@ class ConversationsListViewController: UITableViewController {
   // MARK: - Table view delegate
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if let viewController = UIStoryboard(name: "Conversation", bundle: nil).instantiateViewController(withIdentifier: "ConvViewController") as? ConversationViewController {
-      viewController.title = indexPath.section == 0 ? onlineUsers[indexPath.row].name : offlineUsers[indexPath.row].name
+      viewController.title = indexPath.section == 0 ? communicationManager.communicator.foundPeers[indexPath.row].displayName : offlineUsers[indexPath.row].name
       navigationController?.pushViewController(viewController, animated: true)
     }
   }
