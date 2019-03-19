@@ -47,7 +47,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     let numberOfMessages = messages.count - 1
     let identifier = messages[numberOfMessages-indexPath.row].isInput ? "InputMessageCell" : "OutputMessageCell"
     let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! MessageCell
-    cell.textMessage = messages[indexPath.row].text
+    cell.textMessage = messages[numberOfMessages-indexPath.row].text
     cell.sizeToFit()
 
     // To insert messages from bottom

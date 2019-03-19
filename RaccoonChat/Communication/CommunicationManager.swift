@@ -22,10 +22,12 @@ class CommunicationManager: CommunicatorDelegate {
     self.communicator.delegate = self
   }
   func didFoundUser(userID: String, userName: String?) {
+    communicator.onlineUsers.sort(by: User.sortUsers(lhs:rhs:))
     updateChat?()
   }
   
   func didLostUser(userID: String) {
+    communicator.onlineUsers.sort(by: User.sortUsers(lhs:rhs:))
     updateChat?()
   }
   

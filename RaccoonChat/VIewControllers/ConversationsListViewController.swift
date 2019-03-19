@@ -95,7 +95,8 @@ class ConversationsListViewController: UITableViewController {
     if section == 0 {
       return CommunicationManager.shared.communicator.onlineUsers.count
     }
-    return CommunicationManager.shared.communicator.historyUsers.count
+    //return CommunicationManager.shared.communicator.historyUsers.count
+    return 0
   }
   
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
