@@ -29,7 +29,6 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
       if newValue == nil {
         messageLabel.text = "No messages yet"
         messageLabel.font = UIFont.italicSystemFont(ofSize: messageLabel.font.pointSize)
-        print(messageLabel.font)
       }
       else {
         messageLabel.text = newValue

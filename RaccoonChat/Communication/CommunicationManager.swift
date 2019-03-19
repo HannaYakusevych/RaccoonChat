@@ -11,6 +11,9 @@ import MultipeerConnectivity
 
 class CommunicationManager: CommunicatorDelegate {
   
+  // MARK: Singleton
+  static let shared = CommunicationManager()
+  
   var updateChat: (() -> Void)?
   
   var communicator: MultipeerCommunicator

@@ -19,6 +19,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     self.tableView.delegate = self
     self.tableView.dataSource = self
     
+    // To insert messages from bottom
+    tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
+    
     self.tableView.reloadData()
     
     
@@ -36,27 +39,19 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return messages.count
+    return messages?.count ?? 0
   }
-
-  // MARK: - Some messages
-  struct Message {
-    var text: String? = nil
-    var isInput = false
-  }
-  let messages = [Message(text: """
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pretium in risus et posuere. Vestibulum venenatis, nunc sit amet finibus dignissim, nisl mauris malesuada metus, id fringilla neque arcu ultrices odio. Maecenas maximus turpis ut augue rutrum venenatis. Suspendisse tincidunt, libero quis ultricies egestas, quam velit viverra velit, a auctor ligula magna a elit. Quisque id libero sodales arcu convallis malesuada. Vestibulum mattis ipsum felis, rhoncus iaculis dui viverra at. Donec lacinia, risus in finibus mattis, leo libero molestie urna, at pellentesque turpis ligula gravida lorem. Praesent eu consectetur neque, ac tincidunt ipsum. Curabitur faucibus enim mi, fringilla tempus justo volutpat non. Nunc vel lectus mollis, bibendum purus sed, finibus metus.
-""", isInput: true), Message(text: "Hi! How are you", isInput: false),
-                  Message(text: "Good, thanks. How are you?", isInput: true), Message(text: """
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nunc dui, vehicula sit amet urna in, mattis consectetur risus. Cras at sodales odio. Sed tristique nisl vitae efficitur ullamcorper. Interdum et malesuada fames ac ante ipsum primis id.
-""", isInput: false)]
+  var messages: [Message]!
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let identifier = messages[indexPath.row].isInput ? "InputMessageCell" : "OutputMessageCell"
+    let numberOfMessages = messages.count - 1
+    let identifier = messages[numberOfMessages-indexPath.row].isInput ? "InputMessageCell" : "OutputMessageCell"
     let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! MessageCell
     cell.textMessage = messages[indexPath.row].text
     cell.sizeToFit()
 
+    // To insert messages from bottom
+    cell.contentView.transform = CGAffineTransform(scaleX: 1, y: -1)
     return cell
   }
   
