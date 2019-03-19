@@ -108,7 +108,7 @@ class ConversationsListViewController: UITableViewController {
   
   // MARK: - Table view delegate
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if !CommunicationManager.shared.communicator.onlineUsers[indexPath.row].connected {
+    if !CommunicationManager.shared.communicator.onlineUsers[indexPath.row].online {
       let selectedPeer = CommunicationManager.shared.communicator.onlineUsers[indexPath.row].peerId
       CommunicationManager.shared.communicator.inviteUser(peerId: selectedPeer)
       goToConversation(indexPath: indexPath)

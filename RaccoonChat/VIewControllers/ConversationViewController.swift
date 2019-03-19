@@ -12,9 +12,24 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   
   
   @IBOutlet weak var tableView: UITableView!
+  @IBOutlet var newMessageView: UIView!
+  @IBOutlet var newMessageTextView: UITextView!
+  @IBOutlet var sendButton: UIButton!
+  @IBAction func sendMessage(_ sender: Any) {
+    self.resignFirstResponder()
+  }
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    
+    // Listen for keyboard events
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+    
+    newMessageView.backgroundColor = ThemeManager.currentTheme().mainColor
+    newMessageTextView.layer.cornerRadius = newMessageTextView.frame.height / 2
+    sendButton.layer.cornerRadius = sendButton.frame.height / 2
     
     self.tableView.delegate = self
     self.tableView.dataSource = self
@@ -30,6 +45,13 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+  }
+  
+  deinit {
+    // Stop listening for keyboard hide/show events
+    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
   }
 
   // MARK: - Table view data source
@@ -113,4 +135,48 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     }
     */
 
+}
+
+extension ConversationViewController: UITextViewDelegate {
+  func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+    textView.inputAccessoryView = newMessageView
+    return true
+  }
+  
+  func textViewDidEndEditing(_ textView: UITextView) {
+    textView.resignFirstResponder()
+  }
+  
+  func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+    textView.inputAccessoryView = nil
+    return true
+  }
+  
+  // Private functions
+  private func configureTapGesture() {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap))
+    view.addGestureRecognizer(tapGesture)
+  }
+  
+  @objc func handleTap() {
+    view.endEditing(true)
+  }
+  
+  // Handling covering TextView by keyboard
+  @objc func keyboardWillChange(notification: Notification) {
+    
+    Logger.write("Keyboard is changing the state")
+    guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+      return
+    }
+    if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
+      //self.descriptionTextView.inputAccessoryView = keyboardToolbar
+      view.frame.origin.y = -keyboardRect.height
+    } else  if notification.name == UIResponder.keyboardWillHideNotification {
+      //self.descriptionTextView.inputAccessoryView = nil
+      //view.frame.origin.y += keyboardRect.height * 1.2
+      
+      view.frame.origin.y = 0
+    }
+  }
 }

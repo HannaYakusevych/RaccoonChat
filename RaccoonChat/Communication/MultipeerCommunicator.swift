@@ -70,7 +70,6 @@ extension MultipeerCommunicator: MCSessionDelegate {
     switch state{
     case MCSessionState.connected:
       print("Connected to session: \(session)")
-      
     case MCSessionState.connecting:
       print("Connecting to session: \(session)")
     default:
@@ -110,6 +109,7 @@ extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate {
     for (index, user) in self.historyUsers.enumerated() {
       if user.peerId == peerID {
         historyUsers.remove(at: index)
+        user.online = true
         onlineUsers.append(user)
         delegate?.didFoundUser(userID: peerID.displayName, userName: user.name)
         return
@@ -128,6 +128,7 @@ extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate {
     for (index, user) in self.onlineUsers.enumerated() {
       if user.peerId == peerID {
         onlineUsers.remove(at: index)
+        user.online = false
         // TODO: disable debug mode
         if user.chatHistory.count > 0 {
           historyUsers.append(user)
@@ -169,6 +170,7 @@ class User {
   var message: String? { return chatHistory.last?.text  }
   var date: Date? { return chatHistory.last?.date }
   var hasUnreadMessages = false
+  var online = true
   var photo: UIImage? = nil
   var chatHistory = [Message]()
   
