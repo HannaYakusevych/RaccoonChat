@@ -16,20 +16,38 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   @IBOutlet var newMessageTextView: UITextView!
   @IBOutlet var sendButton: UIButton!
   @IBAction func sendMessage(_ sender: Any) {
-    self.resignFirstResponder()
+    //newMessageTextView.resignFirstResponder()
+    CommunicationManager.shared.communicator.sendMessage(string: newMessageTextView.text, to: self.title!) { isSent, error in
+      if !isSent {
+        Logger.write(error?.localizedDescription ?? "Message sending error: user is unknown")
+        return
+      }
+      let message = Message(isInput: false, text: newMessageTextView.text, date: Date(timeIntervalSinceReferenceDate: 0))
+      CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.append(message)
+      self.tableView.reloadData()
+      DispatchQueue.main.async { self.tableView.reloadData() }
+      newMessageTextView.text = ""
+    }
   }
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    CommunicationManager.shared.updateChat = {
+      self.tableView.reloadData()
+      print("Hello")
+    }
     
     // Listen for keyboard events
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     
+    // Theme managing
     newMessageView.backgroundColor = ThemeManager.currentTheme().mainColor
-    newMessageTextView.layer.cornerRadius = newMessageTextView.frame.height / 2
-    sendButton.layer.cornerRadius = sendButton.frame.height / 2
+    newMessageTextView.layer.cornerRadius = newMessageTextView.frame.height / 4
+    
+    // Add gesture recognizer to close tho keyboard
+    configureTapGesture()
     
     self.tableView.delegate = self
     self.tableView.dataSource = self
@@ -61,82 +79,24 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return messages?.count ?? 0
+    return CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.count ?? 0
   }
-  var messages: [Message]!
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let numberOfMessages = messages.count - 1
-    let identifier = messages[numberOfMessages-indexPath.row].isInput ? "InputMessageCell" : "OutputMessageCell"
+    let numberOfMessages = (CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.count)! - 1
+    let identifier = (CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory[numberOfMessages-indexPath.row].isInput)! ? "InputMessageCell" : "OutputMessageCell"
     let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! MessageCell
-    cell.textMessage = messages[numberOfMessages-indexPath.row].text
+    cell.textMessage = CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory[numberOfMessages-indexPath.row].text
     cell.sizeToFit()
 
     // To insert messages from bottom
     cell.contentView.transform = CGAffineTransform(scaleX: 1, y: -1)
     return cell
   }
-  
-  
-  
-  // MARK: - Table view delegate
-  /*
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let header = UILabel(frame: CGRect(x: 16, y: 16, width: 100, height: 100))
-    header.text = "Name"
-    header.textAlignment = .center
-    header.font = UIFont.boldSystemFont(ofSize: 20)
-    header.backgroundColor = #colorLiteral(red: 0.9994240403, green: 0.9855536819, blue: 0, alpha: 1)
-    return header
-  }
- */
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            // Delete the row from the data source
-            tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
+
+// MARK: - UITextViewDelegate
 extension ConversationViewController: UITextViewDelegate {
   func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
     textView.inputAccessoryView = newMessageView
@@ -158,8 +118,9 @@ extension ConversationViewController: UITextViewDelegate {
     view.addGestureRecognizer(tapGesture)
   }
   
+  // Resign keyboard if tapped on view
   @objc func handleTap() {
-    view.endEditing(true)
+    newMessageTextView.resignFirstResponder()
   }
   
   // Handling covering TextView by keyboard

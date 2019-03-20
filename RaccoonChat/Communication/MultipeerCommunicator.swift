@@ -13,7 +13,20 @@ class MultipeerCommunicator: NSObject, Communicator {
   
   // MARK: - Communicator interface
   func sendMessage(string: String, to userId: String, completionHandler: ((Bool, Error?) -> ())) {
-    // TODO: implement
+    let jsonMessage: [String: String] =  ["eventType": "TextMessage",
+                                       "messageId": generateMessageId() ,
+                                       "text": string]
+    let dataToSend = NSKeyedArchiver.archivedData(withRootObject: jsonMessage)
+    if let foo = onlineUsers.first(where: {$0.name == userId}) {
+      do {
+        try sessions[foo.peerId]?.send(dataToSend, toPeers: [foo.peerId], with: MCSessionSendDataMode.unreliable)
+        completionHandler(true, nil)
+      } catch {
+        completionHandler(false, error)
+      }
+    } else {
+      completionHandler(false, nil)
+    }
   }
   
   weak var delegate: CommunicatorDelegate?
@@ -31,7 +44,7 @@ class MultipeerCommunicator: NSObject, Communicator {
   var onlineUsers = [User]()
   var historyUsers = [User]()
   
-  let serviceType = "tinkoff-chat"
+  let serviceType = "tinkoff-ch"
   
   // MARK: - Init
   override init() {
@@ -78,7 +91,8 @@ extension MultipeerCommunicator: MCSessionDelegate {
   }
   
   func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
-    // TODO: implement
+    let dataDictionary = NSKeyedUnarchiver.unarchiveObject(with: data) as! Dictionary<String, String>
+    delegate?.didReceiveMessage(text: dataDictionary["message"]!, fromUser: peerID.displayName, toUser: myPeerId.displayName)
   }
   
   func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
@@ -177,13 +191,6 @@ class User {
   init(peerId: MCPeerID) {
     self.peerId = peerId
     self.name = peerId.displayName
-    
-    chatHistory = [Message(isInput: true, text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", date: Date(timeIntervalSince1970: 300)),
-                   Message(isInput: false, text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", date: Date(timeIntervalSince1970: 1000)),
-                   Message(isInput: false, text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", date: Date(timeIntervalSince1970: 10000)),
-                   Message(isInput: true, text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", date: Date(timeIntervalSince1970: 300)),
-                   Message(isInput: false, text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", date: Date(timeIntervalSinceNow: -100)),
-                   Message(isInput: true, text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five ", date: Date(timeIntervalSinceNow: -100))]
   }
   
   static func sortUsers(lhs: User, rhs: User) -> Bool {

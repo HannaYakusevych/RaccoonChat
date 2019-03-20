@@ -55,7 +55,7 @@ class ConversationsListViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    CommunicationManager.shared.updateChat = {self.tableView.reloadData()}
+    CommunicationManager.shared.updateChatList = {self.tableView.reloadData()}
     // TODO: Check!!
     //communicationManager.communicator.goToChat = { indexPath in
     //  goToConversation(indexPath: indexPath)
@@ -108,19 +108,19 @@ class ConversationsListViewController: UITableViewController {
   
   // MARK: - Table view delegate
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if !CommunicationManager.shared.communicator.onlineUsers[indexPath.row].online {
+    //if !CommunicationManager.shared.communicator.onlineUsers[indexPath.row]. {
       let selectedPeer = CommunicationManager.shared.communicator.onlineUsers[indexPath.row].peerId
       CommunicationManager.shared.communicator.inviteUser(peerId: selectedPeer)
       goToConversation(indexPath: indexPath)
-    } else {
-      goToConversation(indexPath: indexPath)
-    }
+    //} else {
+    //  goToConversation(indexPath: indexPath)
+    //}
   }
   
   func goToConversation(indexPath: IndexPath) {
     if let viewController = UIStoryboard(name: "Conversation", bundle: nil).instantiateViewController(withIdentifier: "ConvViewController") as? ConversationViewController {
       viewController.title = indexPath.section == 0 ? CommunicationManager.shared.communicator.onlineUsers[indexPath.row].name : CommunicationManager.shared.communicator.historyUsers[indexPath.row].name
-      viewController.messages = indexPath.section == 0 ? CommunicationManager.shared.communicator.onlineUsers[indexPath.row].chatHistory : CommunicationManager.shared.communicator.historyUsers[indexPath.row].chatHistory
+      //viewController.messages = indexPath.section == 0 ? CommunicationManager.shared.communicator.onlineUsers[indexPath.row].chatHistory : CommunicationManager.shared.communicator.historyUsers[indexPath.row].chatHistory
       navigationController?.pushViewController(viewController, animated: true)
     }
   }

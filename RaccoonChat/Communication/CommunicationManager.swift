@@ -14,6 +14,7 @@ class CommunicationManager: CommunicatorDelegate {
   // MARK: Singleton
   static let shared = CommunicationManager()
   
+  var updateChatList: (() -> Void)?
   var updateChat: (() -> Void)?
   
   var communicator: MultipeerCommunicator
@@ -23,12 +24,12 @@ class CommunicationManager: CommunicatorDelegate {
   }
   func didFoundUser(userID: String, userName: String?) {
     communicator.onlineUsers.sort(by: User.sortUsers(lhs:rhs:))
-    updateChat?()
+    updateChatList?()
   }
   
   func didLostUser(userID: String) {
     communicator.onlineUsers.sort(by: User.sortUsers(lhs:rhs:))
-    updateChat?()
+    updateChatList?()
   }
   
   func failedToStartBrowsingForUsers(error: Error) {
@@ -40,7 +41,10 @@ class CommunicationManager: CommunicatorDelegate {
   }
   
   func didReceiveMessage(text: String, fromUser: String, toUser: String) {
-    // TODO: implement
+    let message = Message(isInput: true, text: text, date: Date(timeIntervalSinceNow: 0))
+    communicator.onlineUsers.first(where: {$0.name == fromUser})?.chatHistory.append(message)
+    updateChatList?()
+    updateChat?()
   }
   
   
