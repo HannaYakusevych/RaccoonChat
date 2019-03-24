@@ -17,6 +17,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   @IBOutlet var sendButton: UIButton!
   @IBAction func sendMessage(_ sender: Any) {
     //newMessageTextView.resignFirstResponder()
+    guard let user = CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!}), user.connected else {
+      return
+    }
     CommunicationManager.shared.communicator.sendMessage(string: newMessageTextView.text, to: self.title!) { isSent, error in
       if !isSent {
         Logger.write(error?.localizedDescription ?? "Message sending error: user is unknown")

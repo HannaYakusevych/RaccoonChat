@@ -83,16 +83,35 @@ extension MultipeerCommunicator: MCSessionDelegate {
     switch state{
     case MCSessionState.connected:
       print("Connected to session: \(session)")
+      for user in onlineUsers {
+        if user.peerId == peerID {
+          user.connected = true
+          break
+        }
+      }
+      
     case MCSessionState.connecting:
       print("Connecting to session: \(session)")
+      for user in onlineUsers {
+        if user.peerId == peerID {
+          user.connected = false
+          break
+        }
+      }
     default:
       print("Did not connect to session: \(session)")
+      for user in onlineUsers {
+        if user.peerId == peerID {
+          user.connected = false
+          break
+        }
+      }
     }
   }
   
   func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
     let dataDictionary = NSKeyedUnarchiver.unarchiveObject(with: data) as! Dictionary<String, String>
-    delegate?.didReceiveMessage(text: dataDictionary["message"]!, fromUser: peerID.displayName, toUser: myPeerId.displayName)
+    delegate?.didReceiveMessage(text: dataDictionary["text"]!, fromUser: peerID.displayName, toUser: myPeerId.displayName)
   }
   
   func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
@@ -143,6 +162,7 @@ extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate {
       if user.peerId == peerID {
         onlineUsers.remove(at: index)
         user.online = false
+        user.connected = false
         // TODO: disable debug mode
         if user.chatHistory.count > 0 {
           historyUsers.append(user)
@@ -185,6 +205,7 @@ class User {
   var date: Date? { return chatHistory.last?.date }
   var hasUnreadMessages = false
   var online = true
+  var connected = false
   var photo: UIImage? = nil
   var chatHistory = [Message]()
   

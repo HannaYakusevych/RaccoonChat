@@ -55,7 +55,11 @@ class ConversationsListViewController: UITableViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
-    CommunicationManager.shared.updateChatList = {self.tableView.reloadData()}
+    CommunicationManager.shared.updateChatList = {
+      DispatchQueue.main.async {
+        self.tableView.reloadData()
+      }
+    }
     // TODO: Check!!
     //communicationManager.communicator.goToChat = { indexPath in
     //  goToConversation(indexPath: indexPath)
@@ -108,13 +112,13 @@ class ConversationsListViewController: UITableViewController {
   
   // MARK: - Table view delegate
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //if !CommunicationManager.shared.communicator.onlineUsers[indexPath.row]. {
+    if !CommunicationManager.shared.communicator.onlineUsers[indexPath.row].connected {
       let selectedPeer = CommunicationManager.shared.communicator.onlineUsers[indexPath.row].peerId
       CommunicationManager.shared.communicator.inviteUser(peerId: selectedPeer)
       goToConversation(indexPath: indexPath)
-    //} else {
-    //  goToConversation(indexPath: indexPath)
-    //}
+    } else {
+      goToConversation(indexPath: indexPath)
+    }
   }
   
   func goToConversation(indexPath: IndexPath) {
