@@ -44,7 +44,7 @@ class MultipeerCommunicator: NSObject, Communicator {
   var onlineUsers = [User]()
   var historyUsers = [User]()
   
-  let serviceType = "tinkoff-ch"
+  let serviceType = "tinkoff-chat"
   
   // MARK: - Init
   override init() {

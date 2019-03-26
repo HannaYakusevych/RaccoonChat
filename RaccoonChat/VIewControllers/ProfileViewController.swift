@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import Photos
+import CoreData
 
 class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
   
@@ -23,13 +24,16 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
   @IBOutlet var keyboardToolbar: UIToolbar!
   @IBOutlet var activityIndicator: UIActivityIndicatorView!
   
+  // MARK: CoreData
+  let coreDataStack = CoreDataStack()
+  
   // Checking if data has changed
   var nameHasChanged = false
   var descriptionHasChanged = false
   var imageHasChanged = false
   
   // Default: GCD
-  var dataManager: ProfileDataManager = GCDDataManager()
+  var dataManager: ProfileDataManager = StorageManager()
   
   // MARK: - Actions
   
@@ -56,23 +60,26 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
   }
   
   @IBAction func saveData(_ sender: UIButton) {
+    
     showPlaceholderTextIfEmpty(descriptionTextView)
     // Don't allow user to save date while last saving isn't complete
     gcdButton.isUserInteractionEnabled = false
     operationButton.isUserInteractionEnabled = false
     
+    /*
     if (sender == gcdButton) {
       self.dataManager = GCDDataManager()
     } else {
       self.dataManager = OperationDataManager()
     }
+    */
+    
     activityIndicator.startAnimating()
     dataManager.saveProfileData(name: self.nameHasChanged ? self.nameTextField.text : nil,
                                 description: self.descriptionHasChanged ? self.descriptionTextView.text: nil,
                                 image: self.imageHasChanged ? self.profileImageView.image: nil) { isSaved in
                                   self.save(isSaved: isSaved)
     }
-    
     
   }
   
@@ -102,7 +109,6 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate  {
     dataManager.loadProfileData() { isLoaded, data in
       self.load(isLoaded: isLoaded, data: data)
     }
-    
   }
   
   deinit {

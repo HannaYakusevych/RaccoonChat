@@ -15,6 +15,7 @@
 		95054EDC220EFACE00BC484F /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95054EDB220EFACE00BC484F /* Logger.swift */; };
 		95238929222BE79100AE51C2 /* Themes.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95238928222BE79100AE51C2 /* Themes.storyboard */; };
 		9523893F222BF55500AE51C2 /* Themes.m in Sources */ = {isa = PBXBuildFile; fileRef = 9523893E222BF55400AE51C2 /* Themes.m */; };
+		9527C522224A944100E5EBDE /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C521224A944100E5EBDE /* StorageManager.swift */; };
 		952FB8FD222302B4009822C6 /* ConversationsList.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 952FB8FC222302B4009822C6 /* ConversationsList.storyboard */; };
 		952FB90022230429009822C6 /* ConversationsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB8FF22230429009822C6 /* ConversationsListViewController.swift */; };
 		952FB90322231510009822C6 /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 952FB90222231510009822C6 /* ConversationCell.swift */; };
@@ -64,6 +65,7 @@
 		9523893A222BF33700AE51C2 /* RaccoonChat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RaccoonChat-Bridging-Header.h"; sourceTree = "<group>"; };
 		9523893E222BF55400AE51C2 /* Themes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Themes.m; sourceTree = "<group>"; };
 		95238940222BF5BB00AE51C2 /* Themes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Themes.h; sourceTree = "<group>"; };
+		9527C521224A944100E5EBDE /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
 		952FB8FC222302B4009822C6 /* ConversationsList.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ConversationsList.storyboard; sourceTree = "<group>"; };
 		952FB8FF22230429009822C6 /* ConversationsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsListViewController.swift; sourceTree = "<group>"; };
 		952FB90222231510009822C6 /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ConversationCell.swift; path = RaccoonChat/ViewCells/ConversationCell.swift; sourceTree = SOURCE_ROOT; };
@@ -194,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				954D94B82242AF4500981B1D /* CoreDataStack.swift */,
+				9527C521224A944100E5EBDE /* StorageManager.swift */,
 				954D94BC2242B4BA00981B1D /* AppUser.swift */,
 				954D94C62242C09D00981B1D /* RaccoonChat.xcdatamodeld */,
 			);
@@ -310,10 +313,11 @@
 				TargetAttributes = {
 					95054EB2220EDCD800BC484F = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 					};
 					95054EC9220EDCDA00BC484F = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1020;
 						TestTargetID = 95054EB2220EDCD800BC484F;
 					};
 				};
@@ -380,6 +384,7 @@
 				9523893F222BF55500AE51C2 /* Themes.m in Sources */,
 				953CDB122238DCEB00E6F1CC /* SaveOperation.swift in Sources */,
 				959F97BA222F102E00451C41 /* ThemeManager.swift in Sources */,
+				9527C522224A944100E5EBDE /* StorageManager.swift in Sources */,
 				959F97BF222F1C7F00451C41 /* Theme.swift in Sources */,
 				953CDB102238D95800E6F1CC /* LoadOperation.swift in Sources */,
 				953CDB0C2238D5AB00E6F1CC /* OperationDataManager.swift in Sources */,

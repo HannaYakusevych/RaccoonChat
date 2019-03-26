@@ -36,8 +36,9 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   override func viewDidLoad() {
     super.viewDidLoad()
     CommunicationManager.shared.updateChat = {
-      self.tableView.reloadData()
-      print("Hello")
+      DispatchQueue.main.async {
+        self.tableView.reloadData()
+      }
     }
     
     // Listen for keyboard events
