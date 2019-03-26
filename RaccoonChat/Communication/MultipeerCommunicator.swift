@@ -11,40 +11,24 @@ import MultipeerConnectivity
 
 class MultipeerCommunicator: NSObject, Communicator {
   
-  // MARK: - Communicator interface
-  func sendMessage(string: String, to userId: String, completionHandler: ((Bool, Error?) -> ())) {
-    let jsonMessage: [String: String] =  ["eventType": "TextMessage",
-                                       "messageId": generateMessageId() ,
-                                       "text": string]
-    let dataToSend = NSKeyedArchiver.archivedData(withRootObject: jsonMessage)
-    if let foo = onlineUsers.first(where: {$0.name == userId}) {
-      do {
-        try sessions[foo.peerId]?.send(dataToSend, toPeers: [foo.peerId], with: MCSessionSendDataMode.unreliable)
-        completionHandler(true, nil)
-      } catch {
-        completionHandler(false, error)
-      }
-    } else {
-      completionHandler(false, nil)
-    }
-  }
-  
   weak var delegate: CommunicatorDelegate?
-  var goToChat: ((IndexPath) -> Void)?
+  
   // TODO: implement
+  // For now our user is always online
   var online: Bool = true
   
   // MARK: - Connection members
   private var sessions = [MCPeerID: MCSession]()
-  let myPeerId = MCPeerID(displayName: UIDevice.current.name)
   private var advertiser: MCNearbyServiceAdvertiser!
   private var browser: MCNearbyServiceBrowser!
+  let serviceType = "tinkoff-chat"
   
-  // Var for all found peers
+  // TODO: Load the user name
+  let myPeerId = MCPeerID(displayName: UIDevice.current.name)
+  
+  // Lists for all found peers
   var onlineUsers = [User]()
   var historyUsers = [User]()
-  
-  let serviceType = "tinkoff-chat"
   
   // MARK: - Init
   override init() {
@@ -62,12 +46,22 @@ class MultipeerCommunicator: NSObject, Communicator {
     advertiser.startAdvertisingPeer()
   }
   
-  func inviteUser(peerId: MCPeerID) {
-    let session = MCSession(peer: myPeerId, securityIdentity: nil, encryptionPreference: .optional)
-    session.delegate = self
-    sessions[peerId] = session
-    browser.invitePeer(peerId, to: session, withContext: nil, timeout: 30)
-    Logger.write("User is invited")
+  // MARK: - Communicator protocol conformance
+  func sendMessage(string: String, to userId: String, completionHandler: ((Bool, Error?) -> ())) {
+    let jsonMessage: [String: String] =  ["eventType": "TextMessage",
+                                          "messageId": generateMessageId() ,
+                                          "text": string]
+    let dataToSend = NSKeyedArchiver.archivedData(withRootObject: jsonMessage)
+    if let user = onlineUsers.first(where: {$0.name == userId}) {
+      do {
+        try sessions[user.peerId]?.send(dataToSend, toPeers: [user.peerId], with: MCSessionSendDataMode.unreliable)
+        completionHandler(true, nil)
+      } catch {
+        completionHandler(false, error)
+      }
+    } else {
+      completionHandler(false, nil)
+    }
   }
   
   private func generateMessageId() -> String {
@@ -75,6 +69,14 @@ class MultipeerCommunicator: NSObject, Communicator {
     return string!
   }
   
+  // Make new session and invite user to it
+  func inviteUser(peerId: MCPeerID) {
+    let session = MCSession(peer: myPeerId, securityIdentity: nil, encryptionPreference: .optional)
+    session.delegate = self
+    sessions[peerId] = session
+    browser.invitePeer(peerId, to: session, withContext: nil, timeout: 30)
+    Logger.write("User is invited")
+  }
 }
 
 // MARK: - MCSessionDelegate
@@ -83,30 +85,30 @@ extension MultipeerCommunicator: MCSessionDelegate {
     switch state{
     case MCSessionState.connected:
       print("Connected to session: \(session)")
-      for user in onlineUsers {
-        if user.peerId == peerID {
-          user.connected = true
-          break
-        }
+      if let user = onlineUserWith(peerID: peerID) {
+        user.connected = true
       }
-      
     case MCSessionState.connecting:
       print("Connecting to session: \(session)")
-      for user in onlineUsers {
-        if user.peerId == peerID {
-          user.connected = false
-          break
-        }
+      if let user = onlineUserWith(peerID: peerID) {
+        user.connected = false
       }
     default:
       print("Did not connect to session: \(session)")
-      for user in onlineUsers {
-        if user.peerId == peerID {
-          user.connected = false
-          break
-        }
+      if let user = onlineUserWith(peerID: peerID) {
+        user.connected = false
       }
     }
+  }
+  
+  // Helping function - check if user with peerID is in onlineUsers
+  private func onlineUserWith(peerID: MCPeerID) -> User? {
+    for user in onlineUsers {
+      if user.peerId == peerID {
+        return user
+      }
+    }
+    return nil
   }
   
   func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
@@ -115,7 +117,7 @@ extension MultipeerCommunicator: MCSessionDelegate {
   }
   
   func session(_ session: MCSession, didReceive stream: InputStream, withName streamName: String, fromPeer peerID: MCPeerID) {
-    // TODO: implement
+    // TODO: For now user can't receive streams
   }
   
   func session(_ session: MCSession, didStartReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, with progress: Progress) {
@@ -125,18 +127,16 @@ extension MultipeerCommunicator: MCSessionDelegate {
   func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
     // TODO: implement
   }
-  
-  
 }
 
 // MARK: - MCNearbyServiceBrowserDelegate
 extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate {
   func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String : String]?) {
-    for (_, user) in self.onlineUsers.enumerated() {
-      if user.peerId == peerID {
-        return
-      }
+    // If user is already online, do nothing
+    if onlineUserWith(peerID: peerID) != nil {
+      return
     }
+    
     // Check if user was connected during the session
     // Then return it to online section
     for (index, user) in self.historyUsers.enumerated() {
@@ -148,6 +148,7 @@ extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate {
         return
       }
     }
+    
     // Else it is a new user - add it to the list
     onlineUsers.append(User(peerId: peerID))
     guard let discovery = info, let name = discovery["userName"] else {
@@ -162,8 +163,7 @@ extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate {
       if user.peerId == peerID {
         onlineUsers.remove(at: index)
         user.online = false
-        user.connected = false
-        // TODO: disable debug mode
+        // If chat wasn't empty, save it till the end of session
         if user.chatHistory.count > 0 {
           historyUsers.append(user)
         }
@@ -182,6 +182,7 @@ extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate {
 // MARK: - MCNearbyServiceAdvertiserDelegate
 extension MultipeerCommunicator: MCNearbyServiceAdvertiserDelegate {
   func advertiser(_ advertiser: MCNearbyServiceAdvertiser, didReceiveInvitationFromPeer peerID: MCPeerID, withContext context: Data?, invitationHandler: @escaping (Bool, MCSession?) -> Void) {
+    // If the session for this user already exists
     if sessions[peerID] != nil {
       invitationHandler(false, nil)
       return
@@ -198,6 +199,7 @@ extension MultipeerCommunicator: MCNearbyServiceAdvertiserDelegate {
   
 }
 
+// MARK: - Helping structs (data source)
 class User {
   var name = "Name"
   var peerId: MCPeerID

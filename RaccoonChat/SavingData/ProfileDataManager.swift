@@ -9,7 +9,7 @@
 import Foundation
 
 protocol ProfileDataManager {
-  func saveProfileData(name:String?, description: String?, image: UIImage?, isSaved: @escaping (_ hasError: Bool) -> Void)
+  func saveProfileData(name:String?, description: String?, image: UIImage?, completion: @escaping (_ hasError: Bool) -> Void)
   func loadProfileData(isDone: @escaping (Bool, (String, String, UIImage)) -> Void)
 }
 

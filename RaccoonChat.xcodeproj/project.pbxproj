@@ -183,6 +183,7 @@
 		953CDB062236692200E6F1CC /* SavingData */ = {
 			isa = PBXGroup;
 			children = (
+				9527C521224A944100E5EBDE /* StorageManager.swift */,
 				953CDB072236699500E6F1CC /* ProfileDataManager.swift */,
 				953CDB0922383DF500E6F1CC /* GCDDataManager.swift */,
 				953CDB0B2238D5AB00E6F1CC /* OperationDataManager.swift */,
@@ -196,7 +197,6 @@
 			isa = PBXGroup;
 			children = (
 				954D94B82242AF4500981B1D /* CoreDataStack.swift */,
-				9527C521224A944100E5EBDE /* StorageManager.swift */,
 				954D94BC2242B4BA00981B1D /* AppUser.swift */,
 				954D94C62242C09D00981B1D /* RaccoonChat.xcdatamodeld */,
 			);

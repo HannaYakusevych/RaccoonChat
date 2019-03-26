@@ -436,12 +436,8 @@ extension ProfileViewController: UITextFieldDelegate {
       return
     }
     if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
-      //self.descriptionTextView.inputAccessoryView = keyboardToolbar
       view.frame.origin.y = -keyboardRect.height
     } else  if notification.name == UIResponder.keyboardWillHideNotification {
-      //self.descriptionTextView.inputAccessoryView = nil
-      //view.frame.origin.y += keyboardRect.height * 1.2
-      
       view.frame.origin.y = 0
     }
     
@@ -451,7 +447,6 @@ extension ProfileViewController: UITextFieldDelegate {
 
 extension ProfileViewController: UITextViewDelegate {
   func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-    textView.inputAccessoryView = keyboardToolbar
     return true
   }
   
@@ -471,7 +466,6 @@ extension ProfileViewController: UITextViewDelegate {
   }
   
   func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
-    textView.inputAccessoryView = nil
     return true
   }
   

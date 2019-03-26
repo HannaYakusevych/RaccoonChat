@@ -16,7 +16,10 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   @IBOutlet var newMessageTextView: UITextView!
   @IBOutlet var sendButton: UIButton!
   @IBAction func sendMessage(_ sender: Any) {
-    //newMessageTextView.resignFirstResponder()
+    // If the message is empty, don't send anything
+    if newMessageTextView.text == "" {
+      return
+    }
     guard let user = CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!}), user.connected else {
       return
     }
@@ -25,7 +28,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         Logger.write(error?.localizedDescription ?? "Message sending error: user is unknown")
         return
       }
-      let message = Message(isInput: false, text: newMessageTextView.text, date: Date(timeIntervalSinceReferenceDate: 0))
+      let message = Message(isInput: false, text: newMessageTextView.text, date: Date())
       CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.append(message)
       self.tableView.reloadData()
       DispatchQueue.main.async { self.tableView.reloadData() }
@@ -60,13 +63,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
     
     self.tableView.reloadData()
-    
-    
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
   }
   
   deinit {
@@ -135,12 +131,8 @@ extension ConversationViewController: UITextViewDelegate {
       return
     }
     if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
-      //self.descriptionTextView.inputAccessoryView = keyboardToolbar
       view.frame.origin.y = -keyboardRect.height
-    } else  if notification.name == UIResponder.keyboardWillHideNotification {
-      //self.descriptionTextView.inputAccessoryView = nil
-      //view.frame.origin.y += keyboardRect.height * 1.2
-      
+    } else  if notification.name == UIResponder.keyboardWillHideNotification {      
       view.frame.origin.y = 0
     }
   }

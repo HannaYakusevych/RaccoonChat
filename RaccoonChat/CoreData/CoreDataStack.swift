@@ -10,13 +10,14 @@ import Foundation
 import CoreData
 
 class CoreDataStack {
-  // NSPersistentStore
+  
+  // MARK: - NSPersistentStore
   private var storeURL: URL {
     let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     return documentsURL.appendingPathComponent("TheStore.sqlite")
   }
   
-  // NSManagedObjectModel
+  // MARK: - NSManagedObjectModel
   private let dataModelName = "RaccoonChat"
   
   private lazy var managedObjectModel: NSManagedObjectModel = {
@@ -24,7 +25,7 @@ class CoreDataStack {
     return NSManagedObjectModel(contentsOf: modelURL)!
   }()
   
-  // NSPersistentStoreCoordinator
+  // MARK: - NSPersistentStoreCoordinator
   private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
     let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
     do {
@@ -36,6 +37,7 @@ class CoreDataStack {
     return coordinator
   }()
   
+  // MARK: - Contexts
   lazy var masterContext: NSManagedObjectContext = {
     var masterContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
     masterContext.persistentStoreCoordinator = self.persistentStoreCoordinator
@@ -53,29 +55,33 @@ class CoreDataStack {
   
   lazy var saveContext: NSManagedObjectContext = {
     var saveContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
-    ///saveContext.persistentStoreCoordinator = self.persistentStoreCoordinator
     saveContext.parent = self.mainContext
     saveContext.mergePolicy = NSOverwriteMergePolicy
     return saveContext
   }()
   
-  typealias SaveCompletion = () -> Void
+  // MARK: - Saving
+  typealias SaveCompletion = (Bool) -> Void
   func performSave(with context: NSManagedObjectContext, completion: SaveCompletion? = nil) {
     context.perform {
+      // Check if there is something new to save
       guard context.hasChanges else {
-        completion?()
+        completion?(true)
         return
       }
+      // Try to save
       do {
         try context.save()
       } catch {
-        print("Context save error: \(error)")
+        Logger.write("Context save error: \(error.localizedDescription)")
+        completion?(false)
+        return
       }
       
       if let parentContext = context.parent {
         self.performSave(with: parentContext, completion: completion)
       } else {
-        completion?()
+        completion?(true)
       }
     }
   }

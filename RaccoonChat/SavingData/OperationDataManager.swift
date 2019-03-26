@@ -12,7 +12,7 @@ class OperationDataManager: ProfileDataManager {
   
   let queue = OperationQueue()
   
-  func saveProfileData(name: String?, description: String?, image: UIImage?, isSaved: @escaping (Bool) -> Void) {
+  func saveProfileData(name: String?, description: String?, image: UIImage?, completion: @escaping (Bool) -> Void) {
     let saveOperation = SaveOperation()
     saveOperation.profileName = name
     saveOperation.profileDescription = description
@@ -20,7 +20,7 @@ class OperationDataManager: ProfileDataManager {
     saveOperation.qualityOfService = .userInitiated
     saveOperation.completionBlock = {
       OperationQueue.main.addOperation() {
-        isSaved(!saveOperation.hasError)
+        completion(!saveOperation.hasError)
       }
     }
     queue.addOperation(saveOperation)

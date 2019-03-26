@@ -16,11 +16,11 @@ class GCDDataManager: ProfileDataManager {
   let namePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/nameData.txt"
   let aboutMePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/aboutMeData.txt"
   
-  func saveProfileData(name: String?, description: String?, image: UIImage?, isSaved: @escaping (Bool) -> Void) {
+  func saveProfileData(name: String?, description: String?, image: UIImage?, completion: @escaping (Bool) -> Void) {
     queue.async() {
       let saved = self.save(name: name, description: description, image: image)
       DispatchQueue.main.async {
-        isSaved(saved)
+        completion(saved)
       }
     }
   }
