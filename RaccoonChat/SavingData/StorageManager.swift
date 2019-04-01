@@ -10,33 +10,33 @@ import Foundation
 import CoreData
 
 class StorageManager: ProfileDataManager {
-  
+
   let coreDataStack: CoreDataStack!
-  
+
   init() {
     self.coreDataStack = CoreDataStack()
   }
-  
+
   func saveProfileData(name: String?, description: String?, image: UIImage?, completion: @escaping (Bool) -> Void) {
-    
+
     let appUser = AppUser.findOrInsertAppUser(in: coreDataStack.mainContext)
-    
+
     if let name = name {
       appUser?.setValue(name, forKey: "name")
     }
-    
+
     if let description = description {
       appUser?.setValue(description, forKey: "myDescription")
     }
-    
+
     // Save image
     if let image = image {
       let imageData = image.jpegData(compressionQuality: 0.8)
       appUser?.setValue(imageData, forKey: "image")
     }
-    
+
     appUser?.setValue(Date(), forKey: "timestamp")
-    
+
     coreDataStack.performSave(with: coreDataStack.mainContext) { isSaved in
       // Perform UI task
       DispatchQueue.main.async {
@@ -44,7 +44,7 @@ class StorageManager: ProfileDataManager {
       }
     }
   }
-  
+
   func loadProfileData(isDone: @escaping (Bool, (String, String, UIImage)) -> Void) {
     let appUser = AppUser.findOrInsertAppUser(in: coreDataStack.mainContext)
     let imageData = appUser?.image
@@ -54,5 +54,5 @@ class StorageManager: ProfileDataManager {
       isDone(true, (appUser?.name ?? "", appUser?.myDescription ?? "Profile information", image!))
     }
   }
-  
+
 }

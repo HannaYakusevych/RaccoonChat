@@ -9,17 +9,17 @@
 import Foundation
 
 class LoadOperation: Operation {
-  
+
   let imagePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/profilePhoto.jpg"
   let namePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/nameData.txt"
   let aboutMePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/aboutMeData.txt"
-  
+
   var profileName: String?
   var profileDescription: String?
   var image: UIImage?
-  
+
   var isLoaded = false
-  
+
   override func main() {
     guard FileManager.default.fileExists(atPath: namePath),
       FileManager.default.fileExists(atPath: imagePath),

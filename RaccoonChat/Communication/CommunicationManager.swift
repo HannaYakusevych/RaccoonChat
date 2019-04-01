@@ -10,33 +10,45 @@ import Foundation
 import MultipeerConnectivity
 
 class CommunicationManager: CommunicatorDelegate {
-  
+
   // MARK: Singleton
   static let shared = CommunicationManager()
-  
+
   // MARK: UIViewController updates
   var updateChatList: (() -> Void)?
   var updateChat: (() -> Void)?
-  
+
   var communicator: MultipeerCommunicator
-  
+
+  // Lists for all found peers
+  var onlineUsers = [User]()
+  var historyUsers = [User]()
+
   init() {
     self.communicator = MultipeerCommunicator()
     self.communicator.delegate = self
   }
-  
+
   // Add user to the list
   func didFoundUser(userID: String, userName: String?) {
-    communicator.onlineUsers.sort(by: User.sortUsers(lhs:rhs:))
+    onlineUsers.sort(by: User.sortUsers(lhs:rhs:))
     updateChatList?()
   }
-  
+
   // Remove user from the list
   func didLostUser(userID: String) {
-    communicator.onlineUsers.sort(by: User.sortUsers(lhs:rhs:))
+    for (index, user) in onlineUsers.enumerated() where user.name == userID {
+      CommunicationManager.shared.onlineUsers.remove(at: index)
+      user.online = false
+      // If chat wasn't empty, save it till the end of session
+      if user.chatHistory.count > 0 {
+        historyUsers.append(user)
+      }
+    }
+    onlineUsers.sort(by: User.sortUsers(lhs:rhs:))
     updateChatList?()
   }
-  
+
   // Multipeer Communicator errors
   func failedToStartBrowsingForUsers(error: Error) {
     assertionFailure(error.localizedDescription)
@@ -44,14 +56,13 @@ class CommunicationManager: CommunicatorDelegate {
   func failedToStartAdvertising(error: Error) {
     assertionFailure(error.localizedDescription)
   }
-  
+
   // Update table views with a new message
   func didReceiveMessage(text: String, fromUser: String, toUser: String) {
     let message = Message(isInput: true, text: text, date: Date())
-    communicator.onlineUsers.first(where: {$0.name == fromUser})?.chatHistory.append(message)
+    onlineUsers.first(where: {$0.name == fromUser})?.chatHistory.append(message)
     updateChatList?()
     updateChat?()
   }
-  
-  
+
 }

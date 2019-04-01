@@ -9,27 +9,25 @@
 import UIKit
 
 // String for saving in UserDefaults
-let SelectedThemeKey = "SelectedTheme"
+let selectedThemeKey = "SelectedTheme"
 
 struct ThemeManager {
-  
+
   static func currentTheme() -> Theme {
-    if let storedTheme = (UserDefaults.standard.value(forKey: SelectedThemeKey) as AnyObject).integerValue {
+    if let storedTheme = (UserDefaults.standard.value(forKey: selectedThemeKey) as AnyObject).integerValue {
       return Theme(rawValue: storedTheme)!
     } else {
-      return .Orange
+      return .orange
     }
   }
-  
+
   static func applyTheme(theme: Theme) {
-    UserDefaults.standard.set(theme.rawValue, forKey: SelectedThemeKey)
+    UserDefaults.standard.set(theme.rawValue, forKey: selectedThemeKey)
     UserDefaults.standard.synchronize()
-    
+
     let sharedApplication = UIApplication.shared
     sharedApplication.delegate?.window??.tintColor = theme.mainColor
     UINavigationBar.appearance().barStyle = ThemeManager.currentTheme().barStyle
     UINavigationBar.appearance().backgroundColor = ThemeManager.currentTheme().mainColor.withAlphaComponent(0.7)
   }
 }
-
-

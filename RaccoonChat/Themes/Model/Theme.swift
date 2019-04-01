@@ -9,26 +9,26 @@
 import UIKit
 
 enum Theme: Int {
-  case Orange, Blue, Purple
-  
+  case orange, blue, purple
+
   var mainColor: UIColor {
     switch self {
-    case .Blue:
+    case .blue:
       return UIColor(red: 119/255, green: 139/255, blue: 235/255, alpha: 1)
-    case .Orange:
+    case .orange:
       return UIColor(red: 241/255, green: 144/255, blue: 102/255, alpha: 1)
-    case .Purple:
+    case .purple:
       return UIColor(red: 120/255, green: 111/255, blue: 166/255, alpha: 1)
     }
   }
-  
+
   var barStyle: UIBarStyle {
     switch self {
-    case .Orange:
+    case .orange:
       return .default
-    case .Blue, .Purple:
+    case .blue, .purple:
       return .black
     }
   }
-  
+
 }

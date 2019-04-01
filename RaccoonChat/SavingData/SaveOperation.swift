@@ -9,17 +9,17 @@
 import Foundation
 
 class SaveOperation: Operation {
-  
+
   let imagePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/profilePhoto.jpg"
   let namePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/nameData.txt"
   let aboutMePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/aboutMeData.txt"
-  
+
   var profileName: String?
   var profileDescription: String?
   var image: UIImage?
-  
+
   var hasError = false
-  
+
   override func main() {
     // Image saving
     if let image = self.image {
@@ -30,7 +30,7 @@ class SaveOperation: Operation {
         hasError = true
       }
     }
-    
+
     // Name saving
     if let name = self.profileName {
       do {
@@ -40,7 +40,7 @@ class SaveOperation: Operation {
         hasError = true
       }
     }
-    
+
     // Description saving
     if let description = self.profileDescription {
       do {

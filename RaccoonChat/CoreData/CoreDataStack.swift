@@ -10,21 +10,21 @@ import Foundation
 import CoreData
 
 class CoreDataStack {
-  
+
   // MARK: - NSPersistentStore
   private var storeURL: URL {
     let documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     return documentsURL.appendingPathComponent("TheStore.sqlite")
   }
-  
+
   // MARK: - NSManagedObjectModel
   private let dataModelName = "RaccoonChat"
-  
+
   private lazy var managedObjectModel: NSManagedObjectModel = {
     let modelURL = Bundle.main.url(forResource: self.dataModelName, withExtension: "momd")!
     return NSManagedObjectModel(contentsOf: modelURL)!
   }()
-  
+
   // MARK: - NSPersistentStoreCoordinator
   private lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
     let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
@@ -33,10 +33,10 @@ class CoreDataStack {
     } catch {
       assert(false, "Error adding store: \(error)")
     }
-    
+
     return coordinator
   }()
-  
+
   // MARK: - Contexts
   lazy var masterContext: NSManagedObjectContext = {
     var masterContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
@@ -44,7 +44,7 @@ class CoreDataStack {
     masterContext.mergePolicy = NSOverwriteMergePolicy
     return masterContext
   }()
-  
+
   lazy var mainContext: NSManagedObjectContext = {
     var mainContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
     //mainContext.persistentStoreCoordinator = self.persistentStoreCoordinator
@@ -52,14 +52,14 @@ class CoreDataStack {
     mainContext.mergePolicy = NSOverwriteMergePolicy
     return mainContext
   }()
-  
+
   lazy var saveContext: NSManagedObjectContext = {
     var saveContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
     saveContext.parent = self.mainContext
     saveContext.mergePolicy = NSOverwriteMergePolicy
     return saveContext
   }()
-  
+
   // MARK: - Saving
   typealias SaveCompletion = (Bool) -> Void
   func performSave(with context: NSManagedObjectContext, completion: SaveCompletion? = nil) {
@@ -77,7 +77,7 @@ class CoreDataStack {
         completion?(false)
         return
       }
-      
+
       if let parentContext = context.parent {
         self.performSave(with: parentContext, completion: completion)
       } else {

@@ -9,19 +9,19 @@
 import UIKit
 
 class ThemesViewController: UIViewController {
-  
+
   var model: Themes!
-  var changeColor: ((UIColor) -> ())?
-  
+  var changeColor: ((UIColor) -> Void)?
+
   @IBOutlet var themeButtons: [UIButton]!
-  
+
   @IBAction func didSelectTheme(_ sender: UIButton) {
     guard
       let model = model,
       let index = themeButtons.index(of: sender) else { return }
-    
+
     let backgroundColor: UIColor
-    
+
     switch index {
     case 0:
       backgroundColor = model.theme1
@@ -37,9 +37,9 @@ class ThemesViewController: UIViewController {
     } else {
       Logger.write("Error: The closure for changing color wasn't passed")
     }
-    
+
   }
-  
+
   @IBAction private func dismiss(_ sender: UIBarButtonItem) {
     self.dismiss(animated: true, completion: nil)
   }
@@ -52,7 +52,6 @@ class ThemesViewController: UIViewController {
     self.view.backgroundColor = ThemeManager.currentTheme().mainColor
         // Do any additional setup after loading the view.
   }
-    
 
     /*
     // MARK: - Navigation
