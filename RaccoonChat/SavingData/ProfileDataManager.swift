@@ -10,5 +10,6 @@ import Foundation
 
 protocol ProfileDataManager {
   func saveProfileData(name: String?, description: String?, image: UIImage?, completion: @escaping (_ hasError: Bool) -> Void)
-  func loadProfileData(isDone: @escaping (Bool, (String, String, UIImage)) -> Void)
+  //func loadProfileData(isDone: @escaping (Bool, (String, String, UIImage)) -> Void)
+  func loadProfileData(isDone: @escaping (Bool, [String: Any]) -> Void)
 }

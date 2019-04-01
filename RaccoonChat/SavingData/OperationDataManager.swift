@@ -26,20 +26,22 @@ class OperationDataManager: ProfileDataManager {
     queue.addOperation(saveOperation)
   }
 
-  func loadProfileData(isDone: @escaping (Bool, (String, String, UIImage)) -> Void) {
+  func loadProfileData(isDone: @escaping (Bool, [String: Any]) -> Void) {
     let loadOperation = LoadOperation()
     loadOperation.qualityOfService = .userInitiated
     loadOperation.completionBlock = {
       if loadOperation.isLoaded {
         OperationQueue.main.addOperation {
-          isDone(true, (loadOperation.profileName ?? "",
-                        loadOperation.profileDescription ?? "Profile information",
-                        loadOperation.image ?? UIImage(named: "placeholder-user")!))
+          isDone(true, ["name": loadOperation.profileName ?? "",
+                        "description": loadOperation.profileDescription ?? "Profile information",
+                        "image": loadOperation.image ?? UIImage(named: "placeholder-user")!])
         }
       } else {
         Logger.write("Error loading data")
         OperationQueue.main.addOperation {
-          isDone(false, ("", "Profile information", UIImage(named: "placeholder-user")!))
+          isDone(false, ["name": "",
+                         "description": "Profile information",
+                         "image": UIImage(named: "placeholder-user")!])
         }
       }
     }

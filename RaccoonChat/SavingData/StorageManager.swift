@@ -45,13 +45,15 @@ class StorageManager: ProfileDataManager {
     }
   }
 
-  func loadProfileData(isDone: @escaping (Bool, (String, String, UIImage)) -> Void) {
+  func loadProfileData(isDone: @escaping (Bool, [String: Any]) -> Void) {
     let appUser = AppUser.findOrInsertAppUser(in: coreDataStack.mainContext)
     let imageData = appUser?.image
     let image = imageData != nil ? UIImage(data: imageData!) : UIImage(named: "placeholder-user")
     // Perform UI task
     DispatchQueue.main.async {
-      isDone(true, (appUser?.name ?? "", appUser?.myDescription ?? "Profile information", image!))
+      isDone(true, ["name": appUser?.name ?? "",
+                    "description": appUser?.myDescription ?? "Profile information",
+                    "image": image!])
     }
   }
 

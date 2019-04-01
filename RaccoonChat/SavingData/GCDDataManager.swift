@@ -25,17 +25,21 @@ class GCDDataManager: ProfileDataManager {
     }
   }
 
-  func loadProfileData(isDone: @escaping (Bool, (String, String, UIImage)) -> Void) {
+  func loadProfileData(isDone: @escaping (Bool, [String: Any]) -> Void) {
     queue.async {
       let data = self.load()
       if let data = data {
         DispatchQueue.main.async {
-          isDone(true, (data.name ?? "", data.description ?? "Profile information", data.image ?? UIImage(named: "placeholder-user")!))
+          isDone(true, ["name": data["name"] ?? "",
+                        "description": data["description"] ?? "Profile information",
+                        "image": data["image"] ?? UIImage(named: "placeholder-user")!])
         }
       } else {
         Logger.write("Error loading data")
         DispatchQueue.main.async {
-          isDone(false, ("", "Profile information", UIImage(named: "placeholder-user")!))
+          isDone(false, ["name": "",
+                         "description": "Profile information",
+                         "image": UIImage(named: "placeholder-user")!])
         }
       }
     }
@@ -74,7 +78,8 @@ class GCDDataManager: ProfileDataManager {
     return true
   }
 
-  func load() -> (name: String?, description: String?, image: UIImage?)? {
+  //func load() -> (name: String?, description: String?, image: UIImage?)? {
+  func load() -> [String: Any]? {
     guard FileManager.default.fileExists(atPath: namePath),
       FileManager.default.fileExists(atPath: imagePath),
       FileManager.default.fileExists(atPath: aboutMePath),
@@ -87,7 +92,7 @@ class GCDDataManager: ProfileDataManager {
         Logger.write("Error loading data")
         return nil
     }
-    return (name, description, image)
+    return ["name": name, "description": description, "image": image]
   }
 
 }

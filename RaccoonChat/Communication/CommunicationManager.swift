@@ -40,7 +40,7 @@ class CommunicationManager: CommunicatorDelegate {
     for (index, user) in onlineUsers.enumerated() where user.name == userID {
       CommunicationManager.shared.onlineUsers.remove(at: index)
       user.online = false
-      // If chat wasn't empty, save it till the end of session
+      // If chat wasn't empty, save it
       if user.chatHistory.count > 0 {
         historyUsers.append(user)
       }
@@ -65,4 +65,43 @@ class CommunicationManager: CommunicatorDelegate {
     updateChat?()
   }
 
+}
+
+// MARK: - Helping structs (data source)
+class User {
+  var name = "Name"
+  var peerId: MCPeerID
+
+  var message: String? { return chatHistory.last?.text  }
+  var date: Date? { return chatHistory.last?.date }
+
+  var hasUnreadMessages = false
+  var online = true
+  var connected = false
+  var photo: UIImage?
+  var chatHistory = [Message]()
+
+  init(peerId: MCPeerID) {
+    self.peerId = peerId
+    self.name = peerId.displayName
+  }
+
+  static func sortUsers(lhs: User, rhs: User) -> Bool {
+    switch (lhs.date, rhs.date) {
+    case (nil, nil):
+      return lhs.name < rhs.name
+    case (nil, _):
+      return false
+    case ( _, nil):
+      return true
+    case (let lhs, let rhs):
+      return lhs! < rhs!
+    }
+  }
+}
+
+struct Message {
+  let isInput: Bool
+  let text: String
+  let date: Date
 }

@@ -13,7 +13,6 @@ class MultipeerCommunicator: NSObject, Communicator {
 
   weak var delegate: CommunicatorDelegate?
 
-  // TODO: implement
   // For now our user is always online
   var online: Bool = true
 
@@ -23,8 +22,7 @@ class MultipeerCommunicator: NSObject, Communicator {
   private var browser: MCNearbyServiceBrowser!
   let serviceType = "tinkoff-chat"
 
-  // TODO: Load the user name
-  let myPeerId = MCPeerID(displayName: UserDefaults.standard.string(forKey: "name") ?? "Name")
+  var myPeerId: MCPeerID = MCPeerID(displayName: UserDefaults.standard.string(forKey: "name") ?? "Name undefined")
 
   // MARK: - Init
   override init() {
@@ -194,41 +192,4 @@ extension MultipeerCommunicator: MCNearbyServiceAdvertiserDelegate {
     delegate?.failedToStartAdvertising(error: error)
   }
 
-}
-
-// MARK: - Helping structs (data source)
-class User {
-  var name = "Name"
-  var peerId: MCPeerID
-  var message: String? { return chatHistory.last?.text  }
-  var date: Date? { return chatHistory.last?.date }
-  var hasUnreadMessages = false
-  var online = true
-  var connected = false
-  var photo: UIImage?
-  var chatHistory = [Message]()
-
-  init(peerId: MCPeerID) {
-    self.peerId = peerId
-    self.name = peerId.displayName
-  }
-
-  static func sortUsers(lhs: User, rhs: User) -> Bool {
-    switch (lhs.date, rhs.date) {
-    case (nil, nil):
-      return lhs.name < rhs.name
-    case (nil, _):
-      return false
-    case ( _, nil):
-      return true
-    case (let lhs, let rhs):
-      return lhs! < rhs!
-    }
-  }
-}
-
-struct Message {
-  let isInput: Bool
-  let text: String
-  let date: Date
 }

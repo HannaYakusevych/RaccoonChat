@@ -130,11 +130,11 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
   /**
    Function for loading data ending (reloading included)
    */
-  func load(isLoaded: Bool, data: (String, String, UIImage)) {
-    let (name, description, image) = data
-    self.profileImageView.image = image
-    self.nameTextField.text = name
-    self.descriptionTextView.text = description
+  func load(isLoaded: Bool, data: [String: Any]) {
+    let (name, description, image) = (data["name"], data["description"], data["image"])
+    self.profileImageView.image = image as? UIImage ?? UIImage(named: "placeholder-user")
+    self.nameTextField.text = name as? String ?? ""
+    self.descriptionTextView.text = description as? String ?? "Profile information"
     if self.descriptionTextView.text != "Profile information" {
       self.descriptionTextView.textColor = UIColor.black
     }

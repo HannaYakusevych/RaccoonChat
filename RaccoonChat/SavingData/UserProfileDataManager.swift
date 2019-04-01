@@ -45,7 +45,8 @@ struct ProfileDataManager {
     return true
   }
 
-  static func loadData() -> (name: String, description: String?, image: UIImage?) {
+  //static func loadData() -> (name: String, description: String?, image: UIImage?) {
+  static func loadData() -> [String: Any] {
     let imageUrl = URL(fileURLWithPath: imagePath)
 
     let jsonDecoder = JSONDecoder()
@@ -63,9 +64,9 @@ struct ProfileDataManager {
     guard FileManager.default.fileExists(atPath: imagePath), let imageData = try? Data(contentsOf: imageUrl),
       let image = UIImage(data: imageData, scale: UIScreen.main.scale) else {
       print("Hello")
-      return (user.name, user.description, nil)
+        return ["Name": user.name, "description": user.description, "image": nil]
     }
-    return (user.name, user.description, image)
+    return ["Name": user.name, "description": user.description, "image": image]
 
   }
 }
