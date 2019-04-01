@@ -9,24 +9,24 @@
 import Foundation
 
 class GCDDataManager: ProfileDataManager {
-  
+
   let queue = DispatchQueue(label: "com.app.gcdQueue", qos: .userInitiated)
-  
+
   let imagePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/profilePhoto.jpg"
   let namePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/nameData.txt"
   let aboutMePath = "\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])/aboutMeData.txt"
-  
+
   func saveProfileData(name: String?, description: String?, image: UIImage?, completion: @escaping (Bool) -> Void) {
-    queue.async() {
+    queue.async {
       let saved = self.save(name: name, description: description, image: image)
       DispatchQueue.main.async {
         completion(saved)
       }
     }
   }
-  
+
   func loadProfileData(isDone: @escaping (Bool, (String, String, UIImage)) -> Void) {
-    queue.async() {
+    queue.async {
       let data = self.load()
       if let data = data {
         DispatchQueue.main.async {
@@ -40,7 +40,7 @@ class GCDDataManager: ProfileDataManager {
       }
     }
   }
-  
+
   func save(name: String?, description: String?, image: UIImage?) -> Bool {
     // Image saving
     if let image = image {
@@ -51,7 +51,7 @@ class GCDDataManager: ProfileDataManager {
         return false
       }
     }
-    
+
     // Name saving
     if let name = name {
       do {
@@ -61,7 +61,7 @@ class GCDDataManager: ProfileDataManager {
         return false
       }
     }
-    
+
     // Description saving
     if let description = description {
       do {
@@ -73,7 +73,7 @@ class GCDDataManager: ProfileDataManager {
     }
     return true
   }
-  
+
   func load() -> (name: String?, description: String?, image: UIImage?)? {
     guard FileManager.default.fileExists(atPath: namePath),
       FileManager.default.fileExists(atPath: imagePath),
@@ -89,5 +89,5 @@ class GCDDataManager: ProfileDataManager {
     }
     return (name, description, image)
   }
-  
+
 }

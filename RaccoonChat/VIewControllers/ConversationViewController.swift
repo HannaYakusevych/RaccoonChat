@@ -9,8 +9,7 @@
 import UIKit
 
 class ConversationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-  
-  
+
   @IBOutlet weak var tableView: UITableView!
   @IBOutlet var newMessageView: UIView!
   @IBOutlet var newMessageTextView: UITextView!
@@ -20,7 +19,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     if newMessageTextView.text == "" {
       return
     }
-    guard let user = CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!}), user.connected else {
+    guard let user = CommunicationManager.shared.onlineUsers.first(where: {$0.name == self.title!}), user.connected else {
       return
     }
     CommunicationManager.shared.communicator.sendMessage(string: newMessageTextView.text, to: self.title!) { isSent, error in
@@ -29,13 +28,13 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         return
       }
       let message = Message(isInput: false, text: newMessageTextView.text, date: Date())
-      CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.append(message)
+      CommunicationManager.shared.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.append(message)
       self.tableView.reloadData()
       DispatchQueue.main.async { self.tableView.reloadData() }
       newMessageTextView.text = ""
     }
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
     CommunicationManager.shared.updateChat = {
@@ -43,28 +42,31 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
         self.tableView.reloadData()
       }
     }
-    
+
     // Listen for keyboard events
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-    
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)),
+                                           name: UIResponder.keyboardWillShowNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)),
+                                           name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)),
+                                           name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+
     // Theme managing
     newMessageView.backgroundColor = ThemeManager.currentTheme().mainColor
     newMessageTextView.layer.cornerRadius = newMessageTextView.frame.height / 4
-    
+
     // Add gesture recognizer to close tho keyboard
     configureTapGesture()
-    
+
     self.tableView.delegate = self
     self.tableView.dataSource = self
-    
+
     // To insert messages from bottom
     tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
-    
+
     self.tableView.reloadData()
   }
-  
+
   deinit {
     // Stop listening for keyboard hide/show events
     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -79,14 +81,17 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.count ?? 0
+    return CommunicationManager.shared.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.count ?? 0
   }
-  
+
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let numberOfMessages = (CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.count)! - 1
-    let identifier = (CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory[numberOfMessages-indexPath.row].isInput)! ? "InputMessageCell" : "OutputMessageCell"
-    let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as! MessageCell
-    cell.textMessage = CommunicationManager.shared.communicator.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory[numberOfMessages-indexPath.row].text
+    let numberOfMessages = (CommunicationManager.shared.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.count)! - 1
+    let user = CommunicationManager.shared.onlineUsers.first(where: {$0.name == self.title!})
+    let identifier = ((user?.chatHistory[numberOfMessages-indexPath.row].isInput)!) ? "InputMessageCell" : "OutputMessageCell"
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? MessageCell else {
+      fatalError("Cell configuration is wrong")
+    }
+    cell.textMessage = user?.chatHistory[numberOfMessages-indexPath.row].text
     cell.sizeToFit()
 
     // To insert messages from bottom
@@ -95,44 +100,43 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   }
 }
 
-
 // MARK: - UITextViewDelegate
 extension ConversationViewController: UITextViewDelegate {
   func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
     textView.inputAccessoryView = newMessageView
     return true
   }
-  
+
   func textViewDidEndEditing(_ textView: UITextView) {
     textView.resignFirstResponder()
   }
-  
+
   func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
     textView.inputAccessoryView = nil
     return true
   }
-  
+
   // Private functions
   private func configureTapGesture() {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap))
     view.addGestureRecognizer(tapGesture)
   }
-  
+
   // Resign keyboard if tapped on view
   @objc func handleTap() {
     newMessageTextView.resignFirstResponder()
   }
-  
+
   // Handling covering TextView by keyboard
   @objc func keyboardWillChange(notification: Notification) {
-    
+
     Logger.write("Keyboard is changing the state")
     guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
       return
     }
     if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
       view.frame.origin.y = -keyboardRect.height
-    } else  if notification.name == UIResponder.keyboardWillHideNotification {      
+    } else  if notification.name == UIResponder.keyboardWillHideNotification {
       view.frame.origin.y = 0
     }
   }

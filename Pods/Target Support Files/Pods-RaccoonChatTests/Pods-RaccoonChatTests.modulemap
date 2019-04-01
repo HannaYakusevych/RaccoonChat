@@ -1,0 +1,6 @@
+framework module Pods_RaccoonChatTests {
+  umbrella header "Pods-RaccoonChatTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

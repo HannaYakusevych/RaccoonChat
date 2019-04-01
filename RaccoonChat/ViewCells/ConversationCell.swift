@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 
 class ConversationCell: UITableViewCell, ConversationCellConfiguration {
-  
+
   // MARK: ConversationCellConfiguration conformance
   var name: String? {
     get {
@@ -20,7 +20,7 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
       nameLabel.text = newValue ?? "Name"
     }
   }
-  
+
   var message: String? {
     get {
       return messageLabel.text == "No messages yet" ? nil : messageLabel.text
@@ -29,14 +29,13 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
       if newValue == nil {
         messageLabel.text = "No messages yet"
         messageLabel.font = UIFont.italicSystemFont(ofSize: messageLabel.font.pointSize)
-      }
-      else {
+      } else {
         messageLabel.text = newValue
         messageLabel.font = UIFont.systemFont(ofSize: 17)
       }
     }
   }
-  
+
   var date: Date? {
     get {
       if dateLabel.text == nil {
@@ -48,22 +47,20 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
     set {
       let dateFormatter = DateFormatter()
       let calendar = Calendar.current
-      
+
       if newValue == nil {
         dateLabel.text = nil
-      }
-      else {
+      } else {
         if calendar.isDateInToday(newValue!) {
           dateFormatter.setLocalizedDateFormatFromTemplate("HH:mm")
-        }
-        else {
+        } else {
           dateFormatter.setLocalizedDateFormatFromTemplate("dd MMM")
         }
         dateLabel.text = dateFormatter.string(from: newValue!)
       }
     }
   }
-  
+
   var online: Bool {
     get {
       return self.backgroundColor != #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -72,7 +69,7 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
       self.backgroundColor = newValue ? ThemeManager.currentTheme().mainColor : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     }
   }
-  
+
   var hasUnreadMessages: Bool {
     get {
       return messageLabel.font.fontDescriptor.symbolicTraits.contains(.traitBold)
@@ -81,14 +78,13 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
       if message != nil {
         if newValue {
           messageLabel.font = UIFont.boldSystemFont(ofSize: messageLabel.font.pointSize)
-        }
-        else {
+        } else {
           messageLabel.font = UIFont.systemFont(ofSize: messageLabel.font.pointSize)
         }
       }
     }
   }
-  
+
   var photo: UIImage? {
     get {
       return profileImageView.image
@@ -99,13 +95,12 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
   }
 
   // MARK: Outlets
-  
+
   @IBOutlet var profileImageView: UIImageView!
   @IBOutlet var nameLabel: UILabel!
   @IBOutlet var dateLabel: UILabel!
   @IBOutlet var messageLabel: UILabel!
-  
-  
+
   override func awakeFromNib() {
     super.awakeFromNib()
     profileImageView.layer.cornerRadius = profileImageView.layer.bounds.height / 2
@@ -114,13 +109,13 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
 
   override func setSelected(_ selected: Bool, animated: Bool) {
     super.setSelected(selected, animated: animated)
-    
+
     // Configure the view for the selected state
   }
 
 }
 
-protocol ConversationCellConfiguration : class {
+protocol ConversationCellConfiguration: class {
   var name: String? {get set}
   var message: String? {get set}
   var date: Date? {get set}
