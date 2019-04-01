@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7BE40B63C7AF91383253E2A1 /* Pods_RaccoonChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C1B12E5962D267379126EF2 /* Pods_RaccoonChat.framework */; };
+		46D34671CC81EBA53AD9E00E /* Pods_RaccoonChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F838A182EF2D1C2ABAE3FEF /* Pods_RaccoonChat.framework */; };
 		95054EB7220EDCD800BC484F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95054EB6220EDCD800BC484F /* AppDelegate.swift */; };
 		95054EBC220EDCD800BC484F /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95054EBA220EDCD800BC484F /* Profile.storyboard */; };
 		95054EC1220EDCDA00BC484F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 95054EC0220EDCDA00BC484F /* Assets.xcassets */; };
@@ -39,7 +39,7 @@
 		959F97BA222F102E00451C41 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959F97B9222F102E00451C41 /* ThemeManager.swift */; };
 		959F97BF222F1C7F00451C41 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 959F97BE222F1C7F00451C41 /* Theme.swift */; };
 		95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 95C769E82218898D001CB34E /* ProfileViewController.swift */; };
-		FF59721F530FDBE2156A5F15 /* Pods_RaccoonChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB65400A4426337B6A0A7735 /* Pods_RaccoonChatTests.framework */; };
+		F557A7DC2854D2C732CDC80A /* Pods_RaccoonChatTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D21425A55B5F2F0DC085455 /* Pods_RaccoonChatTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,8 +53,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0D862E93F379C8D9176F2990 /* Pods-RaccoonChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaccoonChat.debug.xcconfig"; path = "Target Support Files/Pods-RaccoonChat/Pods-RaccoonChat.debug.xcconfig"; sourceTree = "<group>"; };
-		4C1B12E5962D267379126EF2 /* Pods_RaccoonChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RaccoonChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B2DA3B1822F44BDFA58D80 /* Pods-RaccoonChatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaccoonChatTests.release.xcconfig"; path = "Target Support Files/Pods-RaccoonChatTests/Pods-RaccoonChatTests.release.xcconfig"; sourceTree = "<group>"; };
+		1D21425A55B5F2F0DC085455 /* Pods_RaccoonChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RaccoonChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		374DDFAE7E773B28F3C5C7FA /* Pods-RaccoonChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaccoonChat.debug.xcconfig"; path = "Target Support Files/Pods-RaccoonChat/Pods-RaccoonChat.debug.xcconfig"; sourceTree = "<group>"; };
+		3F838A182EF2D1C2ABAE3FEF /* Pods_RaccoonChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RaccoonChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EFAC415FD63FFB206BA92C0 /* Pods-RaccoonChatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaccoonChatTests.debug.xcconfig"; path = "Target Support Files/Pods-RaccoonChatTests/Pods-RaccoonChatTests.debug.xcconfig"; sourceTree = "<group>"; };
 		95054EB3220EDCD800BC484F /* RaccoonChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RaccoonChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		95054EB6220EDCD800BC484F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		95054EBB220EDCD800BC484F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Profile.storyboard; sourceTree = "<group>"; };
@@ -92,10 +95,7 @@
 		959F97B9222F102E00451C41 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		959F97BE222F1C7F00451C41 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		95C769E82218898D001CB34E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		AF7661110B6DE5854E96683C /* Pods-RaccoonChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaccoonChat.release.xcconfig"; path = "Target Support Files/Pods-RaccoonChat/Pods-RaccoonChat.release.xcconfig"; sourceTree = "<group>"; };
-		BB65400A4426337B6A0A7735 /* Pods_RaccoonChatTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RaccoonChatTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BE133BC8FAAC5197BDAECCE0 /* Pods-RaccoonChatTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaccoonChatTests.release.xcconfig"; path = "Target Support Files/Pods-RaccoonChatTests/Pods-RaccoonChatTests.release.xcconfig"; sourceTree = "<group>"; };
-		CB6A2743EC0808A5566FCDA9 /* Pods-RaccoonChatTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaccoonChatTests.debug.xcconfig"; path = "Target Support Files/Pods-RaccoonChatTests/Pods-RaccoonChatTests.debug.xcconfig"; sourceTree = "<group>"; };
+		F6C7170DA635BCCAEAC6F872 /* Pods-RaccoonChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RaccoonChat.release.xcconfig"; path = "Target Support Files/Pods-RaccoonChat/Pods-RaccoonChat.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,7 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7BE40B63C7AF91383253E2A1 /* Pods_RaccoonChat.framework in Frameworks */,
+				46D34671CC81EBA53AD9E00E /* Pods_RaccoonChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -111,29 +111,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF59721F530FDBE2156A5F15 /* Pods_RaccoonChatTests.framework in Frameworks */,
+				F557A7DC2854D2C732CDC80A /* Pods_RaccoonChatTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0031923FC1461588762393CD /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				4C1B12E5962D267379126EF2 /* Pods_RaccoonChat.framework */,
-				BB65400A4426337B6A0A7735 /* Pods_RaccoonChatTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		4E2E52813D0FBC3BB1D5F600 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				0D862E93F379C8D9176F2990 /* Pods-RaccoonChat.debug.xcconfig */,
-				AF7661110B6DE5854E96683C /* Pods-RaccoonChat.release.xcconfig */,
-				CB6A2743EC0808A5566FCDA9 /* Pods-RaccoonChatTests.debug.xcconfig */,
-				BE133BC8FAAC5197BDAECCE0 /* Pods-RaccoonChatTests.release.xcconfig */,
+				374DDFAE7E773B28F3C5C7FA /* Pods-RaccoonChat.debug.xcconfig */,
+				F6C7170DA635BCCAEAC6F872 /* Pods-RaccoonChat.release.xcconfig */,
+				7EFAC415FD63FFB206BA92C0 /* Pods-RaccoonChatTests.debug.xcconfig */,
+				13B2DA3B1822F44BDFA58D80 /* Pods-RaccoonChatTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -145,7 +136,7 @@
 				95054ECD220EDCDA00BC484F /* RaccoonChatTests */,
 				95054EB4220EDCD800BC484F /* Products */,
 				4E2E52813D0FBC3BB1D5F600 /* Pods */,
-				0031923FC1461588762393CD /* Frameworks */,
+				96AC749AB8480BF1345998F3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -295,6 +286,15 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		96AC749AB8480BF1345998F3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3F838A182EF2D1C2ABAE3FEF /* Pods_RaccoonChat.framework */,
+				1D21425A55B5F2F0DC085455 /* Pods_RaccoonChatTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -302,7 +302,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 95054ED3220EDCDA00BC484F /* Build configuration list for PBXNativeTarget "RaccoonChat" */;
 			buildPhases = (
-				6A8EE9F46A4D024B89815754 /* [CP] Check Pods Manifest.lock */,
+				1CF36ADD31BD681C03191D38 /* [CP] Check Pods Manifest.lock */,
 				95054EAF220EDCD800BC484F /* Sources */,
 				95054EB0220EDCD800BC484F /* Frameworks */,
 				95054EB1220EDCD800BC484F /* Resources */,
@@ -321,7 +321,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 95054ED6220EDCDA00BC484F /* Build configuration list for PBXNativeTarget "RaccoonChatTests" */;
 			buildPhases = (
-				7B5CB99E85415AC1FA4E3DE0 /* [CP] Check Pods Manifest.lock */,
+				30D0148EDDA00D8ABDD9E289 /* [CP] Check Pods Manifest.lock */,
 				95054EC6220EDCDA00BC484F /* Sources */,
 				95054EC7220EDCDA00BC484F /* Frameworks */,
 				95054EC8220EDCDA00BC484F /* Resources */,
@@ -400,7 +400,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6A8EE9F46A4D024B89815754 /* [CP] Check Pods Manifest.lock */ = {
+		1CF36ADD31BD681C03191D38 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -422,7 +422,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7B5CB99E85415AC1FA4E3DE0 /* [CP] Check Pods Manifest.lock */ = {
+		30D0148EDDA00D8ABDD9E289 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -652,7 +652,7 @@
 		};
 		95054ED4220EDCDA00BC484F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0D862E93F379C8D9176F2990 /* Pods-RaccoonChat.debug.xcconfig */;
+			baseConfigurationReference = 374DDFAE7E773B28F3C5C7FA /* Pods-RaccoonChat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -678,7 +678,7 @@
 		};
 		95054ED5220EDCDA00BC484F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = AF7661110B6DE5854E96683C /* Pods-RaccoonChat.release.xcconfig */;
+			baseConfigurationReference = F6C7170DA635BCCAEAC6F872 /* Pods-RaccoonChat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -703,7 +703,7 @@
 		};
 		95054ED7220EDCDA00BC484F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB6A2743EC0808A5566FCDA9 /* Pods-RaccoonChatTests.debug.xcconfig */;
+			baseConfigurationReference = 7EFAC415FD63FFB206BA92C0 /* Pods-RaccoonChatTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -725,7 +725,7 @@
 		};
 		95054ED8220EDCDA00BC484F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE133BC8FAAC5197BDAECCE0 /* Pods-RaccoonChatTests.release.xcconfig */;
+			baseConfigurationReference = 13B2DA3B1822F44BDFA58D80 /* Pods-RaccoonChatTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
