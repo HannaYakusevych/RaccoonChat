@@ -37,7 +37,7 @@ class StorageManager: ProfileDataManager {
 
     appUser?.setValue(Date(), forKey: "timestamp")
 
-    coreDataStack.performSave(with: coreDataStack.mainContext) { isSaved in
+    coreDataStack.performSave(with: coreDataStack.saveContext) { isSaved in
       // Perform UI task
       DispatchQueue.main.async {
         completion(isSaved)
@@ -49,12 +49,8 @@ class StorageManager: ProfileDataManager {
     let appUser = AppUser.findOrInsertAppUser(in: coreDataStack.mainContext)
     let imageData = appUser?.image
     let image = imageData != nil ? UIImage(data: imageData!) : UIImage(named: "placeholder-user")
-    // Perform UI task
-    DispatchQueue.main.async {
-      isDone(true, ["name": appUser?.name ?? "",
-                    "description": appUser?.myDescription ?? "Profile information",
-                    "image": image!])
-    }
+    isDone(true, ["name": appUser?.name ?? "",
+                  "description": appUser?.myDescription ?? "Profile information",
+                  "image": image!])
   }
-
 }

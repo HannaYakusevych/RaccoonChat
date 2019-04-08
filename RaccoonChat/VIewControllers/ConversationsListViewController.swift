@@ -7,8 +7,14 @@
 //
 
 import UIKit
+import CoreData
 
 class ConversationsListViewController: UITableViewController {
+  var onlineUsers = [User]()
+  var historyUsers = [User]()
+  var conversationsService = ConversationsService()
+  var conversationListDataProvider: ConversationListDataProvider?
+  var dialogService = DialogService()
 
   // MARK: - Actions
   @IBAction func goToProfile(_ sender: Any) {
@@ -59,11 +65,10 @@ class ConversationsListViewController: UITableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    CommunicationManager.shared.updateChatList = {
-      DispatchQueue.main.async {
-        self.tableView.reloadData()
-      }
-    }
+    CommunicationManager.shared.delegate = self
+    self.conversationListDataProvider = ConversationListDataProvider(tableView: self.tableView,
+                                                             context: self.conversationsService.coreDataStack.mainContext)
+    self.conversationListDataProvider?.loadConversations()
     tableView.reloadData()
   }
 
@@ -79,34 +84,34 @@ class ConversationsListViewController: UITableViewController {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationCell", for: indexPath) as? ConversationCell else {
       fatalError("Cell format is wrong")
     }
-    if indexPath.section == 0 {
-      cell.name = CommunicationManager.shared.onlineUsers[indexPath.row].name
-      cell.message = CommunicationManager.shared.onlineUsers[indexPath.row].message
-      cell.date = CommunicationManager.shared.onlineUsers[indexPath.row].date
-      cell.online = CommunicationManager.shared.onlineUsers[indexPath.row].online
-      cell.hasUnreadMessages = CommunicationManager.shared.onlineUsers[indexPath.row].hasUnreadMessages
-      cell.photo = CommunicationManager.shared.onlineUsers[indexPath.row].photo
-    } else {
-      cell.name = CommunicationManager.shared.historyUsers[indexPath.row].name
-      cell.message = CommunicationManager.shared.historyUsers[indexPath.row].message
-      cell.date = CommunicationManager.shared.historyUsers[indexPath.row].date
-      cell.online = CommunicationManager.shared.historyUsers[indexPath.row].online
-      cell.hasUnreadMessages = CommunicationManager.shared.historyUsers[indexPath.row].hasUnreadMessages
-      cell.photo = CommunicationManager.shared.historyUsers[indexPath.row].photo
+    if let user = self.conversationListDataProvider?.fetchedResultsController.object(at: indexPath) {
+      cell.name = user.name
+      cell.message = user.lastMessage
+      cell.date = user.lastMessageDate
+      cell.online = user.isOnline
+      cell.hasUnreadMessages = user.hasUnreadMessage
+      if let image = user.image {
+        cell.photo = UIImage(data: image)
+      } else {
+        cell.photo = nil
+      }
     }
-
     return cell
   }
 
   override func numberOfSections(in tableView: UITableView) -> Int {
-    return 2
+    guard let numberOfSections = self.conversationListDataProvider?.fetchedResultsController.sections?.count else {
+      return 0
+    }
+    return numberOfSections
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if section == 0 {
-      return CommunicationManager.shared.onlineUsers.count
+    guard let sections = self.conversationListDataProvider?.fetchedResultsController.sections else {
+      return 0
     }
-    return CommunicationManager.shared.historyUsers.count
+    print("Number of objects in section: \(sections[section].numberOfObjects)")
+    return sections[section].numberOfObjects
   }
 
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -118,23 +123,15 @@ class ConversationsListViewController: UITableViewController {
 
   // MARK: - Table view delegate
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    if !CommunicationManager.shared.onlineUsers[indexPath.row].connected {
-      let selectedPeer = CommunicationManager.shared.onlineUsers[indexPath.row].peerId
-      CommunicationManager.shared.communicator.inviteUser(peerId: selectedPeer)
-      goToConversation(indexPath: indexPath)
-    } else {
-      goToConversation(indexPath: indexPath)
-    }
+    goToConversation(indexPath: indexPath)
   }
 
   func goToConversation(indexPath: IndexPath) {
     let storyboard = UIStoryboard(name: "Conversation", bundle: nil)
     if let viewController = storyboard.instantiateViewController(withIdentifier: "ConvViewController") as? ConversationViewController {
-      if indexPath.section == 0 {
-        viewController.title = CommunicationManager.shared.onlineUsers[indexPath.row].name
-      } else {
-        viewController.title = CommunicationManager.shared.historyUsers[indexPath.row].name
-      }
+      viewController.title = self.conversationListDataProvider?.fetchedResultsController.object(at: indexPath).name ?? "Name unspecified"
+      viewController.conversationsService = self.conversationsService
+      viewController.dialogService = self.dialogService
       navigationController?.pushViewController(viewController, animated: true)
     }
   }
@@ -146,5 +143,45 @@ class ConversationsListViewController: UITableViewController {
     } else {
       Logger.write("Error: the new theme color is nil")
     }
+  }
+}
+
+extension ConversationsListViewController: CommunicationManagerDelegate {
+  func moveUserToOnlineSection(userId: String, userName: String?) {
+    guard let user = dialogService.findOrInsertNewUser(userId: userId) else {
+      assert(false, "Some error with find or insert user")
+      return
+    }
+    user.name = userName
+    if let conversation = dialogService.findOrInsertNewDialog(user: user) {
+      conversation.user?.isOnline = true
+      self.conversationsService.performSave(completion: { isSaved in
+        print(isSaved ? "User saved" : "Can't save user")
+      })
+    }
+    reloadTableView()
+  }
+  func moveUserToHistorySection(userId: String) {
+    self.dialogService.setOfflineStatus(userID: userId, complition: nil)
+    reloadTableView()
+  }
+  func didReceiveNewMessage(text: String, from userId: String) {
+    guard let user = self.dialogService.findOrInsertNewUser(userId: userId) else {
+      print("Error finding and inserting user")
+      return
+    }
+    user.lastMessage = text
+    user.lastMessageDate = Date()
+    self.dialogService.insertNewMessage(text: text, to: userId, isInput: true)
+    self.conversationsService.performSave(completion: nil)
+    reloadTableView()
+  }
+}
+
+extension ConversationsListViewController: ConversationsListDelegate {
+  func reloadTableView() {
+    conversationListDataProvider?.loadConversations()
+    self.onlineUsers = self.onlineUsers.sorted(by: { $0.lastMessageDate?.compare($1.lastMessageDate!) == .orderedDescending })
+    self.tableView.reloadData()
   }
 }

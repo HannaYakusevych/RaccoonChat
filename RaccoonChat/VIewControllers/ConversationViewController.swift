@@ -14,35 +14,33 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   @IBOutlet var newMessageView: UIView!
   @IBOutlet var newMessageTextView: UITextView!
   @IBOutlet var sendButton: UIButton!
+  var conversationsService: ConversationsService?
+  var conversationDataProvider: ConversationDataProvider?
+  var dialogService: DialogService?
   @IBAction func sendMessage(_ sender: Any) {
     // If the message is empty, don't send anything
     if newMessageTextView.text == "" {
       return
     }
-    guard let user = CommunicationManager.shared.onlineUsers.first(where: {$0.name == self.title!}), user.connected else {
-      return
-    }
-    CommunicationManager.shared.communicator.sendMessage(string: newMessageTextView.text, to: self.title!) { isSent, error in
+    CommunicationManager.shared.communicator.sendMessage(string: self.newMessageTextView.text, to: self.title!) { isSent, error in
       if !isSent {
         Logger.write(error?.localizedDescription ?? "Message sending error: user is unknown")
         return
       }
-      let message = Message(isInput: false, text: newMessageTextView.text, date: Date())
-      CommunicationManager.shared.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.append(message)
-      self.tableView.reloadData()
-      DispatchQueue.main.async { self.tableView.reloadData() }
-      newMessageTextView.text = ""
+      guard let user = self.dialogService?.findOrInsertNewUser(userId: self.title!) else {
+        return
+      }
+      user.lastMessage = self.newMessageTextView.text
+      user.lastMessageDate = Date()
+      self.dialogService?.insertNewMessage(text: self.newMessageTextView.text,
+                                           to: self.title!, isInput: false)
+      self.conversationsService?.performSave(completion: nil)
+      self.newMessageTextView.text = ""
     }
   }
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    CommunicationManager.shared.updateChat = {
-      DispatchQueue.main.async {
-        self.tableView.reloadData()
-      }
-    }
-
     // Listen for keyboard events
     NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillChange(notification:)),
                                            name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -63,6 +61,10 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     // To insert messages from bottom
     tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
+    self.conversationDataProvider = ConversationDataProvider(conversationID: self.title!,
+                                                             tableView: self.tableView,
+                                                             context: (self.conversationsService?.coreDataStack.mainContext)!)
+    self.conversationDataProvider?.loadMessages()
 
     self.tableView.reloadData()
   }
@@ -77,21 +79,28 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   // MARK: - Table view data source
 
   func numberOfSections(in tableView: UITableView) -> Int {
-    return 1
+    guard let sections = self.conversationDataProvider?.fetchedResultsController.sections else {
+      return 0
+    }
+    return sections.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return CommunicationManager.shared.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.count ?? 0
+    guard let sections = self.conversationDataProvider?.fetchedResultsController.sections else {
+      return 0
+    }
+    return sections[section].numberOfObjects
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let numberOfMessages = (CommunicationManager.shared.onlineUsers.first(where: {$0.name == self.title!})?.chatHistory.count)! - 1
-    let user = CommunicationManager.shared.onlineUsers.first(where: {$0.name == self.title!})
-    let identifier = ((user?.chatHistory[numberOfMessages-indexPath.row].isInput)!) ? "InputMessageCell" : "OutputMessageCell"
+    let fetchResult = self.conversationDataProvider?.fetchedResultsController.sections?[indexPath.section]
+    let numberOfMessages = fetchResult?.numberOfObjects ?? 0
+    let messages = fetchResult?.objects
+    let identifier = (messages?[numberOfMessages-indexPath.row] as? Message)?.isInput ?? false ? "InputMessageCell" : "OutputMessageCell"
     guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? MessageCell else {
       fatalError("Cell configuration is wrong")
     }
-    cell.textMessage = user?.chatHistory[numberOfMessages-indexPath.row].text
+    cell.textMessage = (messages?[numberOfMessages-indexPath.row] as? Message)?.text
     cell.sizeToFit()
 
     // To insert messages from bottom
@@ -138,6 +147,19 @@ extension ConversationViewController: UITextViewDelegate {
       view.frame.origin.y = -keyboardRect.height
     } else  if notification.name == UIResponder.keyboardWillHideNotification {
       view.frame.origin.y = 0
+    }
+  }
+}
+
+extension ConversationViewController: UserStateDelegate {
+  func setOffline(userId: String) {
+    if userId == self.title {
+      self.sendButton.isEnabled = false
+    }
+  }
+  func setOnline(userId: String) {
+    if userId == self.title {
+      self.sendButton.isEnabled = true
     }
   }
 }

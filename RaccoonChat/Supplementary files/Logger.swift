@@ -8,7 +8,7 @@
 
 struct Logger {
   // Set the default value to 'false' to disable activity logs
-  static var isEnabled = false
+  static var isEnabled = true
 
   static func appStateIsChanging(in method: String = #function, from state1: String, to state2: String) {
     if Logger.isEnabled {

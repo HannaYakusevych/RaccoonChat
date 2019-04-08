@@ -14,15 +14,10 @@ class CommunicationManager: CommunicatorDelegate {
   // MARK: Singleton
   static let shared = CommunicationManager()
 
-  // MARK: UIViewController updates
-  var updateChatList: (() -> Void)?
-  var updateChat: (() -> Void)?
-
   var communicator: MultipeerCommunicator
-
-  // Lists for all found peers
-  var onlineUsers = [User]()
-  var historyUsers = [User]()
+  // Communication with the view controller
+  weak var delegate: CommunicationManagerDelegate?
+  weak var changeUserState: UserStateDelegate?
 
   init() {
     self.communicator = MultipeerCommunicator()
@@ -31,22 +26,14 @@ class CommunicationManager: CommunicatorDelegate {
 
   // Add user to the list
   func didFoundUser(userID: String, userName: String?) {
-    onlineUsers.sort(by: User.sortUsers(lhs:rhs:))
-    updateChatList?()
+    self.delegate?.moveUserToOnlineSection(userId: userID, userName: userName)
+    self.changeUserState?.setOnline(userId: userID)
   }
 
   // Remove user from the list
   func didLostUser(userID: String) {
-    for (index, user) in onlineUsers.enumerated() where user.name == userID {
-      CommunicationManager.shared.onlineUsers.remove(at: index)
-      user.online = false
-      // If chat wasn't empty, save it
-      if user.chatHistory.count > 0 {
-        historyUsers.append(user)
-      }
-    }
-    onlineUsers.sort(by: User.sortUsers(lhs:rhs:))
-    updateChatList?()
+    self.delegate?.moveUserToHistorySection(userId: userID)
+    self.changeUserState?.setOffline(userId: userID)
   }
 
   // Multipeer Communicator errors
@@ -59,14 +46,11 @@ class CommunicationManager: CommunicatorDelegate {
 
   // Update table views with a new message
   func didReceiveMessage(text: String, fromUser: String, toUser: String) {
-    let message = Message(isInput: true, text: text, date: Date())
-    onlineUsers.first(where: {$0.name == fromUser})?.chatHistory.append(message)
-    updateChatList?()
-    updateChat?()
+    delegate?.didReceiveNewMessage(text: text, from: fromUser)
   }
 
 }
-
+/*
 // MARK: - Helping structs (data source)
 class User {
   var name = "Name"
@@ -105,3 +89,4 @@ struct Message {
   let text: String
   let date: Date
 }
+*/
