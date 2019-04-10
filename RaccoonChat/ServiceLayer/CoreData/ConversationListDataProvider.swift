@@ -9,7 +9,13 @@
 import Foundation
 import CoreData
 
-class ConversationListDataProvider: NSObject {
+protocol ConversationListDataManagerProtocol: class {
+  var fetchedResultsController: NSFetchedResultsController<User> { get }
+  var tableView: UITableView { get }
+  func loadConversations()
+}
+
+class ConversationListDataManager: NSObject, ConversationListDataManagerProtocol {
   var fetchedResultsController: NSFetchedResultsController<User>
   var tableView: UITableView
   init(tableView: UITableView, context: NSManagedObjectContext) {
@@ -33,7 +39,7 @@ class ConversationListDataProvider: NSObject {
   }
 }
 
-extension ConversationListDataProvider: NSFetchedResultsControllerDelegate {
+extension ConversationListDataManager: NSFetchedResultsControllerDelegate {
   func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     self.tableView.beginUpdates()
   }

@@ -9,9 +9,17 @@
 import Foundation
 import CoreData
 
-class ConversationDataProvider: NSObject {
+protocol ConversationDataManagerProtocol: class {
+  var fetchedResultsController: NSFetchedResultsController<Message> { get }
+  var tableView: UITableView { get }
+  func loadMessages()
+}
+
+class ConversationDataManager: NSObject, ConversationDataManagerProtocol {
+
   var fetchedResultsController: NSFetchedResultsController<Message>
   var tableView: UITableView
+
   init(conversationID: String, tableView: UITableView, context: NSManagedObjectContext) {
     self.tableView = tableView
     let fetchRequest: NSFetchRequest<Message> = Message.fetchRequest()
@@ -28,12 +36,12 @@ class ConversationDataProvider: NSObject {
     do {
       try self.fetchedResultsController.performFetch()
     } catch {
-      print("Error fetching messages: \(error.localizedDescription)")
+      Logger.write("Error fetching messages: \(error.localizedDescription)")
     }
   }
 }
 
-extension ConversationDataProvider: NSFetchedResultsControllerDelegate {
+extension ConversationDataManager: NSFetchedResultsControllerDelegate {
   func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     tableView.beginUpdates()
   }
