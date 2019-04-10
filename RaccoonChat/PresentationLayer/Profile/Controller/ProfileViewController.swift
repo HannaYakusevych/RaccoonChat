@@ -72,7 +72,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
     */
 
     activityIndicator.startAnimating()
-    dataManager.saveProfileData(name: self.nameHasChanged ? self.nameTextField.text : nil,
+    dataManager?.saveProfileData(name: self.nameHasChanged ? self.nameTextField.text : nil,
                                 description: self.descriptionHasChanged ? self.descriptionTextView.text: nil,
                                 image: self.imageHasChanged ? self.profileImageView.image: nil) { isSaved in
                                   self.save(isSaved: isSaved)
@@ -104,7 +104,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
 
     // Reading the user data from the file
     activityIndicator.startAnimating()
-    dataManager.loadProfileData { isLoaded, data in
+    dataManager?.loadProfileData { isLoaded, data in
       self.load(isLoaded: isLoaded, data: data)
     }
   }
@@ -162,7 +162,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
       })
       alertController.addAction(UIAlertAction(title: "Повторить", style: .default) { _ in
         self.activityIndicator.startAnimating()
-        self.dataManager.saveProfileData(name: self.nameTextField.text,
+        self.dataManager?.saveProfileData(name: self.nameTextField.text,
                                          description: self.descriptionTextView.text,
                                          image: self.profileImageView.image) { isSaved in
           self.save(isSaved: isSaved)

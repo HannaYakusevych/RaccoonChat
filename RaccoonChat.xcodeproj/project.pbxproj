@@ -206,9 +206,9 @@
 		95086293225BEF8700845447 /* PresentationLayer */ = {
 			isa = PBXGroup;
 			children = (
-				950862A6225C7F8100845447 /* Conversation */,
 				950862A2225C7F6300845447 /* Profile */,
 				9508629D225C7F0200845447 /* Themes */,
+				950862A6225C7F8100845447 /* Conversation */,
 				95086297225C7C8700845447 /* ConversationsList */,
 			);
 			path = PresentationLayer;
@@ -269,16 +269,8 @@
 			children = (
 				950862A1225C7F1D00845447 /* Controller */,
 				950862A0225C7F1800845447 /* View */,
-				9508629E225C7F0A00845447 /* Model */,
 			);
 			path = Themes;
-			sourceTree = "<group>";
-		};
-		9508629E225C7F0A00845447 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		950862A0225C7F1800845447 /* View */ = {
@@ -292,6 +284,7 @@
 		950862A1225C7F1D00845447 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				956685D1222C948E00E5F864 /* ThemesViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -301,16 +294,8 @@
 			children = (
 				950862A5225C7F7400845447 /* Controller */,
 				950862A4225C7F7000845447 /* View */,
-				950862A3225C7F6A00845447 /* Model */,
 			);
 			path = Profile;
-			sourceTree = "<group>";
-		};
-		950862A3225C7F6A00845447 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		950862A4225C7F7000845447 /* View */ = {
@@ -436,7 +421,6 @@
 		959F97B6222F00A800451C41 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				956685D1222C948E00E5F864 /* ThemesViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
