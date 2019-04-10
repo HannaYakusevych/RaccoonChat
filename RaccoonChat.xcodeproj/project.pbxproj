@@ -238,16 +238,8 @@
 			children = (
 				9508629A225C7CB200845447 /* Controller */,
 				95086299225C7CA700845447 /* View */,
-				95086298225C7C9B00845447 /* Model */,
 			);
 			path = ConversationsList;
-			sourceTree = "<group>";
-		};
-		95086298225C7C9B00845447 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		95086299225C7CA700845447 /* View */ = {
@@ -323,16 +315,8 @@
 			children = (
 				950862A9225C7F9D00845447 /* Controller */,
 				950862A8225C7F9700845447 /* View */,
-				950862A7225C7F8E00845447 /* Model */,
 			);
 			path = Conversation;
-			sourceTree = "<group>";
-		};
-		950862A7225C7F8E00845447 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 		950862A8225C7F9700845447 /* View */ = {

@@ -63,7 +63,6 @@ class CoreDataStack {
   // MARK: - Saving
   typealias SaveCompletion = (Bool) -> Void
   func performSave(with context: NSManagedObjectContext, completion: SaveCompletion? = nil) {
-    print(context)
     context.perform {
       // Check if there is something new to save
       guard context.hasChanges else {

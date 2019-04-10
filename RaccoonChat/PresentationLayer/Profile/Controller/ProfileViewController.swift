@@ -38,7 +38,6 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
     if !tappedInSetPhotoCircle(sender: sender) {
       return
     }
-    print("Выбери изображение профиля")
 
     showAlertController()
     setViewContentProperties()

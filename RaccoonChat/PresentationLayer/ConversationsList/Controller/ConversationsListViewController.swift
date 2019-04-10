@@ -14,6 +14,7 @@ class ConversationsListViewController: UITableViewController {
   var conversationListService: ConversationListServiceProtocol?
   var contextManager: ContextManagerProtocol?
   var conversationListDataManager: ConversationListDataManagerProtocol?
+  let rootAssembly = RootAssembly()
 
   // MARK: - Actions
   @IBAction func goToProfile(_ sender: Any) {
@@ -136,7 +137,7 @@ class ConversationsListViewController: UITableViewController {
 
   // MARK: - Table view delegate
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    print("Selected user: \(indexPath)")
+    Logger.write("Selected user: \(indexPath)")
     goToConversation(indexPath: indexPath)
   }
 
@@ -160,6 +161,7 @@ class ConversationsListViewController: UITableViewController {
 
 extension ConversationsListViewController: CommunicationManagerDelegate {
   func moveUserToOnlineSection(userId: String, userName: String?) {
+    Logger.write("")
     guard let user = self.conversationListService?.findOrInsertNewUser(userId: userId) else {
       assert(false, "Some error with find or insert user")
       return
@@ -174,12 +176,13 @@ extension ConversationsListViewController: CommunicationManagerDelegate {
     reloadTableView()
   }
   func moveUserToHistorySection(userId: String) {
+    Logger.write("")
     self.conversationListService?.setOfflineStatus(userId: userId, completion: nil)
     reloadTableView()
   }
   func didReceiveNewMessage(text: String, from userId: String) {
     guard let user = self.conversationListService?.findOrInsertNewUser(userId: userId) else {
-      print("Error finding and inserting user")
+      Logger.write("Error finding and inserting user")
       return
     }
     user.lastMessage = text
@@ -190,7 +193,7 @@ extension ConversationsListViewController: CommunicationManagerDelegate {
   }
 
   func reloadTableView() {
-    //conversationListDataManager?.loadConversations()
+    conversationListDataManager?.loadConversations()
     self.tableView.reloadData()
   }
 }

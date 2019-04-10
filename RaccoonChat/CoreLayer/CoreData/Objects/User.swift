@@ -31,7 +31,7 @@ extension User {
         user = foundUser
       }
     } catch {
-      print("Failed to fetch User: \(error)")
+      Logger.write("Failed to fetch User: \(error)")
     }
     if user == nil {
       user = User.insertUser(userId: userId, in: context)
@@ -50,6 +50,7 @@ extension User {
     return fetchRequest
   }
   static func setOffline(userId: String, context: NSManagedObjectContext) {
+    Logger.write("")
     guard let model = context.persistentStoreCoordinator?.managedObjectModel else {
       assert(false, "Model is not available in this context")
       return
@@ -65,7 +66,7 @@ extension User {
         user = foundUser
       }
     } catch {
-      print("Error fetching user: \(error)")
+      Logger.write("Error fetching user: \(error)")
     }
     user?.isOnline = false
   }

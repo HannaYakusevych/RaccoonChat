@@ -26,7 +26,7 @@ class MultipeerCommunicator: NSObject, Communicator {
   override init() {
     super.init()
 
-    //myPeerId = MCPeerID(displayName: UIDevice.current.name)
+    self.delegate = RootAssembly.communicationManager
 
     self.browser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: serviceType)
     self.browser.delegate = self
@@ -73,11 +73,11 @@ extension MultipeerCommunicator: MCSessionDelegate {
   func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
     switch state {
     case MCSessionState.connected:
-      print("Peer \(peerID.displayName) is connected to session: \(session)")
+      Logger.write("Peer \(peerID.displayName) is connected to session: \(session)")
     case MCSessionState.connecting:
-      print("Peer \(peerID.displayName) is connecting to session: \(session)")
+      Logger.write("Peer \(peerID.displayName) is connecting to session: \(session)")
     default:
-      print("Peer \(peerID.displayName) is not connected to session: \(session)")
+      Logger.write("Peer \(peerID.displayName) is not connected to session: \(session)")
     }
   }
 
@@ -115,9 +115,10 @@ extension MultipeerCommunicator: MCSessionDelegate {
 // MARK: - MCNearbyServiceBrowserDelegate
 extension MultipeerCommunicator: MCNearbyServiceBrowserDelegate {
   func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String: String]?) {
-    if let session = self.getSession(for: peerID.displayName),
-      !session.connectedPeers.contains(peerID) && peerID.displayName != self.myPeerId.displayName {
-      browser.invitePeer(peerID, to: session, withContext: nil, timeout: 30)
+    if let session = self.getSession(for: peerID.displayName) {
+      if !session.connectedPeers.contains(peerID) && peerID.displayName != self.myPeerId.displayName {
+        browser.invitePeer(peerID, to: session, withContext: nil, timeout: 30)
+      }
       self.delegate?.didFoundUser(userID: peerID.displayName, userName: info?["userName"] ?? "Unidentified user")
     }
   }

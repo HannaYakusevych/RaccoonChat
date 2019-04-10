@@ -21,13 +21,4 @@ struct Logger {
       print("\(method): \(message)")
     }
   }
-
-  /*
-  static func viewStateIsChanging(in method: String = #function, message: String) {
-    if Logger.isEnabled {
-      print("ViewController: \(message): \(method)")
-    }
-  }
- */
-
 }

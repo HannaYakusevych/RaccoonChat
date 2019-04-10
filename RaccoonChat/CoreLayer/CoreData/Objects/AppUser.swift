@@ -18,7 +18,7 @@ extension AppUser {
 
   static func findOrInsertAppUser(in context: NSManagedObjectContext) -> AppUser? {
     guard let model = context.persistentStoreCoordinator?.managedObjectModel else {
-      print("Model is not available in context")
+      Logger.write("Model is not available in context")
       assert(false)
       return nil
     }
@@ -30,14 +30,13 @@ extension AppUser {
 
     context.performAndWait {
       do {
-        print("Current context: \(context)")
         let results = try context.fetch(fetchRequest)
         assert(results.count < 2, "Multiple AppUsers found!")
         if let foundUser = results.first {
           appUser = foundUser
         }
       } catch {
-        print("Failed to fetch AppUser: \(error)")
+        Logger.write("Failed to fetch AppUser: \(error)")
       }
 
       if appUser == nil {
