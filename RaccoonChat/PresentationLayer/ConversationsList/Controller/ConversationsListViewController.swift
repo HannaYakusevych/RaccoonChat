@@ -194,6 +194,8 @@ extension ConversationsListViewController: CommunicationManagerDelegate {
 
   func reloadTableView() {
     conversationListDataManager?.loadConversations()
-    self.tableView.reloadData()
+    DispatchQueue.main.async {
+      self.tableView.reloadData()
+    }
   }
 }

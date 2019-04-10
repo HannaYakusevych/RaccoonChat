@@ -27,6 +27,7 @@
 		950862AE225DD97A00845447 /* ContextManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950862AD225DD97A00845447 /* ContextManagerProtocol.swift */; };
 		950862B5225DF65800845447 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950862B4225DF65800845447 /* Utils.swift */; };
 		950862B7225DF8F200845447 /* RootAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950862B6225DF8F200845447 /* RootAssembly.swift */; };
+		950862B9225E2A6200845447 /* NewMessageDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 950862B8225E2A6200845447 /* NewMessageDelegate.swift */; };
 		95238929222BE79100AE51C2 /* Themes.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 95238928222BE79100AE51C2 /* Themes.storyboard */; };
 		9523893F222BF55500AE51C2 /* Themes.m in Sources */ = {isa = PBXBuildFile; fileRef = 9523893E222BF55400AE51C2 /* Themes.m */; };
 		9527C522224A944100E5EBDE /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9527C521224A944100E5EBDE /* StorageManager.swift */; };
@@ -92,6 +93,7 @@
 		950862AD225DD97A00845447 /* ContextManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextManagerProtocol.swift; sourceTree = "<group>"; };
 		950862B4225DF65800845447 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		950862B6225DF8F200845447 /* RootAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootAssembly.swift; sourceTree = "<group>"; };
+		950862B8225E2A6200845447 /* NewMessageDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageDelegate.swift; sourceTree = "<group>"; };
 		95238928222BE79100AE51C2 /* Themes.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Themes.storyboard; sourceTree = "<group>"; };
 		9523893A222BF33700AE51C2 /* RaccoonChat-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RaccoonChat-Bridging-Header.h"; sourceTree = "<group>"; };
 		9523893E222BF55400AE51C2 /* Themes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Themes.m; sourceTree = "<group>"; };
@@ -342,6 +344,7 @@
 				950862852253D98B00845447 /* CommunicationManagerDelegate.swift */,
 				950862872253DBE100845447 /* UserStateDelegate.swift */,
 				959E8C55223FC6CE00182C98 /* CommunicationManager.swift */,
+				950862B8225E2A6200845447 /* NewMessageDelegate.swift */,
 			);
 			path = Communication;
 			sourceTree = "<group>";
@@ -623,6 +626,7 @@
 				953CDB052235242500E6F1CC /* ThemesViewController.swift in Sources */,
 				953CDB0A22383DF500E6F1CC /* GCDDataManager.swift in Sources */,
 				9508627D22534A0C00845447 /* Message.swift in Sources */,
+				950862B9225E2A6200845447 /* NewMessageDelegate.swift in Sources */,
 				95054EB7220EDCD800BC484F /* AppDelegate.swift in Sources */,
 				954D94C82242C09D00981B1D /* RaccoonChat.xcdatamodeld in Sources */,
 				95C769E92218898D001CB34E /* ProfileViewController.swift in Sources */,

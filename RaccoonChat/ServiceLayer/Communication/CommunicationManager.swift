@@ -15,6 +15,7 @@ class CommunicationManager: CommunicatorDelegate {
   // Communication with the view controller
   weak var delegate: CommunicationManagerDelegate?
   weak var changeUserState: UserStateDelegate?
+  weak var newMessageDelegate: NewMessageDelegate?
 
   init() {
     self.communicator = MultipeerCommunicator()
@@ -46,6 +47,7 @@ class CommunicationManager: CommunicatorDelegate {
   // Update table views with a new message
   func didReceiveMessage(text: String, fromUser: String, toUser: String) {
     delegate?.didReceiveNewMessage(text: text, from: fromUser)
+    newMessageDelegate?.reloadData()
   }
 
 }

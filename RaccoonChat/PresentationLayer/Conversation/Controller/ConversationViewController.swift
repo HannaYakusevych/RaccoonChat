@@ -36,8 +36,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
       user.lastMessageDate = Date()
       self.conversationListService?.insertNewMessage(text: self.newMessageTextView.text,
                                            to: self.title!, isInput: false)
-      self.contextManager?.performSave(completion: nil)
-      self.newMessageTextView.text = ""
+      self.contextManager?.performSave { isSaved in
+        DispatchQueue.main.async {
+          self.newMessageTextView.text = ""
+          self.conversationDataManager?.loadMessages()
+        }
+      }
     }
   }
 
@@ -77,10 +81,14 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
                                                              context: mainContext)
     self.conversationDataManager?.loadMessages()
 
+    RootAssembly.communicationManager.newMessageDelegate = self
+
     self.tableView.reloadData()
   }
 
   deinit {
+    RootAssembly.communicationManager.newMessageDelegate = nil
+
     // Stop listening for keyboard hide/show events
     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
@@ -107,7 +115,6 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     let fetchResult = self.conversationDataManager?.fetchedResultsController.sections?[indexPath.section]
     let numberOfMessages = fetchResult?.numberOfObjects ?? 0
     let messages = fetchResult?.objects
-    print(numberOfMessages, indexPath)
     let identifier = (messages?[numberOfMessages - 1 - indexPath.row] as? Message)?.isInput ?? false ? "InputMessageCell" : "OutputMessageCell"
     guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? MessageCell else {
       fatalError("Cell configuration is wrong")
@@ -172,6 +179,15 @@ extension ConversationViewController: UserStateDelegate {
   func setOnline(userId: String) {
     if userId == self.title {
       self.sendButton.isEnabled = true
+    }
+  }
+}
+
+extension ConversationViewController: NewMessageDelegate {
+  func reloadData() {
+    self.conversationDataManager?.loadMessages()
+    DispatchQueue.main.async {
+      self.tableView.reloadData()
     }
   }
 }
