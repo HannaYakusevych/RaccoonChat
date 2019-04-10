@@ -107,11 +107,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     let fetchResult = self.conversationDataManager?.fetchedResultsController.sections?[indexPath.section]
     let numberOfMessages = fetchResult?.numberOfObjects ?? 0
     let messages = fetchResult?.objects
-    let identifier = (messages?[numberOfMessages-indexPath.row] as? Message)?.isInput ?? false ? "InputMessageCell" : "OutputMessageCell"
+    print(numberOfMessages, indexPath)
+    let identifier = (messages?[numberOfMessages - 1 - indexPath.row] as? Message)?.isInput ?? false ? "InputMessageCell" : "OutputMessageCell"
     guard let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? MessageCell else {
       fatalError("Cell configuration is wrong")
     }
-    cell.textMessage = (messages?[numberOfMessages-indexPath.row] as? Message)?.text
+    cell.textMessage = (messages?[numberOfMessages - 1 - indexPath.row] as? Message)?.text
     cell.sizeToFit()
 
     // To insert messages from bottom

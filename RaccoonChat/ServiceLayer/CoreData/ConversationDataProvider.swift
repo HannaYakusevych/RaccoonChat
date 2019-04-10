@@ -23,7 +23,7 @@ class ConversationDataManager: NSObject, ConversationDataManagerProtocol {
   init(conversationID: String, tableView: UITableView, context: NSManagedObjectContext) {
     self.tableView = tableView
     let fetchRequest: NSFetchRequest<Message> = Message.fetchRequest()
-    fetchRequest.predicate = NSPredicate(format: "conversation.conversationID == %@", conversationID)
+    fetchRequest.predicate = NSPredicate(format: "conversation.conversationId == %@", conversationID)
     fetchRequest.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
     self.fetchedResultsController = NSFetchedResultsController<Message>(fetchRequest: fetchRequest,
                                                                         managedObjectContext: context,
@@ -60,7 +60,9 @@ extension ConversationDataManager: NSFetchedResultsControllerDelegate {
       }
     case .insert:
       if let newIndexPath = newIndexPath {
-        self.tableView.insertRows(at: [newIndexPath], with: .automatic)
+        let numberOfMessages = fetchedResultsController.fetchedObjects?.count
+        let indexPath = IndexPath(row: numberOfMessages! - newIndexPath.row - 1, section: 0)
+        self.tableView.insertRows(at: [indexPath], with: .automatic)
       }
     case .update:
       if let indexPath = indexPath {
