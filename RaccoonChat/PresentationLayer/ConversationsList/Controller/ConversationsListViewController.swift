@@ -66,8 +66,9 @@ class ConversationsListViewController: UITableViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     CommunicationManager.shared.delegate = self
+    //self.conversationListDataProvider = ConversationListDataProvider(tableView: self.tableView, context: self.conversationsService.coreDataStack.mainContext)
     self.conversationListDataProvider = ConversationListDataProvider(tableView: self.tableView,
-                                                             context: self.conversationsService.coreDataStack.mainContext)
+                                                                     context: CoreDataStack.shared.mainContext)
     self.conversationListDataProvider?.loadConversations()
     tableView.reloadData()
   }

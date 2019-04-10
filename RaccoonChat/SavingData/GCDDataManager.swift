@@ -8,7 +8,7 @@
 
 import Foundation
 
-class GCDDataManager: ProfileDataManager {
+class GCDDataManager: ProfileDataManagerProtocol {
 
   let queue = DispatchQueue(label: "com.app.gcdQueue", qos: .userInitiated)
 

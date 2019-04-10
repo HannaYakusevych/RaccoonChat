@@ -24,16 +24,13 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
   @IBOutlet var keyboardToolbar: UIToolbar!
   @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
-  // MARK: CoreData
-  let coreDataStack = CoreDataStack()
-
   // Checking if data has changed
   var nameHasChanged = false
   var descriptionHasChanged = false
   var imageHasChanged = false
 
-  // Default: GCD
-  var dataManager: ProfileDataManager = StorageManager()
+  // Default
+  var dataManager: ProfileDataManagerProtocol? = StorageManager()
 
   // MARK: - Actions
 
@@ -131,6 +128,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
    Function for loading data ending (reloading included)
    */
   func load(isLoaded: Bool, data: [String: Any]) {
+    Logger.write("App user is loaded: \(isLoaded)")
     let (name, description, image) = (data["name"], data["description"], data["image"])
     self.profileImageView.image = image as? UIImage ?? UIImage(named: "placeholder-user")
     self.nameTextField.text = name as? String ?? ""

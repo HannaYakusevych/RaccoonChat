@@ -61,9 +61,12 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
 
     // To insert messages from bottom
     tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
+    //self.conversationDataProvider = ConversationDataProvider(conversationID: self.title!,
+    //                                                         tableView: self.tableView,
+    //                                                         context: (self.conversationsService?.coreDataStack.mainContext)!)
     self.conversationDataProvider = ConversationDataProvider(conversationID: self.title!,
                                                              tableView: self.tableView,
-                                                             context: (self.conversationsService?.coreDataStack.mainContext)!)
+                                                             context: CoreDataStack.shared.mainContext)
     self.conversationDataProvider?.loadMessages()
 
     self.tableView.reloadData()

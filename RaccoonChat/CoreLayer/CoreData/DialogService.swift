@@ -12,7 +12,8 @@ import CoreData
 class DialogService {
   var coreDataStack: CoreDataStack
   init() {
-    self.coreDataStack = CoreDataStack()
+    //self.coreDataStack = CoreDataStack()
+    self.coreDataStack = CoreDataStack.shared
   }
   func findOrInsertNewUser(userId: String) -> User? {
     return User.findOrInsertUser(userId: userId, in: self.coreDataStack.mainContext)

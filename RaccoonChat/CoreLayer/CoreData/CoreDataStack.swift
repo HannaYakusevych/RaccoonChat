@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 class CoreDataStack {
+  static let shared = CoreDataStack()
 
   // MARK: - NSPersistentStore
   private var storeURL: URL {
@@ -63,9 +64,11 @@ class CoreDataStack {
   // MARK: - Saving
   typealias SaveCompletion = (Bool) -> Void
   func performSave(with context: NSManagedObjectContext, completion: SaveCompletion? = nil) {
+    print(context)
     context.perform {
       // Check if there is something new to save
       guard context.hasChanges else {
+        Logger.write("No changes to save in \(context)")
         completion?(true)
         return
       }

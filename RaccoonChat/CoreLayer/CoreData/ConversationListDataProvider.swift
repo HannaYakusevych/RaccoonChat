@@ -45,7 +45,6 @@ extension ConversationListDataProvider: NSFetchedResultsControllerDelegate {
                   at indexPath: IndexPath?,
                   for type: NSFetchedResultsChangeType,
                   newIndexPath: IndexPath?) {
-    
     switch type {
     case .insert:
       if let newIndexPath = newIndexPath {

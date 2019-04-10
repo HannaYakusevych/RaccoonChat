@@ -34,6 +34,7 @@ extension AppUser {
       if let foundUser = results.first {
         appUser = foundUser
       }
+      print("AppUser: \(appUser)")
     } catch {
       print("Failed to fetch AppUser: \(error)")
     }

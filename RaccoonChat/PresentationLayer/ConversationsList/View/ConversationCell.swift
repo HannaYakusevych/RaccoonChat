@@ -9,6 +9,15 @@
 import UIKit
 import Foundation
 
+protocol ConversationCellConfiguration: class {
+  var name: String? {get set}
+  var message: String? {get set}
+  var date: Date? {get set}
+  var online: Bool {get set}
+  var hasUnreadMessages: Bool {get set}
+  var photo: UIImage? {get set}
+}
+
 class ConversationCell: UITableViewCell, ConversationCellConfiguration {
 
   // MARK: ConversationCellConfiguration conformance
@@ -113,13 +122,4 @@ class ConversationCell: UITableViewCell, ConversationCellConfiguration {
     // Configure the view for the selected state
   }
 
-}
-
-protocol ConversationCellConfiguration: class {
-  var name: String? {get set}
-  var message: String? {get set}
-  var date: Date? {get set}
-  var online: Bool {get set}
-  var hasUnreadMessages: Bool {get set}
-  var photo: UIImage? {get set}
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class OperationDataManager: ProfileDataManager {
+class OperationDataManager: ProfileDataManagerProtocol {
 
   let queue = OperationQueue()
 

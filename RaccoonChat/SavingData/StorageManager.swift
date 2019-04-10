@@ -9,17 +9,18 @@
 import Foundation
 import CoreData
 
-class StorageManager: ProfileDataManager {
+class StorageManager: ProfileDataManagerProtocol {
 
-  let coreDataStack: CoreDataStack!
+  //let coreDataStack: CoreDataStack!
 
-  init() {
-    self.coreDataStack = CoreDataStack()
-  }
+  //init() {
+  //  self.coreDataStack = CoreDataStack()
+  //}
 
   func saveProfileData(name: String?, description: String?, image: UIImage?, completion: @escaping (Bool) -> Void) {
 
-    let appUser = AppUser.findOrInsertAppUser(in: coreDataStack.mainContext)
+    //let appUser = AppUser.findOrInsertAppUser(in: coreDataStack.mainContext)
+    let appUser = AppUser.findOrInsertAppUser(in: CoreDataStack.shared.mainContext)
 
     if let name = name {
       appUser?.setValue(name, forKey: "name")
@@ -37,7 +38,8 @@ class StorageManager: ProfileDataManager {
 
     appUser?.setValue(Date(), forKey: "timestamp")
 
-    coreDataStack.performSave(with: coreDataStack.saveContext) { isSaved in
+    //coreDataStack.performSave(with: coreDataStack.saveContext) { isSaved in
+    CoreDataStack.shared.performSave(with: CoreDataStack.shared.saveContext) { isSaved in
       // Perform UI task
       DispatchQueue.main.async {
         completion(isSaved)
@@ -46,7 +48,8 @@ class StorageManager: ProfileDataManager {
   }
 
   func loadProfileData(isDone: @escaping (Bool, [String: Any]) -> Void) {
-    let appUser = AppUser.findOrInsertAppUser(in: coreDataStack.mainContext)
+    //let appUser = AppUser.findOrInsertAppUser(in: coreDataStack.mainContext)
+    let appUser = AppUser.findOrInsertAppUser(in: CoreDataStack.shared.mainContext)
     let imageData = appUser?.image
     let image = imageData != nil ? UIImage(data: imageData!) : UIImage(named: "placeholder-user")
     isDone(true, ["name": appUser?.name ?? "",
