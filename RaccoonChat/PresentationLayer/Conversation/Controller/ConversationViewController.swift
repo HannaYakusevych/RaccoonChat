@@ -14,27 +14,29 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   @IBOutlet var newMessageView: UIView!
   @IBOutlet var newMessageTextView: UITextView!
   @IBOutlet var sendButton: UIButton!
-  var conversationsService: ConversationsService?
-  var conversationDataProvider: ConversationDataProvider?
-  var dialogService: DialogService?
+
+  var contextManager: ContextManagerProtocol?
+  var conversationListService: ConversationListServiceProtocol?
+  var conversationDataManager: ConversationDataManagerProtocol?
+
   @IBAction func sendMessage(_ sender: Any) {
     // If the message is empty, don't send anything
     if newMessageTextView.text == "" {
       return
     }
-    CommunicationManager.shared.communicator.sendMessage(string: self.newMessageTextView.text, to: self.title!) { isSent, error in
+    RootAssembly.communicationManager.communicator.sendMessage(string: self.newMessageTextView.text, to: self.title!) { isSent, error in
       if !isSent {
         Logger.write(error?.localizedDescription ?? "Message sending error: user is unknown")
         return
       }
-      guard let user = self.dialogService?.findOrInsertNewUser(userId: self.title!) else {
+      guard let user = self.conversationListService?.findOrInsertNewUser(userId: self.title!) else {
         return
       }
       user.lastMessage = self.newMessageTextView.text
       user.lastMessageDate = Date()
-      self.dialogService?.insertNewMessage(text: self.newMessageTextView.text,
+      self.conversationListService?.insertNewMessage(text: self.newMessageTextView.text,
                                            to: self.title!, isInput: false)
-      self.conversationsService?.performSave(completion: nil)
+      self.contextManager?.performSave(completion: nil)
       self.newMessageTextView.text = ""
     }
   }
@@ -60,14 +62,20 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
     self.tableView.dataSource = self
 
     // To insert messages from bottom
-    tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
-    //self.conversationDataProvider = ConversationDataProvider(conversationID: self.title!,
-    //                                                         tableView: self.tableView,
-    //                                                         context: (self.conversationsService?.coreDataStack.mainContext)!)
-    self.conversationDataProvider = ConversationDataProvider(conversationID: self.title!,
+    self.tableView.transform = CGAffineTransform(scaleX: 1, y: -1)
+
+    let conversationListService = ConversationListService()
+    self.conversationListService = conversationListService
+    self.contextManager = conversationListService
+
+    guard let mainContext = self.contextManager?.getMainContext() else {
+      assert(false, "Error: mainContext doesn't exist")
+      return
+    }
+    self.conversationDataManager = ConversationDataManager(conversationID: self.title!,
                                                              tableView: self.tableView,
-                                                             context: CoreDataStack.shared.mainContext)
-    self.conversationDataProvider?.loadMessages()
+                                                             context: mainContext)
+    self.conversationDataManager?.loadMessages()
 
     self.tableView.reloadData()
   }
@@ -82,21 +90,21 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
   // MARK: - Table view data source
 
   func numberOfSections(in tableView: UITableView) -> Int {
-    guard let sections = self.conversationDataProvider?.fetchedResultsController.sections else {
+    guard let sections = self.conversationDataManager?.fetchedResultsController.sections else {
       return 0
     }
     return sections.count
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    guard let sections = self.conversationDataProvider?.fetchedResultsController.sections else {
+    guard let sections = self.conversationDataManager?.fetchedResultsController.sections else {
       return 0
     }
     return sections[section].numberOfObjects
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let fetchResult = self.conversationDataProvider?.fetchedResultsController.sections?[indexPath.section]
+    let fetchResult = self.conversationDataManager?.fetchedResultsController.sections?[indexPath.section]
     let numberOfMessages = fetchResult?.numberOfObjects ?? 0
     let messages = fetchResult?.objects
     let identifier = (messages?[numberOfMessages-indexPath.row] as? Message)?.isInput ?? false ? "InputMessageCell" : "OutputMessageCell"

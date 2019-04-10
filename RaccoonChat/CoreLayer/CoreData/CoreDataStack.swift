@@ -10,7 +10,6 @@ import Foundation
 import CoreData
 
 class CoreDataStack {
-  static let shared = CoreDataStack()
 
   // MARK: - NSPersistentStore
   private var storeURL: URL {

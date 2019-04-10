@@ -10,11 +10,10 @@ import UIKit
 import CoreData
 
 class ConversationsListViewController: UITableViewController {
-  var onlineUsers = [User]()
-  var historyUsers = [User]()
-  var conversationsService = ConversationsService()
-  var conversationListDataProvider: ConversationListDataProvider?
-  var dialogService = DialogService()
+
+  var conversationListService: ConversationListServiceProtocol?
+  var contextManager: ContextManagerProtocol?
+  var conversationListDataManager: ConversationListDataManagerProtocol?
 
   // MARK: - Actions
   @IBAction func goToProfile(_ sender: Any) {
@@ -65,11 +64,20 @@ class ConversationsListViewController: UITableViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    CommunicationManager.shared.delegate = self
-    //self.conversationListDataProvider = ConversationListDataProvider(tableView: self.tableView, context: self.conversationsService.coreDataStack.mainContext)
-    self.conversationListDataProvider = ConversationListDataProvider(tableView: self.tableView,
-                                                                     context: CoreDataStack.shared.mainContext)
-    self.conversationListDataProvider?.loadConversations()
+    RootAssembly.communicationManager.delegate = self
+
+    let conversationListService = ConversationListService()
+    self.conversationListService = conversationListService
+    self.contextManager = conversationListService
+
+    guard let mainContext = self.contextManager?.getMainContext() else {
+      Logger.write("Error getting main context")
+      return
+    }
+    self.conversationListDataManager = ConversationListDataManager(tableView: self.tableView,
+                                                                   context: mainContext)
+    self.conversationListDataManager?.loadConversations()
+
     tableView.reloadData()
   }
 
@@ -85,7 +93,7 @@ class ConversationsListViewController: UITableViewController {
     guard let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationCell", for: indexPath) as? ConversationCell else {
       fatalError("Cell format is wrong")
     }
-    if let user = self.conversationListDataProvider?.fetchedResultsController.object(at: indexPath) {
+    if let user = self.conversationListDataManager?.fetchedResultsController.object(at: indexPath) {
       cell.name = user.name
       cell.message = user.lastMessage
       cell.date = user.lastMessageDate
@@ -101,38 +109,41 @@ class ConversationsListViewController: UITableViewController {
   }
 
   override func numberOfSections(in tableView: UITableView) -> Int {
-    guard let numberOfSections = self.conversationListDataProvider?.fetchedResultsController.sections?.count else {
+    guard let numberOfSections = self.conversationListDataManager?.fetchedResultsController.sections?.count else {
       return 0
     }
     return numberOfSections
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    guard let sections = self.conversationListDataProvider?.fetchedResultsController.sections else {
+    guard let sections = self.conversationListDataManager?.fetchedResultsController.sections else {
       return 0
     }
-    print("Number of objects in section: \(sections[section].numberOfObjects)")
+    Logger.write("Number of objects in section: \(sections[section].numberOfObjects)")
     return sections[section].numberOfObjects
   }
 
   override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    if section == 0 {
+    guard let sections = self.conversationListDataManager?.fetchedResultsController.sections else {
+      return ""
+    }
+    if sections[section].name == "0" {
+      return "History"
+    } else {
       return "Online"
     }
-    return "History"
   }
 
   // MARK: - Table view delegate
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    print("Selected user: \(indexPath)")
     goToConversation(indexPath: indexPath)
   }
 
   func goToConversation(indexPath: IndexPath) {
     let storyboard = UIStoryboard(name: "Conversation", bundle: nil)
     if let viewController = storyboard.instantiateViewController(withIdentifier: "ConvViewController") as? ConversationViewController {
-      viewController.title = self.conversationListDataProvider?.fetchedResultsController.object(at: indexPath).name ?? "Name unspecified"
-      viewController.conversationsService = self.conversationsService
-      viewController.dialogService = self.dialogService
+      viewController.title = self.conversationListDataManager?.fetchedResultsController.object(at: indexPath).name ?? "Name unspecified"
       navigationController?.pushViewController(viewController, animated: true)
     }
   }
@@ -149,40 +160,37 @@ class ConversationsListViewController: UITableViewController {
 
 extension ConversationsListViewController: CommunicationManagerDelegate {
   func moveUserToOnlineSection(userId: String, userName: String?) {
-    guard let user = dialogService.findOrInsertNewUser(userId: userId) else {
+    guard let user = self.conversationListService?.findOrInsertNewUser(userId: userId) else {
       assert(false, "Some error with find or insert user")
       return
     }
     user.name = userName
-    if let conversation = dialogService.findOrInsertNewDialog(user: user) {
+    if let conversation = self.conversationListService?.findOrInsertNewDialog(user: user) {
       conversation.user?.isOnline = true
-      self.conversationsService.performSave(completion: { isSaved in
-        print(isSaved ? "User saved" : "Can't save user")
+      self.contextManager?.performSave(completion: { isSaved in
+        Logger.write(isSaved ? "User saved" : "Can't save user")
       })
     }
     reloadTableView()
   }
   func moveUserToHistorySection(userId: String) {
-    self.dialogService.setOfflineStatus(userID: userId, complition: nil)
+    self.conversationListService?.setOfflineStatus(userId: userId, completion: nil)
     reloadTableView()
   }
   func didReceiveNewMessage(text: String, from userId: String) {
-    guard let user = self.dialogService.findOrInsertNewUser(userId: userId) else {
+    guard let user = self.conversationListService?.findOrInsertNewUser(userId: userId) else {
       print("Error finding and inserting user")
       return
     }
     user.lastMessage = text
     user.lastMessageDate = Date()
-    self.dialogService.insertNewMessage(text: text, to: userId, isInput: true)
-    self.conversationsService.performSave(completion: nil)
+    self.conversationListService?.insertNewMessage(text: text, to: userId, isInput: true)
+    self.contextManager?.performSave(completion: nil)
     reloadTableView()
   }
-}
 
-extension ConversationsListViewController: ConversationsListDelegate {
   func reloadTableView() {
-    conversationListDataProvider?.loadConversations()
-    self.onlineUsers = self.onlineUsers.sorted(by: { $0.lastMessageDate?.compare($1.lastMessageDate!) == .orderedDescending })
+    //conversationListDataManager?.loadConversations()
     self.tableView.reloadData()
   }
 }

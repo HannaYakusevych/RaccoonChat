@@ -11,9 +11,6 @@ import MultipeerConnectivity
 
 class CommunicationManager: CommunicatorDelegate {
 
-  // MARK: Singleton
-  static let shared = CommunicationManager()
-
   var communicator: MultipeerCommunicator
   // Communication with the view controller
   weak var delegate: CommunicationManagerDelegate?

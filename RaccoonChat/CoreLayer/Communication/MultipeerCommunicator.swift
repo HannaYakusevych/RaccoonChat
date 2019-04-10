@@ -56,13 +56,6 @@ class MultipeerCommunicator: NSObject, Communicator {
     }
   }
 
-  // TODO: Left it only in one place
-  private func generateMessageId() -> String {
-    let date = Date.timeIntervalSinceReferenceDate
-    let string = "\(arc4random_uniform(UINT32_MAX))+\(date)+\(arc4random_uniform(UINT32_MAX))".data(using: .utf8)?.base64EncodedString()
-    return string!
-  }
-
   // Make new session and invite user to it
   func getSession(for userId: String) -> MCSession? {
     if let session = sessions[userId] {

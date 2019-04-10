@@ -28,9 +28,4 @@ extension Message {
       conversation.addToMessages(message)
     }
   }
-  static func generateMessageId() -> String {
-    let date = Date.timeIntervalSinceReferenceDate
-    let string = "\(arc4random_uniform(UINT32_MAX))+\(date)+\(arc4random_uniform(UINT32_MAX))".data(using: .utf8)?.base64EncodedString()
-    return string!
-  }
 }
