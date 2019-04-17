@@ -31,6 +31,8 @@ class ConversationDataManager: NSObject, ConversationDataManagerProtocol {
                                                                         cacheName: nil)
     super.init()
     self.fetchedResultsController.delegate = self
+    self.fetchedResultsController.fetchRequest.fetchBatchSize = 30
+    self.fetchedResultsController.fetchRequest.returnsObjectsAsFaults = false
   }
   func loadMessages() {
     do {
@@ -53,6 +55,8 @@ extension ConversationDataManager: NSFetchedResultsControllerDelegate {
                   at indexPath: IndexPath?,
                   for type: NSFetchedResultsChangeType,
                   newIndexPath: IndexPath?) {
+    print("Hello")
+    print(type)
     switch type {
     case .delete:
       if let indexPath = indexPath {

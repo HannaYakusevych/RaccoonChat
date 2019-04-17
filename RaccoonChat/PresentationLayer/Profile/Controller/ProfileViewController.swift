@@ -306,11 +306,26 @@ extension ProfileViewController: UIImagePickerControllerDelegate {
       }
     })
 
+    let loadPhotoAction = UIAlertAction(title: "Скачать фото", style: .default, handler: { (_: UIAlertAction!) -> Void in
+      let storyboard = UIStoryboard(name: "PhotoCollection", bundle: nil)
+      let viewController = storyboard.instantiateViewController(withIdentifier: "PhotoCollection")
+      if let viewController = viewController as? PhotoCollectionViewController {
+        viewController.completion = { image in
+          self.imageHasChanged = true
+          self.profileImageView.image = image
+          self.operationButton.isUserInteractionEnabled = true
+          self.gcdButton.isUserInteractionEnabled = true
+        }
+      }
+      self.present(viewController, animated: true, completion: nil)
+    })
+
     let cancelAction = UIAlertAction(title: "Отменить", style: .cancel, handler: {(_: UIAlertAction!) -> Void in self.setViewContentProperties()})
 
     // Add actions to the controller
     alertController.addAction(choosePhotoAction)
     alertController.addAction(makePhotoAction)
+    alertController.addAction(loadPhotoAction)
     alertController.addAction(cancelAction)
 
     self.present(alertController, animated: true, completion: {self.setViewContentProperties()})

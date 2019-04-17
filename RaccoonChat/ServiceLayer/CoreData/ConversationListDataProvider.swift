@@ -21,7 +21,7 @@ class ConversationListDataManager: NSObject, ConversationListDataManagerProtocol
   init(tableView: UITableView, context: NSManagedObjectContext) {
     self.tableView = tableView
     let request: NSFetchRequest<User> = User.fetchRequest()
-    request.sortDescriptors = [NSSortDescriptor(key: "isOnline", ascending: true),
+    request.sortDescriptors = [NSSortDescriptor(key: "isOnline", ascending: false),
                                NSSortDescriptor(key: "userId", ascending: true)]
     self.fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
                                                                managedObjectContext: context,
@@ -29,6 +29,8 @@ class ConversationListDataManager: NSObject, ConversationListDataManagerProtocol
                                                                cacheName: nil)
     super.init()
     self.fetchedResultsController.delegate = self
+    self.fetchedResultsController.fetchRequest.fetchBatchSize = 30
+    self.fetchedResultsController.fetchRequest.returnsObjectsAsFaults = false
   }
   func loadConversations() {
     do {

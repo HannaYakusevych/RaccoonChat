@@ -36,7 +36,7 @@ class ConversationViewController: UIViewController, UITableViewDataSource, UITab
       user.lastMessageDate = Date()
       self.conversationListService?.insertNewMessage(text: self.newMessageTextView.text,
                                            to: self.title!, isInput: false)
-      self.contextManager?.performSave { isSaved in
+      self.contextManager?.performSave { _ in
         DispatchQueue.main.async {
           self.newMessageTextView.text = ""
           self.conversationDataManager?.loadMessages()

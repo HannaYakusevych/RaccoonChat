@@ -21,7 +21,8 @@ class ConversationListService: ConversationListServiceProtocol, ContextManagerPr
   // MARK: - ContextManagerProtocol
   var coreDataStack: CoreDataStack
   init() {
-    self.coreDataStack = CoreDataStack()
+    //self.coreDataStack = CoreDataStack()
+    self.coreDataStack = RootAssembly.coreDataStack
   }
 
   func getMasterContext() -> NSManagedObjectContext? {
