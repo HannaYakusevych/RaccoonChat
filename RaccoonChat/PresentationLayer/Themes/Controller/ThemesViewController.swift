@@ -13,8 +13,19 @@ class ThemesViewController: UIViewController {
   var model: Themes!
   var changeColor: ((UIColor) -> Void)?
 
+  var particleEmitter: ParticleEmitter!
+
   @IBOutlet var themeButtons: [UIButton]!
 
+  @IBAction func viewWasTapped(_ sender: UIGestureRecognizer) {
+    if sender.state == .began {
+      self.particleEmitter.touchBegan(sender.location(in: self.view))
+    } else if sender.state == .ended {
+      self.particleEmitter.touchEnded(sender.location(in: self.view))
+    } else if sender.state == .changed {
+      self.particleEmitter.touchBegan(sender.location(in: self.view))
+    }
+  }
   @IBAction func didSelectTheme(_ sender: UIButton) {
     guard
       let model = model,
@@ -50,5 +61,9 @@ class ThemesViewController: UIViewController {
     themeButtons[1].backgroundColor = UIColor.white.withAlphaComponent(0.8)
     themeButtons[2].backgroundColor = UIColor.white.withAlphaComponent(0.8)
     self.view.backgroundColor = ThemeManager.currentTheme().mainColor
+    self.particleEmitter = ParticleEmitter()
+    self.particleEmitter.frame = self.view.frame
+    self.particleEmitter.isUserInteractionEnabled = false
+    self.view.addSubview(particleEmitter)
   }
 }

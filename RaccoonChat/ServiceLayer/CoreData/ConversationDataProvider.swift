@@ -55,8 +55,6 @@ extension ConversationDataManager: NSFetchedResultsControllerDelegate {
                   at indexPath: IndexPath?,
                   for type: NSFetchedResultsChangeType,
                   newIndexPath: IndexPath?) {
-    print("Hello")
-    print(type)
     switch type {
     case .delete:
       if let indexPath = indexPath {

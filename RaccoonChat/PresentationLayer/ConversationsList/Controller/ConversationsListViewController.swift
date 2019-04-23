@@ -16,6 +16,10 @@ class ConversationsListViewController: UITableViewController {
   var conversationListDataManager: ConversationListDataManagerProtocol?
   let rootAssembly = RootAssembly()
 
+  weak var userStateDelegate: UserStateDelegate?
+
+  var particleEmitter: ParticleEmitter!
+
   // MARK: - Actions
   @IBAction func goToProfile(_ sender: Any) {
     let storyboard = UIStoryboard(name: "Profile", bundle: nil)
@@ -24,6 +28,17 @@ class ConversationsListViewController: UITableViewController {
       self.present(navigationController, animated: true, completion: nil)
     }
   }
+
+  @IBAction func viewWasTapped(_ sender: UIGestureRecognizer) {
+    if sender.state == .began {
+      self.particleEmitter.touchBegan(sender.location(in: self.view))
+    } else if sender.state == .ended {
+      self.particleEmitter.touchEnded(sender.location(in: self.view))
+    } else if sender.state == .changed {
+      self.particleEmitter.touchBegan(sender.location(in: self.view))
+    } 
+  }
+
   @IBAction func selectNewTheme(_ sender: Any) {
     let storyboard = UIStoryboard(name: "Themes", bundle: nil)
     guard let navigationController = storyboard.instantiateViewController(withIdentifier: "ThemeController") as? UINavigationController else {
@@ -79,7 +94,12 @@ class ConversationsListViewController: UITableViewController {
                                                                    context: mainContext)
     self.conversationListDataManager?.loadConversations()
 
-    tableView.reloadData()
+    self.particleEmitter = ParticleEmitter()
+    self.particleEmitter.frame = self.tableView.frame
+    self.particleEmitter.isUserInteractionEnabled = false
+    self.view.addSubview(particleEmitter)
+
+    self.tableView.reloadData()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -145,6 +165,8 @@ class ConversationsListViewController: UITableViewController {
     let storyboard = UIStoryboard(name: "Conversation", bundle: nil)
     if let viewController = storyboard.instantiateViewController(withIdentifier: "ConvViewController") as? ConversationViewController {
       viewController.title = self.conversationListDataManager?.fetchedResultsController.object(at: indexPath).name ?? "Name unspecified"
+      self.userStateDelegate = viewController
+      self.userStateDelegate?.isOnline = self.tableView.headerView(forSection: indexPath.section)?.textLabel?.text == "ONLINE" ? true : false
       navigationController?.pushViewController(viewController, animated: true)
     }
   }
@@ -174,11 +196,13 @@ extension ConversationsListViewController: CommunicationManagerDelegate {
       })
     }
     reloadTableView()
+    self.userStateDelegate?.setOnline(userId: userId)
   }
   func moveUserToHistorySection(userId: String) {
     Logger.write("")
     self.conversationListService?.setOfflineStatus(userId: userId, completion: nil)
     reloadTableView()
+    self.userStateDelegate?.setOffline(userId: userId)
   }
   func didReceiveNewMessage(text: String, from userId: String) {
     guard let user = self.conversationListService?.findOrInsertNewUser(userId: userId) else {

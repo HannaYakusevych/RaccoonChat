@@ -41,6 +41,7 @@
 		953CDB0C2238D5AB00E6F1CC /* OperationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953CDB0B2238D5AB00E6F1CC /* OperationDataManager.swift */; };
 		953CDB102238D95800E6F1CC /* LoadOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953CDB0F2238D95800E6F1CC /* LoadOperation.swift */; };
 		953CDB122238DCEB00E6F1CC /* SaveOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 953CDB112238DCEB00E6F1CC /* SaveOperation.swift */; };
+		954271F8226E4D14002C2B40 /* ParticleEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954271F7226E4D14002C2B40 /* ParticleEmitter.swift */; };
 		954D94B92242AF4500981B1D /* CoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954D94B82242AF4500981B1D /* CoreDataStack.swift */; };
 		954D94BD2242B4BA00981B1D /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 954D94BC2242B4BA00981B1D /* AppUser.swift */; };
 		954D94C82242C09D00981B1D /* RaccoonChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 954D94C62242C09D00981B1D /* RaccoonChat.xcdatamodeld */; };
@@ -114,6 +115,7 @@
 		953CDB0B2238D5AB00E6F1CC /* OperationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationDataManager.swift; sourceTree = "<group>"; };
 		953CDB0F2238D95800E6F1CC /* LoadOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadOperation.swift; sourceTree = "<group>"; };
 		953CDB112238DCEB00E6F1CC /* SaveOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveOperation.swift; sourceTree = "<group>"; };
+		954271F7226E4D14002C2B40 /* ParticleEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParticleEmitter.swift; sourceTree = "<group>"; };
 		954D94B82242AF4500981B1D /* CoreDataStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack.swift; sourceTree = "<group>"; };
 		954D94BC2242B4BA00981B1D /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		954D94C72242C09D00981B1D /* RaccoonChat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RaccoonChat.xcdatamodel; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 		95086293225BEF8700845447 /* PresentationLayer */ = {
 			isa = PBXGroup;
 			children = (
+				954271F7226E4D14002C2B40 /* ParticleEmitter.swift */,
 				950862A2225C7F6300845447 /* Profile */,
 				9508629D225C7F0200845447 /* Themes */,
 				950862A6225C7F8100845447 /* Conversation */,
@@ -670,6 +673,7 @@
 				9508627B2252A42700845447 /* Conversation.swift in Sources */,
 				955A93DD226739EA00EC4CF7 /* PhotoCell.swift in Sources */,
 				9508628C2253E1AD00845447 /* ConversationsService.swift in Sources */,
+				954271F8226E4D14002C2B40 /* ParticleEmitter.swift in Sources */,
 				953CDB122238DCEB00E6F1CC /* SaveOperation.swift in Sources */,
 				9508629C225C7CF900845447 /* ConversationCell.swift in Sources */,
 				959F97BA222F102E00451C41 /* ThemeManager.swift in Sources */,

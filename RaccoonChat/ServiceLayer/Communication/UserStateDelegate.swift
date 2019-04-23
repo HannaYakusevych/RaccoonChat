@@ -9,6 +9,7 @@
 import Foundation
 
 protocol UserStateDelegate: class {
+  var isOnline: Bool {get set}
   func setOffline(userId: String)
   func setOnline(userId: String)
 }

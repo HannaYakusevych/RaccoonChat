@@ -99,4 +99,9 @@ class PhotoCollectionViewController: UICollectionViewController {
     }
     self.dismiss(animated: true, completion: nil)
   }
+
+  func gestureRecognizer(gestureRecognizer: UIGestureRecognizer,
+                         shouldRecognizeSimultaneouslyWithGestureRecognizer otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
+  }
 }

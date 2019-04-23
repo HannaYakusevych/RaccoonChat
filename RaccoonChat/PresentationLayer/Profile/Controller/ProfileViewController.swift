@@ -11,7 +11,7 @@ import AVFoundation
 import Photos
 import CoreData
 
-class ProfileViewController: UIViewController, UINavigationControllerDelegate {
+class ProfileViewController: UIViewController, UINavigationControllerDelegate, UIGestureRecognizerDelegate {
 
   // MARK: - Outlets
   @IBOutlet weak var setPhotoImageView: UIImageView!
@@ -24,10 +24,13 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
   @IBOutlet var keyboardToolbar: UIToolbar!
   @IBOutlet var activityIndicator: UIActivityIndicatorView!
 
+  // MARK: - Variables
   // Checking if data has changed
   var nameHasChanged = false
   var descriptionHasChanged = false
   var imageHasChanged = false
+
+  var particleEmitter: ParticleEmitter!
 
   // Default
   var dataManager: ProfileDataManagerProtocol? = StorageManager()
@@ -35,12 +38,26 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
   // MARK: - Actions
 
   @IBAction func changePhoto(_ sender: UITapGestureRecognizer) {
+    print("Change photo")
     if !tappedInSetPhotoCircle(sender: sender) {
       return
     }
 
     showAlertController()
     setViewContentProperties()
+  }
+
+  @IBAction func viewWasTapped(_ sender: UIGestureRecognizer) {
+    if sender.state == .began {
+      print("began")
+      self.particleEmitter.touchBegan(sender.location(in: self.view))
+    } else if sender.state == .ended {
+      print("ended")
+      self.particleEmitter.touchEnded(sender.location(in: self.view))
+    } else if sender.state == .changed {
+      print("changed")
+      self.particleEmitter.touchBegan(sender.location(in: self.view))
+    }
   }
 
   @IBAction func goBack(_ sender: Any) {
@@ -56,7 +73,8 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
   }
 
   @IBAction func saveData(_ sender: UIButton) {
-
+    self.descriptionTextView.resignFirstResponder()
+    self.nameTextField.resignFirstResponder()
     showPlaceholderTextIfEmpty(descriptionTextView)
     // Don't allow user to save date while last saving isn't complete
     gcdButton.isUserInteractionEnabled = false
@@ -101,6 +119,11 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
 
     nameTextField.addTarget(self, action: #selector(self.textFieldDidChange(_:)), for: .editingChanged)
 
+    self.particleEmitter = ParticleEmitter()
+    self.particleEmitter.frame = self.view.frame
+    self.particleEmitter.isUserInteractionEnabled = false
+    self.view.addSubview(particleEmitter)
+
     // Reading the user data from the file
     activityIndicator.startAnimating()
     dataManager?.loadProfileData { isLoaded, data in
@@ -120,9 +143,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate {
 
     setViewContentProperties()
   }
-
   // MARK: - Private functions
-
   /**
    Function for loading data ending (reloading included)
    */
@@ -357,7 +378,6 @@ extension ProfileViewController: UIImagePickerControllerDelegate {
     photoPicker.delegate = self
     self.present(photoPicker, animated: true, completion: nil)
   }
-
   /**
    Ask the user if an access to the app would be allowed (for now it isn't)
    */
@@ -419,11 +439,20 @@ extension ProfileViewController: UITextFieldDelegate {
   // Private functions
   private func configureTapGesture() {
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.handleTap))
-    view.addGestureRecognizer(tapGesture)
+    self.view.addGestureRecognizer(tapGesture)
   }
 
   @objc func handleTap() {
     view.endEditing(true)
+  }
+
+  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+                         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    return true
+  }
+
+  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    return false
   }
 
   @objc func textFieldDidChange(_ textField: UITextField) {
@@ -439,6 +468,7 @@ extension ProfileViewController: UITextFieldDelegate {
     guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
       return
     }
+    print(notification.name)
     if notification.name == UIResponder.keyboardWillShowNotification || notification.name == UIResponder.keyboardWillChangeFrameNotification {
       view.frame.origin.y = -keyboardRect.height
     } else  if notification.name == UIResponder.keyboardWillHideNotification {
@@ -447,9 +477,9 @@ extension ProfileViewController: UITextFieldDelegate {
 
   }
 }
-
 extension ProfileViewController: UITextViewDelegate {
   func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+    print("Text view Tapped")
     return true
   }
 
@@ -462,12 +492,10 @@ extension ProfileViewController: UITextViewDelegate {
   func textViewDidBeginEditing(_ textView: UITextView) {
     hidePlaceholderText(textView)
   }
-
   func textViewDidEndEditing(_ textView: UITextView) {
     textView.resignFirstResponder()
     showPlaceholderTextIfEmpty(textView)
   }
-
   func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
     return true
   }
@@ -478,7 +506,6 @@ extension ProfileViewController: UITextViewDelegate {
       textView.textColor = UIColor.black
     }
   }
-
   private func showPlaceholderTextIfEmpty(_ textView: UITextView) {
     if textView.text == "" {
       textView.text = "Profile information"
