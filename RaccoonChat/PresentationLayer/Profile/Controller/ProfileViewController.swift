@@ -29,14 +29,12 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
   var nameHasChanged = false
   var descriptionHasChanged = false
   var imageHasChanged = false
-
   var particleEmitter: ParticleEmitter!
 
   // Default
   var dataManager: ProfileDataManagerProtocol? = StorageManager()
 
   // MARK: - Actions
-
   @IBAction func changePhoto(_ sender: UITapGestureRecognizer) {
     print("Change photo")
     if !tappedInSetPhotoCircle(sender: sender) {
@@ -46,32 +44,24 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     showAlertController()
     setViewContentProperties()
   }
-
   @IBAction func viewWasTapped(_ sender: UIGestureRecognizer) {
     if sender.state == .began {
-      print("began")
       self.particleEmitter.touchBegan(sender.location(in: self.view))
     } else if sender.state == .ended {
-      print("ended")
       self.particleEmitter.touchEnded(sender.location(in: self.view))
     } else if sender.state == .changed {
-      print("changed")
       self.particleEmitter.touchBegan(sender.location(in: self.view))
     }
   }
-
   @IBAction func goBack(_ sender: Any) {
     self.dismiss(animated: true, completion: nil)
   }
-
   @IBAction func hideKeyboard(_ sender: UIBarButtonItem) {
     view.endEditing(true)
   }
-
   @IBAction func editProfileData(_ sender: UIButton) {
     editingMode(isEnabled: true)
   }
-
   @IBAction func saveData(_ sender: UIButton) {
     self.descriptionTextView.resignFirstResponder()
     self.nameTextField.resignFirstResponder()
@@ -79,14 +69,6 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
     // Don't allow user to save date while last saving isn't complete
     gcdButton.isUserInteractionEnabled = false
     operationButton.isUserInteractionEnabled = false
-
-    /*
-    if (sender == gcdButton) {
-      self.dataManager = GCDDataManager()
-    } else {
-      self.dataManager = OperationDataManager()
-    }
-    */
 
     activityIndicator.startAnimating()
     dataManager?.saveProfileData(name: self.nameHasChanged ? self.nameTextField.text : nil,
@@ -163,7 +145,7 @@ class ProfileViewController: UIViewController, UINavigationControllerDelegate, U
    Function for saving data ending (reloading included)
    */
   func save(isSaved: Bool) {
-    UserDefaults.standard.set(self.nameHasChanged ? self.nameTextField.text : "Name", forKey: "name")
+    UserDefaults.standard.set(self.nameTextField.text, forKey: "name")
     if isSaved {
       let alertController = UIAlertController(title: "Данные сохранены", message: nil, preferredStyle: UIAlertController.Style.alert)
       alertController.addAction(UIAlertAction(title: "ОК", style: .default, handler: nil))

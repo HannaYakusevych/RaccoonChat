@@ -36,7 +36,7 @@ class ConversationsListViewController: UITableViewController {
       self.particleEmitter.touchEnded(sender.location(in: self.view))
     } else if sender.state == .changed {
       self.particleEmitter.touchBegan(sender.location(in: self.view))
-    } 
+    }
   }
 
   @IBAction func selectNewTheme(_ sender: Any) {
